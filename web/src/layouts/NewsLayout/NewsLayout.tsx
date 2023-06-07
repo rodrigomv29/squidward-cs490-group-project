@@ -7,7 +7,6 @@ import { Link, routes } from '@redwoodjs/router'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
 
-
 type NewsLayoutProps = {
   children?: React.ReactNode
 }
@@ -51,7 +50,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 </div>
               </div>
             </Link>
-            <div className="sing-in-button flex w-1/3 items-center justify-end text-lg">
+            <div className="sing-in-button mx-6 flex w-1/3 items-center justify-end text-lg">
               <Link to={routes.signIn()}>
                 <Button variant="custom_light">Sign in</Button>
               </Link>
@@ -64,26 +63,25 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               <li className="transition-opacity hover:opacity-75">
                 <Link to={routes.home()}>Home</Link>
               </li>
-              <li>
+              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Link to={routes.home()}>World</Link>
               </li>
-              <li>
+              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Link to={routes.home()}>Business</Link>
               </li>
-              <li>
+              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Link to={routes.home()}>Tech</Link>
               </li>
-              <li>
+              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
                 <Link to={routes.home()}>Life & Style</Link>
               </li>
-              <li>
+              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Icon as={Search2Icon} boxSize={6} />
               </li>
             </ul>
           </div>
         </div>
       </header>
-
       <main>{children}</main>
     </>
   )
