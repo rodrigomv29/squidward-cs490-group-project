@@ -1,9 +1,9 @@
-export const setVariable = (value: number) => {
-  localStorage.setItem('variable', String(value))
+export const setStatus = (status: number) => {
+  localStorage.setItem('status', String(status))
 }
 
-// Get the value of the variable from local storage
-export const getVariable = (): number | null => {
-  const value = localStorage.getItem('variable')
-  return value ? Number(value) : null
+// Get the status from local storage
+export const getStatus = (): number | null => {
+  const status = localStorage.getItem('status')
+  return status ? parseInt(status, 10) : null
 }
