@@ -12,7 +12,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
         <nav>
           <ul>
             <li>
-              <Link to={routes.about()}>About</Link>
+              <Link to={routes.home()}>About</Link>
             </li>
           </ul>
         </nav>
