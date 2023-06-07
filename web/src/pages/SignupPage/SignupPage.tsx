@@ -14,12 +14,14 @@ import {
 } from "@chakra-ui/react" // Chakra UI components for UI design
 
 // trying to get this to work
-import { useAuth } from '@redwoodjs/auth' // Redwood's auth hook for authentication
+import { useAuth } from '@redwoodjs/auth'// Redwood's auth hook for authentication
+import { useNavigate } from '@redwoodjs/router'
 
 // Defining the SignupPage component
 const SignupPage = () => {
   // useState hooks for holding form inputs and error messages
-  // const { signUp } = useAuth()
+  //const { signUp } = useAuth()
+  //const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -58,11 +60,12 @@ const SignupPage = () => {
   }
 
   // Function to handle form submission
+  //Validation checks for sign up
   const handleSubmit = async () => {
-    // Validation checks before sign up
     if (!usernameError && !passwordError && !confirmPasswordError) {
       try {
-        await signUp({ username, password }) // calls the signUp function from useAuth
+        await signUp({ username, password })
+        navigate('/landing') // Navigate to the Landing Page after successful sign up
       } catch (error) {
         console.log(error)
       }
