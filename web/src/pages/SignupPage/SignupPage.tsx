@@ -13,15 +13,20 @@ import {
   Center
 } from "@chakra-ui/react" // Chakra UI components for UI design
 
-// trying to get this to work
-import { useAuth } from '@redwoodjs/auth'// Redwood's auth hook for authentication
-import { useNavigate } from '@redwoodjs/router'
+import { toast } from '@redwoodjs/web/toast'
+import { gql, useMutation } from '@apollo/client'
+
+const CREATE_USER_MUTATION = gql`
+  mutation CreateUserMutation($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+    }
+  }
+`
 
 // Defining the SignupPage component
 const SignupPage = () => {
-  // useState hooks for holding form inputs and error messages
-  //const { signUp } = useAuth()
-  //const navigate = useNavigate()
+  const [createUser, { loading, error }] = useMutation(CREATE_USER_MUTATION)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -62,10 +67,18 @@ const SignupPage = () => {
   // Function to handle form submission
   //Validation checks for sign up
   const handleSubmit = async () => {
+
+     const response = await createUser({ variables: { input: { username, password } } })
     if (!usernameError && !passwordError && !confirmPasswordError) {
       try {
-        await signUp({ username, password })
-        navigate('/landing') // Navigate to the Landing Page after successful sign up
+        const response = await signUp({ username, password })
+
+        if (response.message) {
+          toast.error(response.message) // user created, but not logged in
+        } else {
+          toast.success('Welcome!') // user created and logged in
+          navigate(routes.dashboard())
+        }
       } catch (error) {
         console.log(error)
       }

@@ -31,7 +31,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:3.7.15":
+"@apollo/client@npm:3.7.15, @apollo/client@npm:^3.7.15":
   version: 3.7.15
   resolution: "@apollo/client@npm:3.7.15"
   dependencies:
@@ -25767,6 +25767,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@apollo/client": ^3.7.15
     "@chakra-ui/react": ^2
     "@emotion/react": ^11
     "@emotion/styled": ^11
