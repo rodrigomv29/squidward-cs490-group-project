@@ -1,4 +1,5 @@
-import { Button } from '@chakra-ui/react'
+import { Search2Icon } from '@chakra-ui/icons'
+import { Button, Icon } from '@chakra-ui/react'
 
 import { Link, routes } from '@redwoodjs/router'
 
@@ -39,6 +40,30 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
             <Link to={routes.signIn()}>
               <Button variant="custom_light">Sign in</Button>
             </Link>
+          </div>
+        </div>
+        <div className="navbar flex h-10 items-center bg-emerald-400">
+          <div className="navbar-container mx-12 w-screen">
+            <ul className="justify-betw flex justify-between text-lg text-white">
+              <li>
+                <Link to={routes.home()}>Home</Link>
+              </li>
+              <li>
+                <Link to={routes.home()}>World</Link>
+              </li>
+              <li>
+                <Link to={routes.home()}>Business</Link>
+              </li>
+              <li>
+                <Link to={routes.home()}>Tech</Link>
+              </li>
+              <li>
+                <Link to={routes.home()}>Life & Style</Link>
+              </li>
+              <li>
+                <Icon as={Search2Icon} boxSize={6} />
+              </li>
+            </ul>
           </div>
         </div>
       </header>
