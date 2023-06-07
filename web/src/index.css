@@ -11,3 +11,15 @@
 /**
  * END --- SETUP TAILWINDCSS EDIT
  */
+ @import url('https://fonts.googleapis.com/css2?family=Arvo&family=Merriweather+Sans&family=Prompt&display=swap');
+
+ @layer base {
+  html {
+    font-family: Arvo, sans-serif;
+  }
+}
+
+.logo-img {
+  width: 200px;
+  height: auto;
+}
