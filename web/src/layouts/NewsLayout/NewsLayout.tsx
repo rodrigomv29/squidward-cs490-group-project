@@ -44,7 +44,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
         </div>
         <div className="navbar flex h-10 items-center bg-emerald-400">
           <div className="navbar-container mx-12 w-screen">
-            <ul className="justify-betw flex justify-between text-lg text-white">
+            <ul className="flex justify-between text-lg text-white">
               <li>
                 <Link to={routes.home()}>Home</Link>
               </li>
