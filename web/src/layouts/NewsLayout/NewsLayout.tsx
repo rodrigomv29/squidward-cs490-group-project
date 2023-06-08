@@ -1,7 +1,9 @@
 import { Search2Icon } from '@chakra-ui/icons'
 import { Button, Icon } from '@chakra-ui/react'
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, navigate } from '@redwoodjs/router'
+
+import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
 
@@ -9,7 +11,20 @@ type NewsLayoutProps = {
   children?: React.ReactNode
 }
 
-const NewsLayout = ({ children }: NewsLayoutProps) => {
+const NewsLayout: React.FC<NewsLayoutProps> = ({ children }) => {
+  const status = getStatus()
+
+  const signIn = () => {
+    if (status === 0) {
+      navigate(routes.signIn()) // Redirect to sign-in page
+    }
+  }
+
+  function signOut() {
+    setStatus(0) // Set status as not logged in (0)
+    navigate(routes.home()) // Redirect to home page after signing out
+  }
+
   return (
     <>
       <header>
@@ -36,11 +51,20 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               </div>
             </div>
           </Link>
-          <div className="sing-in-button mx-6 my-4 text-lg">
-            <Link to={routes.signIn()}>
-              <Button variant="custom_light">Sign in</Button>
-            </Link>
-          </div>
+          {status === 0 && (
+            <div className="sing-in-button mx-6 my-4 text-lg">
+              <Button onClick={signIn} variant="custom_light">
+                Sign In
+              </Button>
+            </div>
+          )}
+          {status !== 0 && (
+            <div className="sing-in-button mx-6 my-4 text-lg">
+              <Button onClick={signOut} variant="custom_light">
+                Sign Out
+              </Button>
+            </div>
+          )}
         </div>
         <div className="navbar flex h-10 items-center bg-emerald-400">
           <div className="navbar-container mx-12 w-screen">
