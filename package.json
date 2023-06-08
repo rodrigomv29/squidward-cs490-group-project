@@ -21,12 +21,13 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@3.6.0",
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "framer-motion": "^10.12.16"
+    "framer-motion": "^10.12.16",
+    "react-icons": "^4.9.0"
   }
 }
