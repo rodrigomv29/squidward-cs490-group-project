@@ -61,10 +61,12 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
-                  <Link to={routes.home()}>Trending</Link>
-                  {isHovered && (
-                    <Icon as={ArrowRightIcon} boxSize={4} className="mx-1" />
-                  )}
+                  <Link to={routes.home()}>
+                    Trending
+                    {isHovered && (
+                      <Icon as={ArrowRightIcon} boxSize={4} className="mx-1" />
+                    )}
+                  </Link>
                 </div>
               </div>
               <Link to={routes.home()}>
@@ -158,14 +160,17 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 <li className="my-12 border-b transition-opacity duration-300 hover:opacity-75  hover:shadow">
                   Search <Icon as={Search2Icon} boxSize={4} className="mx-2" />
                 </li>
+                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b hover:opacity-75">
+                  <Link to={routes.signIn()}>Sign in</Link>
+                </li>
               </div>
             </ul>
           </div>
         </div>
         <div className="navbar hidden h-10 items-center bg-emerald-400 py-2 md:block">
-          <div className="navbar-container mx-12 w-screen">
+          <div className="navbar-container mx-0 w-full">
             <ul className="flex justify-between text-lg text-white">
-              <li className="transition-opacity hover:opacity-75">
+              <li className="mx-16 transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Link to={routes.home()}>Home</Link>
               </li>
               <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
@@ -180,7 +185,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
                 <Link to={routes.home()}>Life & Style</Link>
               </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+              <li className="mx-16 transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Icon as={Search2Icon} boxSize={6} />
               </li>
             </ul>
