@@ -4,7 +4,9 @@ import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
 import { Button, Icon } from '@chakra-ui/react'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, navigate } from '@redwoodjs/router'
+
+import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
 
@@ -12,6 +14,9 @@ type NewsLayoutProps = {
   children?: React.ReactNode
 }
 
+/*
+  A useEffect to keep track of the current state of the screen for diffrent viewing size
+*/
 const useWindowWidth = (threshold: number) => {
   const [isLargeScreen, setIsLargeScreen] = useState(
     window.innerWidth > threshold
@@ -39,6 +44,19 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const isLargeScreen = useWindowWidth(768)
   const [nav, setNav] = useState(false)
 
+  const status = getStatus()
+
+  const signIn = () => {
+    if (status === 0) {
+      navigate(routes.signIn()) // Redirect to sign-in page
+    }
+  }
+
+  function signOut() {
+    setStatus(0) // Set status as not logged in (0)
+    navigate(routes.home()) // Redirect to home page after signing out
+  }
+
   const handleNav = () => {
     setNav(!nav)
   }
@@ -52,7 +70,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   return (
     <>
       <header>
-        <div className="main pt-4">
+        <div className={'main pt-4 '}>
           <div className="flex items-center justify-between">
             <div className="hidden w-full justify-between md:flex">
               <div className="left-container hidden w-1/3 md:block">
@@ -90,7 +108,19 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               </Link>
               <div className="sing-in-button mx-6 flex w-1/3 items-center justify-end text-lg">
                 <Link to={routes.signIn()}>
-                  <Button variant="custom_light">Sign in</Button>
+                  {status === 0 ? (
+                    <div className="sing-in-button mx-6 my-4 text-lg">
+                      <Button onClick={signIn} variant="custom_light">
+                        Sign In
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="sing-out-button mx-6 my-4 text-lg">
+                      <Button onClick={signOut} variant="custom_light">
+                        Sign Out
+                      </Button>
+                    </div>
+                  )}
                 </Link>
               </div>
             </div>
@@ -136,8 +166,8 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
           <div
             className={
               !nav
-                ? 'fixed left-[-100%] top-0 h-[100%] duration-500 ease-in-out'
-                : 'fixed left-0 top-0 h-[100%] w-1/5 flex-none border-r border-r-gray-300 duration-500 ease-in-out'
+                ? 'fixed left-[-100%] top-0 h-[100%] duration-500 ease-in-out z-9999'
+                : 'fixed left-0 top-0 h-[100%] w-1/5 flex-none border-r border-r-gray-300 duration-500 ease-in-out z-50 bg-black bg-opacity-50'
             }
           >
             <ul className=" text-md h-[100%] bg-emerald-400 text-white">
@@ -161,7 +191,15 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   Search <Icon as={Search2Icon} boxSize={4} className="mx-2" />
                 </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-12 border-b hover:opacity-75">
-                  <Link to={routes.signIn()}>Sign in</Link>
+                  {status === 0 ? (
+                    <Link to={routes.signIn()} onClick={signIn}>
+                      <span className="flex justify-center">Sign In</span>
+                    </Link>
+                  ) : (
+                    <Link to={routes.home()} onClick={signOut}>
+                      <span className="flex justify-center">Sign Out</span>
+                    </Link>
+                  )}
                 </li>
               </div>
             </ul>
