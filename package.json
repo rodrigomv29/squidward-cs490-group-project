@@ -7,8 +7,9 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "5.2.4",
-    "prettier-plugin-tailwindcss": "^0.3.0"
+    "@redwoodjs/core": "5.3.0",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "tailwindcss": "^3.3.2"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
@@ -21,11 +22,11 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@3.6.0",
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.7.0",
-    "@emotion/react": "^11.11.0",
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "framer-motion": "^10.12.16"
   }
