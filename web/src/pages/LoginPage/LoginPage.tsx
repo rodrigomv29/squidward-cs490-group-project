@@ -14,15 +14,10 @@ import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import { setStatus } from 'src/utils/storage'
 
 const LoginPage = () => {
-  const { isAuthenticated, logIn } = useAuth()
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.home())
-    }
-  }, [isAuthenticated])
+  const { logIn } = useAuth()
 
   const usernameRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
@@ -41,7 +36,13 @@ const LoginPage = () => {
       toast.error(response.error)
     } else {
       toast.success('Welcome back!')
+      signIn()
     }
+  }
+
+  const signIn = () => {
+    setStatus(1) // Set status as logged in (1)
+    navigate(routes.home()) // Redirect to home page after signing in
   }
 
   return (

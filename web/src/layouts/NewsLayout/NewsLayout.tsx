@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react'
 
-import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
-import { Button, Icon } from '@chakra-ui/react'
+import { Search2Icon, ArrowRightIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import {
+  Button,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
@@ -43,23 +51,35 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const [isHovered, setIsHovered] = useState(false)
   const isLargeScreen = useWindowWidth(768)
   const [nav, setNav] = useState(false)
+  const { isAuthenticated, currentUser, logOut } = useAuth()
+  const currentUsername = isAuthenticated ? currentUser.email : null
 
   const status = getStatus()
 
   const signIn = () => {
     if (status === 0) {
-      navigate(routes.signIn()) // Redirect to sign-in page
+      navigate(routes.login()) // Redirect to sign-in page
+      handleNav()
     }
   }
 
   function signOut() {
     setStatus(0) // Set status as not logged in (0)
     navigate(routes.home()) // Redirect to home page after signing out
+    handleNav()
   }
 
   const handleNav = () => {
     setNav(!nav)
   }
+
+  const handleLogout = () => {
+    logOut()
+    setStatus(0)
+    handleNav()
+  }
+
+  console.log(status)
 
   useEffect(() => {
     if (isLargeScreen && nav) {
@@ -107,21 +127,38 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 </div>
               </Link>
               <div className="sing-in-button mx-6 flex w-1/3 items-center justify-end text-lg">
-                <Link to={routes.signIn()}>
-                  {status === 0 ? (
+                {status === 0 ? (
+                  <Link to={routes.login()}>
                     <div className="sing-in-button mx-6 my-4 text-lg">
                       <Button onClick={signIn} variant="custom_light">
                         Sign In
                       </Button>
                     </div>
-                  ) : (
-                    <div className="sing-out-button mx-6 my-4 text-lg">
-                      <Button onClick={signOut} variant="custom_light">
-                        Sign Out
-                      </Button>
-                    </div>
-                  )}
-                </Link>
+                  </Link>
+                ) : (
+                  <div className="my-account-menu mx-6 my-4 text-lg">
+                    <Menu>
+                      {({ isOpen }) => (
+                        <>
+                          <MenuButton
+                            isActive={isOpen}
+                            as={Button}
+                            rightIcon={<ChevronDownIcon />}
+                          >
+                            {'My Account'}
+                          </MenuButton>
+                          <MenuList>
+                            {isAuthenticated && (
+                              <div>{`Logged in as: ${currentUsername}`}</div>
+                            )}
+                            <MenuItem>Settings</MenuItem>
+                            <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+                          </MenuList>
+                        </>
+                      )}
+                    </Menu>
+                  </div>
+                )}
               </div>
             </div>
             <div className="mobile-menu-container flex w-full justify-between md:hidden">
@@ -173,26 +210,36 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
             <ul className=" text-md h-[100%] bg-emerald-400 text-white">
               <div className="list-items px-3 py-5 uppercase">
                 <li className="my-12 border-b transition-opacity hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Home</Link>
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Home
+                  </Link>
                 </li>
                 <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>World</Link>
+                  <Link to={routes.home()} onClick={handleNav}>
+                    World
+                  </Link>
                 </li>
                 <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Business</Link>
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Business
+                  </Link>
                 </li>
                 <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Tech</Link>
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Tech
+                  </Link>
                 </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-2 border-b hover:opacity-75">
-                  <Link to={routes.home()}>Life & Style</Link>
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Life & Style
+                  </Link>
                 </li>
                 <li className="my-12 border-b transition-opacity duration-300 hover:opacity-75  hover:shadow">
                   Search <Icon as={Search2Icon} boxSize={4} className="mx-2" />
                 </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-12 border-b hover:opacity-75">
                   {status === 0 ? (
-                    <Link to={routes.signIn()} onClick={signIn}>
+                    <Link to={routes.login()} onClick={signIn}>
                       <span className="flex justify-center">Sign In</span>
                     </Link>
                   ) : (

@@ -6,6 +6,7 @@ import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo_128.png'
@@ -39,26 +40,30 @@ const useWindowWidth = (threshold: number) => {
   return isLargeScreen
 }
 
-const NewsLayout = ({ children }: NewsLayoutProps) => {
+const SignInSignUpLayout = ({ children }: NewsLayoutProps) => {
   // const [isHovered, setIsHovered] = useState(false)
   const isLargeScreen = useWindowWidth(768)
   const [nav, setNav] = useState(false)
+  const { logOut } = useAuth()
 
   const status = getStatus()
 
   const signIn = () => {
     if (status === 0) {
-      navigate(routes.signIn()) // Redirect to sign-in page
+      navigate(routes.login()) // Redirect to sign-in page
+      handleNav()
     }
-  }
-
-  function signOut() {
-    setStatus(0) // Set status as not logged in (0)
-    navigate(routes.home()) // Redirect to home page after signing out
   }
 
   const handleNav = () => {
     setNav(!nav)
+  }
+
+  const handleLogout = () => {
+    logOut()
+    setStatus(0)
+    handleNav()
+    navigate(routes.home()) // Redirect to home page after signing out
   }
 
   useEffect(() => {
@@ -161,11 +166,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-12 border-b hover:opacity-75">
                   {status === 0 ? (
-                    <Link to={routes.signIn()} onClick={signIn}>
+                    <Link to={routes.login()} onClick={signIn}>
                       <span className="flex justify-center">Sign In</span>
                     </Link>
                   ) : (
-                    <Link to={routes.home()} onClick={signOut}>
+                    <Link to={routes.home()} onClick={handleLogout}>
                       <span className="flex justify-center">Sign Out</span>
                     </Link>
                   )}
@@ -180,4 +185,4 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   )
 }
 
-export default NewsLayout
+export default SignInSignUpLayout
