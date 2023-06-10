@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 
-import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
-import { Button, Icon } from '@chakra-ui/react'
+import { Search2Icon } from '@chakra-ui/icons'
+import { Icon } from '@chakra-ui/react'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 
 import { getStatus, setStatus } from 'src/utils/storage'
 
-import SquidwardLogo from '../../../public/squidward_logo.png'
+import SquidwardLogo from '../../../public/squidward_logo_128.png'
 
 type NewsLayoutProps = {
   children?: React.ReactNode
@@ -40,7 +40,7 @@ const useWindowWidth = (threshold: number) => {
 }
 
 const NewsLayout = ({ children }: NewsLayoutProps) => {
-  const [isHovered, setIsHovered] = useState(false)
+  // const [isHovered, setIsHovered] = useState(false)
   const isLargeScreen = useWindowWidth(768)
   const [nav, setNav] = useState(false)
 
@@ -71,29 +71,15 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     <>
       <header>
         <div className={'main pt-4 '}>
-          <div className="flex items-center justify-between">
-            <div className="hidden w-full justify-between md:flex">
-              <div className="left-container hidden w-1/3 md:block">
-                <div
-                  className="trending delay-50 mx-6 my-6 text-lg font-extrabold transition duration-150 ease-in-out hover:underline"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  <Link to={routes.home()}>
-                    Trending
-                    {isHovered && (
-                      <Icon as={ArrowRightIcon} boxSize={4} className="mx-1" />
-                    )}
-                  </Link>
-                </div>
-              </div>
+          <div className="flex h-48 items-center justify-center ">
+            <div className="hidden w-full justify-center md:flex">
               <Link to={routes.home()}>
-                <div className="main-logo-container flex flex-grow items-center justify-center">
+                <div className="main-logo-container flex flex-grow items-center">
                   <div className="main-header-text flex items-center">
-                    <div className="main-logo-squidward mx-2 h-10 rounded-md bg-emerald-400 px-3 py-1.5 text-2xl font-extrabold text-white">
+                    <div className="main-logo-squidward mx-2 h-12 rounded-md bg-emerald-400 px-3 py-2 text-3xl font-extrabold text-white">
                       Squidward
                     </div>
-                    <div className="main-logo-news text-4xl font-semibold">
+                    <div className="main-logo-news text-5xl font-semibold">
                       News
                     </div>
                   </div>
@@ -101,28 +87,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     <img
                       src={SquidwardLogo}
                       alt="Squidward Logo"
-                      className="h-full w-full"
+                      className="h-32 w-32" // Adjust the height and width to your desired size
                     />
                   </div>
                 </div>
               </Link>
-              <div className="sing-in-button mx-6 flex w-1/3 items-center justify-end text-lg">
-                <Link to={routes.signIn()}>
-                  {status === 0 ? (
-                    <div className="sing-in-button mx-6 my-4 text-lg">
-                      <Button onClick={signIn} variant="custom_light">
-                        Sign In
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="sing-out-button mx-6 my-4 text-lg">
-                      <Button onClick={signOut} variant="custom_light">
-                        Sign Out
-                      </Button>
-                    </div>
-                  )}
-                </Link>
-              </div>
             </div>
             <div className="mobile-menu-container flex w-full justify-between md:hidden">
               <Link to={routes.home()} className="flex-grow">
@@ -202,30 +171,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   )}
                 </li>
               </div>
-            </ul>
-          </div>
-        </div>
-        <div className="navbar hidden h-10 items-center bg-emerald-400 py-2 md:block">
-          <div className="navbar-container mx-0 w-full">
-            <ul className="flex justify-between text-lg text-white">
-              <li className="mx-16 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Home</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>World</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Business</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Tech</Link>
-              </li>
-              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Life & Style</Link>
-              </li>
-              <li className="mx-16 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Icon as={Search2Icon} boxSize={6} />
-              </li>
             </ul>
           </div>
         </div>
