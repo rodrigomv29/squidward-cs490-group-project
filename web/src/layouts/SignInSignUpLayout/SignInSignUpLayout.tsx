@@ -75,7 +75,7 @@ const SignInSignUpLayout = ({ children }: NewsLayoutProps) => {
   return (
     <>
       <header>
-        <div className={'main pt-4 '}>
+        <div className={'main pt-4'}>
           <div className="flex h-48 items-center justify-center ">
             <div className="hidden w-full justify-center md:flex">
               <Link to={routes.home()}>
@@ -146,32 +146,52 @@ const SignInSignUpLayout = ({ children }: NewsLayoutProps) => {
           >
             <ul className=" text-md h-[100%] bg-emerald-400 text-white">
               <div className="list-items px-3 py-5 uppercase">
-                <li className="my-12 border-b transition-opacity hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Home</Link>
+                <li className="my-12 border-b text-xs transition-opacity hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Home
+                  </Link>
                 </li>
-                <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>World</Link>
+                <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Business
+                  </Link>
                 </li>
-                <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Business</Link>
+                <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Entertainment
+                  </Link>
                 </li>
-                <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Tech</Link>
+                <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Health
+                  </Link>
                 </li>
-                <li className="transition-opacityy hover:shadowduration-300 my-2 border-b hover:opacity-75">
-                  <Link to={routes.home()}>Life & Style</Link>
+                <li className="transition-opacityy hover:shadowduration-300 my-2 border-b text-xs hover:opacity-75">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Science
+                  </Link>
                 </li>
-                <li className="my-12 border-b transition-opacity duration-300 hover:opacity-75  hover:shadow">
+                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Sports
+                  </Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Technology
+                  </Link>
+                </li>
+                <li className="my-12 border-b text-xs transition-opacity duration-300  hover:opacity-75 hover:shadow">
                   Search <Icon as={Search2Icon} boxSize={4} className="mx-2" />
                 </li>
-                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b hover:opacity-75">
+                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
                   {status === 0 ? (
                     <Link to={routes.login()} onClick={signIn}>
-                      <span className="flex justify-center">Sign In</span>
+                      <span className="">Sign In</span>
                     </Link>
                   ) : (
                     <Link to={routes.home()} onClick={handleLogout}>
-                      <span className="flex justify-center">Sign Out</span>
+                      <span className="">Sign Out</span>
                     </Link>
                   )}
                 </li>

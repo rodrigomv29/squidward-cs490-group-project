@@ -22,6 +22,26 @@ const theme = extendTheme({
           fontSize: '20px',
           fontFamily: 'Arvo, sans-seri',
         },
+        custom_light_menu: {
+          bg: '#FAF7F6',
+          color: 'main',
+          fontFamily: 'Arvo, sans-seri',
+          fontSize: '22px',
+          _hover: {
+            bg: 'myCustomColor',
+            opacity: 0.8,
+          },
+        },
+        custom_dark_menu: {
+          bg: 'main',
+          color: 'white',
+          fontFamily: 'Arvo, sans-seri',
+          fontSize: '22px',
+          _hover: {
+            bg: 'myCustomColor',
+            opacity: 0.8,
+          },
+        },
       },
     },
   },

@@ -79,8 +79,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     handleNav()
   }
 
-  console.log(status)
-
   useEffect(() => {
     if (isLargeScreen && nav) {
       setNav(false)
@@ -93,6 +91,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
         <div className={'main pt-4 '}>
           <div className="flex items-center justify-between">
             <div className="hidden w-full justify-between md:flex">
+              {/* Trending Link */}
               <div className="left-container hidden w-1/3 md:block">
                 <div
                   className="trending delay-50 mx-6 my-6 text-lg font-extrabold transition duration-150 ease-in-out hover:underline"
@@ -107,6 +106,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   </Link>
                 </div>
               </div>
+              {/* Main Logo */}
               <Link to={routes.home()}>
                 <div className="main-logo-container flex flex-grow items-center justify-center">
                   <div className="main-header-text flex items-center">
@@ -126,7 +126,8 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   </div>
                 </div>
               </Link>
-              <div className="sing-in-button mx-6 flex w-1/3 items-center justify-end text-lg">
+              {/* Sign in container */}
+              <div className="sing-in-my-account-container mx-6 flex w-1/3 items-center justify-end text-lg">
                 {status === 0 ? (
                   <Link to={routes.login()}>
                     <div className="sing-in-button mx-6 my-4 text-lg">
@@ -144,6 +145,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                             isActive={isOpen}
                             as={Button}
                             rightIcon={<ChevronDownIcon />}
+                            variant="custom_light_menu"
                           >
                             {'My Account'}
                           </MenuButton>
@@ -161,6 +163,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 )}
               </div>
             </div>
+            {/* Mobile Menu container */}
             <div className="mobile-menu-container flex w-full justify-between md:hidden">
               <Link to={routes.home()} className="flex-grow">
                 <div className="main-logo-container ml-8 flex items-center justify-center">
@@ -209,42 +212,52 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
           >
             <ul className=" text-md h-[100%] bg-emerald-400 text-white">
               <div className="list-items px-3 py-5 uppercase">
-                <li className="my-12 border-b transition-opacity hover:opacity-75 hover:shadow">
+                <li className="my-12 border-b text-xs transition-opacity hover:opacity-75 hover:shadow">
                   <Link to={routes.home()} onClick={handleNav}>
                     Home
                   </Link>
                 </li>
-                <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()} onClick={handleNav}>
-                    World
-                  </Link>
-                </li>
-                <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
+                <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
                   <Link to={routes.home()} onClick={handleNav}>
                     Business
                   </Link>
                 </li>
-                <li className="my-12 border-b transition-opacity duration-300  hover:opacity-75 hover:shadow">
+                <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
                   <Link to={routes.home()} onClick={handleNav}>
-                    Tech
+                    Entertainment
                   </Link>
                 </li>
-                <li className="transition-opacityy hover:shadowduration-300 my-2 border-b hover:opacity-75">
+                <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
                   <Link to={routes.home()} onClick={handleNav}>
-                    Life & Style
+                    Health
                   </Link>
                 </li>
-                <li className="my-12 border-b transition-opacity duration-300 hover:opacity-75  hover:shadow">
+                <li className="transition-opacityy hover:shadowduration-300 my-2 border-b text-xs hover:opacity-75">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Science
+                  </Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Sports
+                  </Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
+                  <Link to={routes.home()} onClick={handleNav}>
+                    Technology
+                  </Link>
+                </li>
+                <li className="my-12 border-b text-xs transition-opacity duration-300  hover:opacity-75 hover:shadow">
                   Search <Icon as={Search2Icon} boxSize={4} className="mx-2" />
                 </li>
-                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b hover:opacity-75">
+                <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
                   {status === 0 ? (
                     <Link to={routes.login()} onClick={signIn}>
-                      <span className="flex justify-center">Sign In</span>
+                      <span className="">Sign In</span>
                     </Link>
                   ) : (
                     <Link to={routes.home()} onClick={signOut}>
-                      <span className="flex justify-center">Sign Out</span>
+                      <span className="">Sign Out</span>
                     </Link>
                   )}
                 </li>
@@ -252,25 +265,32 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
             </ul>
           </div>
         </div>
+        {/* Main Navbar*/}
         <div className="navbar hidden h-10 items-center bg-emerald-400 py-2 md:block">
           <div className="navbar-container mx-0 w-full">
             <ul className="flex justify-between text-lg text-white">
-              <li className="mx-16 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+              <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Link to={routes.home()}>Home</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>World</Link>
               </li>
               <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Link to={routes.home()}>Business</Link>
               </li>
               <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Tech</Link>
+                <Link to={routes.home()}>Entertainment</Link>
+              </li>
+              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                <Link to={routes.home()}>Health</Link>
               </li>
               <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Life & Style</Link>
+                <Link to={routes.home()}>Science</Link>
               </li>
-              <li className="mx-16 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                <Link to={routes.home()}>Sports</Link>
+              </li>
+              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                <Link to={routes.home()}>Technology</Link>
+              </li>
+              <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
                 <Icon as={Search2Icon} boxSize={6} />
               </li>
             </ul>
