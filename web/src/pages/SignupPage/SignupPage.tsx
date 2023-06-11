@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 
 import {
   Form,
-  Label,
   TextField,
   PasswordField,
   FieldError,
@@ -114,116 +113,115 @@ const SignupPage = () => {
   return (
     <>
       <MetaTags title="Signup" />
-
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container w-1/3">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Signup</h2>
-            </header>
-
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
-                  <Label
-                    name="username"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
+      <div className="sing-up-container mb-6 flex justify-center">
+        <main className="rw-main signUp-page m-0 h-[20%] w-3/5 rounded-3xl bg-emerald-400 py-0 ">
+          <span className="my-10 flex justify-center text-4xl font-bold">
+            Sign Up
+          </span>
+          <Toaster
+            toastOptions={{
+              className: 'my-toast',
+              duration: 3000,
+              style: {
+                background: '#FAF7F6',
+                color: '#34D399',
+                fontFamily: 'Arvo, sans-seri',
+                fontSize: '22px',
+              },
+            }}
+          />
+          <div className="rw-scaffold rw-login-container flex h-full w-[50%] justify-center rounded-3xl py-4">
+            <div className="rw-segment-main flex h-1/2 w-full justify-center py-8">
+              <div className="rw-segment-main flex w-full justify-center py-2">
+                <div className="rw-form-wrapper">
+                  <Form
+                    onSubmit={onSubmit}
+                    className="rw-form-wrapper w-2/4 py-10 text-xl"
                   >
-                    Username
-                  </Label>
-                  <TextField
-                    name="username"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
-                    ref={usernameRef}
-                    validation={{
-                      required: 'Username is required',
-                      validate: (value) => validateUsername(value),
-                    }}
-                    onChange={(event) => setUsername(event.target.value)}
-                  />
-                  {usernameError ? (
-                    <span className="text-xs font-semibold uppercase text-red-700">
-                      {usernameError}
-                    </span>
-                  ) : (
-                    <FieldError name="username" className="rw-field-error" />
-                  )}
-
-                  <Label
-                    name="password"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Password
-                  </Label>
-                  <PasswordField
-                    name="password"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
-                    autoComplete="current-password"
-                    validation={{
-                      required: 'Password is required',
-                      validate: validatePassword,
-                    }}
-                    onChange={(event) => setPassword(event.target.value)}
-                  />
-                  {passwordError ? (
-                    <span className="text-xs font-semibold uppercase text-red-700">
-                      {passwordError}
-                    </span>
-                  ) : (
-                    <FieldError name="password" className="rw-field-error" />
-                  )}
-
-                  <Label
-                    name="confirmPassword"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Confirm Password
-                  </Label>
-                  <PasswordField
-                    name="confirmPassword"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
-                    autoComplete=""
-                    validation={{
-                      required: 'Confirm password is required',
-                      validate: (value) =>
-                        validateConfirmPassword(password, value),
-                    }}
-                  />
-                  {confirmPasswordError ? (
-                    <span className="text-xs font-semibold uppercase text-red-700">
-                      {confirmPasswordError}
-                    </span>
-                  ) : (
-                    <FieldError
-                      name="confirmPassword"
-                      className="rw-field-error"
+                    <TextField
+                      name="username"
+                      className="rw-input bg-gray-30 rounded-full border-gray-400 py-4 text-center"
+                      errorClassName=""
+                      ref={usernameRef}
+                      validation={{
+                        required: 'Username is required',
+                        validate: (value) => validateUsername(value),
+                      }}
+                      onChange={(event) => setUsername(event.target.value)}
+                      placeholder="Username"
                     />
-                  )}
+                    {usernameError ? (
+                      <span className="text-xs font-semibold uppercase text-red-700">
+                        {usernameError}
+                      </span>
+                    ) : (
+                      <FieldError name="username" className="rw-field-error" />
+                    )}
 
-                  <div className="rw-button-group">
-                    <Submit className="rw-button rw-button-blue">
-                      Sign Up
-                    </Submit>
-                  </div>
-                </Form>
+                    <PasswordField
+                      name="password"
+                      className="rw-input bg-gray-30 rounded-full border-gray-400 py-4 text-center"
+                      errorClassName=""
+                      autoComplete="current-password"
+                      validation={{
+                        required: 'Password is required',
+                        validate: validatePassword,
+                      }}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="Password"
+                    />
+                    {passwordError ? (
+                      <span className="text-xs font-semibold uppercase text-red-700">
+                        {passwordError}
+                      </span>
+                    ) : (
+                      <FieldError name="password" className="rw-field-error" />
+                    )}
+
+                    <PasswordField
+                      name="confirmPassword"
+                      className="rw-input bg-gray-30 rounded-full border-gray-400 py-4 text-center"
+                      errorClassName=""
+                      autoComplete=""
+                      validation={{
+                        required: 'Confirm password is required',
+                        validate: (value) =>
+                          validateConfirmPassword(password, value),
+                      }}
+                      placeholder="Confirm Password"
+                    />
+                    {confirmPasswordError ? (
+                      <span className="text-xs font-semibold uppercase text-red-700">
+                        {confirmPasswordError}
+                      </span>
+                    ) : (
+                      <FieldError
+                        name="confirmPassword"
+                        className="rw-field-error"
+                      />
+                    )}
+
+                    <div className="rw-button-group">
+                      <Submit className="rw-button w-[70%] rounded-full bg-emerald-400 py-2 text-lg text-white">
+                        Sign Up
+                      </Submit>
+                    </div>
+                  </Form>
+                </div>
               </div>
             </div>
+            <div className="rw-login-link">
+              <span className="text-xl">Already have an account?</span>{' '}
+              <Link
+                to={routes.login()}
+                className="text-lg text-emerald-400 underline transition-opacity hover:opacity-50"
+              >
+                Log in!
+              </Link>
+            </div>
           </div>
-          <div className="rw-login-link">
-            <span>Already have an account?</span>{' '}
-            <Link to={routes.login()} className="rw-link">
-              Log in!
-            </Link>
-          </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </>
   )
 }

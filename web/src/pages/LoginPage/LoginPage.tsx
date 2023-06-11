@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 
 import {
   Form,
-  Label,
   TextField,
   PasswordField,
   Submit,
@@ -48,29 +47,34 @@ const LoginPage = () => {
   return (
     <>
       <MetaTags title="Login" />
-
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Login</h2>
-            </header>
-
-            <div className="rw-segment-main">
+      <div className="login-container mb-6 flex justify-center">
+        <main className="rw-main login-page m-0 h-[20%] w-3/5 rounded-3xl bg-emerald-400 py-0 ">
+          <span className="my-10 flex justify-center text-4xl font-extrabold">
+            Login
+          </span>
+          <Toaster
+            toastOptions={{
+              className: 'my-toast',
+              duration: 3000,
+              style: {
+                background: '#FAF7F6',
+                color: '#34D399',
+                fontFamily: 'Arvo, sans-seri',
+                fontSize: '22px',
+              },
+            }}
+          />
+          <div className="rw-scaffold rw-login-container flex h-full w-[50%] justify-center rounded-3xl py-4">
+            <div className="rw-segment-main flex w-full justify-center py-8">
               <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
-                  <Label
-                    name="username"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Username
-                  </Label>
+                <Form
+                  onSubmit={onSubmit}
+                  className="rw-form-wrapper w-2/4 py-10 text-xl"
+                >
                   <TextField
                     name="username"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
+                    className="rw-input bg-gray-30 rounded-full border-gray-400 py-4 text-center"
+                    errorClassName=""
                     ref={usernameRef}
                     validation={{
                       required: {
@@ -78,21 +82,15 @@ const LoginPage = () => {
                         message: 'Username is required',
                       },
                     }}
+                    placeholder="Username"
                   />
 
                   <FieldError name="username" className="rw-field-error" />
 
-                  <Label
-                    name="password"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Password
-                  </Label>
                   <PasswordField
                     name="password"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
+                    className="rw-input bg-gray-30 mt-7 rounded-full border-gray-400 py-4 text-center"
+                    errorClassName=""
                     autoComplete="current-password"
                     validation={{
                       required: {
@@ -100,12 +98,13 @@ const LoginPage = () => {
                         message: 'Password is required',
                       },
                     }}
+                    placeholder="Password"
                   />
 
                   <div className="rw-forgot-link">
                     <Link
                       to={routes.forgotPassword()}
-                      className="rw-forgot-link"
+                      className="rw-forgot-link text-emerald-400"
                     >
                       Forgot Password?
                     </Link>
@@ -114,20 +113,28 @@ const LoginPage = () => {
                   <FieldError name="password" className="rw-field-error" />
 
                   <div className="rw-button-group">
-                    <Submit className="rw-button rw-button-blue">Login</Submit>
+                    <Submit className="rw-button w-[70%] rounded-full bg-emerald-400 py-2 text-lg text-white">
+                      Login
+                    </Submit>
                   </div>
                 </Form>
               </div>
             </div>
+            <div className="home-link rounded-full bg-emerald-400 px-4 text-lg text-white">
+              <Link to={routes.home()}>Home</Link>
+            </div>
+            <div className="rw-login-link">
+              <span className="text-xl">Don&apos;t have an account?</span>{' '}
+              <Link
+                to={routes.signup()}
+                className="text-lg text-emerald-400 transition-opacity hover:opacity-50"
+              >
+                Sign up!
+              </Link>
+            </div>
           </div>
-          <div className="rw-login-link">
-            <span>Don&apos;t have an account?</span>{' '}
-            <Link to={routes.signup()} className="rw-link">
-              Sign up!
-            </Link>
-          </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </>
   )
 }
