@@ -57,7 +57,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const isLargeScreen = useWindowWidth(768)
   const [nav, setNav] = useState(false)
   const { isAuthenticated, currentUser, logOut } = useAuth()
-  const currentUsername = isAuthenticated ? currentUser.email : null
+  const currentUsername = currentUser != undefined ? currentUser.email : null
 
   const status = getStatus()
 
@@ -277,7 +277,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     </Link>
                   )}
                 </li>
-                {isAuthenticated && (
+                {currentUser && (
                   <div className="mt-0 flex w-full justify-center py-4">
                     {`${currentUsername}`}
                   </div>
