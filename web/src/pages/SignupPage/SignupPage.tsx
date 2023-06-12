@@ -130,7 +130,7 @@ const SignupPage = () => {
               },
             }}
           />
-          <div className="rw-scaffold rw-login-container flex h-full w-[50%] justify-center rounded-3xl py-4">
+          <div className="rw-scaffold rw-login-container flex h-full w-[75%] justify-center rounded-3xl py-4">
             <div className="rw-segment-main flex h-1/2 w-full justify-center py-8">
               <div className="rw-segment-main flex w-full justify-center py-2">
                 <div className="rw-form-wrapper">
