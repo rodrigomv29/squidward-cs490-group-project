@@ -75,8 +75,8 @@ const SignInSignUpLayout = ({ children }: NewsLayoutProps) => {
   return (
     <>
       <header>
-        <div className={'main pt-4'}>
-          <div className="flex h-48 items-center justify-center ">
+        <div className={'main pt-0'}>
+          <div className="flex items-center justify-center">
             <div className="hidden w-full justify-center md:flex">
               <Link to={routes.home()}>
                 <div className="main-logo-container flex flex-grow items-center">

@@ -14,7 +14,7 @@ const theme = extendTheme({
           bg: 'main',
           color: 'white',
           _hover: {
-            bg: 'myCustomColor',
+            bg: 'main',
             opacity: 0.8,
           },
           height: '38px',
@@ -23,14 +23,15 @@ const theme = extendTheme({
           fontFamily: 'Arvo, sans-seri',
         },
         custom_light_menu: {
-          bg: '#FAF7F6',
-          color: 'main',
+          bg: 'main',
+          color: 'white',
           fontFamily: 'Arvo, sans-seri',
           fontSize: '22px',
           _hover: {
-            bg: 'myCustomColor',
+            bg: 'main',
             opacity: 0.8,
           },
+          borderRadius: 'md',
         },
         custom_dark_menu: {
           bg: 'main',
@@ -38,7 +39,7 @@ const theme = extendTheme({
           fontFamily: 'Arvo, sans-seri',
           fontSize: '22px',
           _hover: {
-            bg: 'myCustomColor',
+            bg: 'main',
             opacity: 0.8,
           },
         },

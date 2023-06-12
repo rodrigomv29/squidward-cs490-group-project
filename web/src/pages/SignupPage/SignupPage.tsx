@@ -151,7 +151,7 @@ const SignupPage = () => {
                       placeholder="Username"
                     />
                     {usernameError ? (
-                      <span className="text-xs font-semibold uppercase text-red-700">
+                      <span className="text-xs font-semibold uppercase text-red-600">
                         {usernameError}
                       </span>
                     ) : (
@@ -171,7 +171,7 @@ const SignupPage = () => {
                       placeholder="Password"
                     />
                     {passwordError ? (
-                      <span className="text-xs font-semibold uppercase text-red-700">
+                      <span className="text-xs font-semibold uppercase text-red-600">
                         {passwordError}
                       </span>
                     ) : (
@@ -191,7 +191,7 @@ const SignupPage = () => {
                       placeholder="Confirm Password"
                     />
                     {confirmPasswordError ? (
-                      <span className="text-xs font-semibold uppercase text-red-700">
+                      <span className="text-xs font-semibold uppercase text-red-600">
                         {confirmPasswordError}
                       </span>
                     ) : (

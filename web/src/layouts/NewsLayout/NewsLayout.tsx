@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 
-import { Search2Icon, ArrowRightIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import {
+  Search2Icon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+  SettingsIcon,
+} from '@chakra-ui/icons'
 import {
   Button,
   Icon,
@@ -137,7 +142,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     </div>
                   </Link>
                 ) : (
-                  <div className="my-account-menu mx-6 my-4 text-lg">
+                  <div className="my-account-menu mx-6 my-4">
                     <Menu>
                       {({ isOpen }) => (
                         <>
@@ -149,12 +154,23 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                           >
                             {'My Account'}
                           </MenuButton>
-                          <MenuList>
+                          <MenuList className="bg-yello-200 mt-0 flex w-96 flex-col items-center justify-center font-semibold">
                             {isAuthenticated && (
-                              <div>{`Logged in as: ${currentUsername}`}</div>
+                              <div className="mt-0 flex w-full justify-center py-4">
+                                Signed In:&nbsp;{`${currentUsername}`}
+                              </div>
                             )}
-                            <MenuItem>Settings</MenuItem>
-                            <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+                            <MenuItem className="mt-2 flex justify-between">
+                              Settings&nbsp;
+                              <SettingsIcon className="" />
+                            </MenuItem>
+                            <MenuItem
+                              onClick={handleLogout}
+                              className="mt-2 flex justify-between"
+                            >
+                              Sign out
+                              <ArrowRightIcon />
+                            </MenuItem>
                           </MenuList>
                         </>
                       )}
@@ -210,7 +226,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 : 'fixed left-0 top-0 z-50 h-[100%] w-1/5 flex-none border-r border-r-gray-300 bg-black bg-opacity-50 duration-500 ease-in-out'
             }
           >
-            <ul className=" text-md h-[100%] bg-emerald-400 text-white">
+            <ul className=" text-md h-[100%] bg-emerald-400 bg-opacity-70 text-white">
               <div className="list-items px-3 py-5 uppercase">
                 <li className="my-12 border-b text-xs transition-opacity hover:opacity-75 hover:shadow">
                   <Link to={routes.home()} onClick={handleNav}>
@@ -261,6 +277,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     </Link>
                   )}
                 </li>
+                {isAuthenticated && (
+                  <div className="mt-0 flex w-full justify-center py-4">
+                    {`${currentUsername}`}
+                  </div>
+                )}
               </div>
             </ul>
           </div>
