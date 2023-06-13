@@ -31,5 +31,8 @@
     "@emotion/styled": "^11.11.0",
     "framer-motion": "^10.12.16",
     "react-icons": "^4.9.0"
+  },
+  "scripts": {
+    "full-install": "yarn install && bash run-secret.sh"
   }
 }
