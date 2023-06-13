@@ -28,7 +28,14 @@
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "crypto": "^1.0.1",
     "framer-motion": "^10.12.16",
+    "fs-extra": "^11.1.1",
     "react-icons": "^4.9.0"
+  },
+  "scripts": {
+    "preinstall": "yarn add ts-node fs-extra crypto --dev",
+    "generate-secret": "ts-node generate-secret.ts",
+    "install": "yarn generate-secret && yarn rw prisma generate && yarn rw prisma db push && yarn install"
   }
 }
