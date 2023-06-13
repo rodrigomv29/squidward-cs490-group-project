@@ -33,10 +33,5 @@
     "framer-motion": "^10.12.16",
     "fs-extra": "^11.1.1",
     "react-icons": "^4.9.0"
-  },
-  "scripts": {
-    "preinstall": "yarn add ts-node fs-extra crypto --dev",
-    "generate-secret": "ts-node generate-secret.ts",
-    "install": "yarn generate-secret && yarn rw prisma generate && yarn rw prisma db push && yarn install"
   }
 }
