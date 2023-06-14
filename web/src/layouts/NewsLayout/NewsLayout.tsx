@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState, useEffect } from 'react'
 
 import {
@@ -14,6 +15,8 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react'
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
@@ -68,12 +71,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     }
   }
 
-  function signOut() {
-    setStatus(0) // Set status as not logged in (0)
-    navigate(routes.home()) // Redirect to home page after signing out
-    handleNav()
-  }
-
   const handleNav = () => {
     setNav(!nav)
   }
@@ -81,6 +78,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const handleLogout = () => {
     logOut()
     setStatus(0)
+    navigate(routes.home()) // Redirect to home page after signing out
     handleNav()
   }
 
@@ -169,7 +167,10 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                               className="mt-2 flex justify-between"
                             >
                               Sign out
-                              <ArrowRightIcon />
+                              <FontAwesomeIcon
+                                icon={faRightToBracket}
+                                style={{ color: '#080808' }}
+                              />
                             </MenuItem>
                           </MenuList>
                         </>
@@ -272,7 +273,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                       <span className="">Sign In</span>
                     </Link>
                   ) : (
-                    <Link to={routes.home()} onClick={signOut}>
+                    <Link to={routes.home()} onClick={handleLogout}>
                       <span className="">Sign Out</span>
                     </Link>
                   )}
