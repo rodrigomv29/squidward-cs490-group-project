@@ -12,3 +12,13 @@ describe('SignUpPage', () => {
     }).not.toThrow()
   })
 })
+/**
+describe('users service', () => {
+  it('creates a user', async () => {
+    const record = await createUser({ name: 'David' })
+
+    expect(record.id).not.toBeNull()
+    expect(record.name).toEqual('David')
+  })
+})
+**/
