@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { render } from '@redwoodjs/testing/web'
 
 import NewsLayout from './NewsLayout'
