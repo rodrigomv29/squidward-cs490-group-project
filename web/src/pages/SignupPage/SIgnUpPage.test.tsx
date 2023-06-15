@@ -1,4 +1,5 @@
 import { render } from '@redwoodjs/testing/web'
+
 import SignupPage from './SignupPage'
 /**
  * insert a new testing function for sign up function
