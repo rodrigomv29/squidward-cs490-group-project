@@ -23,3 +23,31 @@
   width: 200px;
   height: auto;
 }
+
+/* For Webkit-based browsers */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #F4F5F7;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #C1C7D0;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #34D399;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+
+
+
+
+
