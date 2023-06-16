@@ -3,7 +3,7 @@ import React from 'react'
 
 import { MetaTags } from '@redwoodjs/web'
 
-import CategoryListItems from 'src/components/CategoryList/CategoryList'
+import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 
 import SlidingPannel from '../../components/SlidingPannel/SlidingPannel'
 
@@ -42,7 +42,7 @@ const DefaultHomePage = () => {
       <div className="main-container h-screen max-h-screen w-full max-w-full ">
         <div className="main-header-contianer flex h-2/3 justify-center ">
           <div className="slding-pannel-containe my-10  w-2/3">
-            <p className="flex justify-center px-4 text-5xl font-bold">
+            <p className="flex justify-center px-4 text-5xl font-extrabold">
               TOP 10 TODAY
             </p>
             <SlidingPannel />
