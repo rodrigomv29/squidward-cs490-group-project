@@ -5,6 +5,7 @@ export const standard = defineScenario<Prisma.ArticleCreateArgs>({
   article: {
     one: {
       data: {
+        category: 'String',
         author: 'String',
         title: 'String',
         description: 'String',
@@ -16,6 +17,7 @@ export const standard = defineScenario<Prisma.ArticleCreateArgs>({
     },
     two: {
       data: {
+        category: 'String',
         author: 'String',
         title: 'String',
         description: 'String',

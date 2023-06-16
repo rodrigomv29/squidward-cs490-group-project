@@ -31,6 +31,7 @@ describe('articles', () => {
   scenario('creates a article', async () => {
     const result = await createArticle({
       input: {
+        category: 'String',
         author: 'String',
         title: 'String',
         description: 'String',
@@ -41,6 +42,7 @@ describe('articles', () => {
       },
     })
 
+    expect(result.category).toEqual('String')
     expect(result.author).toEqual('String')
     expect(result.title).toEqual('String')
     expect(result.description).toEqual('String')
@@ -54,10 +56,10 @@ describe('articles', () => {
     const original = (await article({ id: scenario.article.one.id })) as Article
     const result = await updateArticle({
       id: original.id,
-      input: { author: 'String2' },
+      input: { category: 'String2' },
     })
 
-    expect(result.author).toEqual('String2')
+    expect(result.category).toEqual('String2')
   })
 
   scenario('deletes a article', async (scenario: StandardScenario) => {
