@@ -8,19 +8,44 @@ import { Link, routes } from '@redwoodjs/router'
 function SlidingPannel() {
   const slides = [
     {
-      url: 'https://images.unsplash.com/photo-1533228876829-65c94e7b5025?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      image_url:
+        'https://images.unsplash.com/photo-1533228876829-65c94e7b5025?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      title: 'The Main title for the Article 1',
+      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
+                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
+                    rhoncus felis at, ultricies dui.`,
     },
     {
-      url: 'https://images.unsplash.com/photo-1504194104404-433180773017?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      image_url:
+        'https://images.unsplash.com/photo-1504194104404-433180773017?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      title: 'Still the main title of the article',
+      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
+                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
+                    rhoncus felis at, ultricies dui.`,
     },
     {
-      url: 'https://images.unsplash.com/photo-1624454218532-350e24b012b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
+      image_url:
+        'https://images.unsplash.com/photo-1624454218532-350e24b012b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
+      title: 'Yet another sample article title',
+      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
+                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
+                    rhoncus felis at, ultricies dui.`,
     },
     {
-      url: 'https://plus.unsplash.com/premium_photo-1671830697504-4e1e21962584?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80',
+      image_url:
+        'https://plus.unsplash.com/premium_photo-1671830697504-4e1e21962584?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80',
+      title: 'The Main title for the Article 5',
+      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
+                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
+                    rhoncus felis at, ultricies dui.`,
     },
     {
-      url: 'https://images.unsplash.com/photo-1626626925024-aaf056134c20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1631&q=80',
+      image_url:
+        'https://images.unsplash.com/photo-1626626925024-aaf056134c20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1631&q=80',
+      title: 'This is a sample title that needs to be replaced',
+      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
+                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
+                    rhoncus felis at, ultricies dui.`,
     },
   ]
 
@@ -56,21 +81,24 @@ function SlidingPannel() {
     <>
       <div className="group relative m-auto h-full w-full max-w-full  px-4 py-4">
         <div
-          style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
+          style={{ backgroundImage: `url(${slides[currentIndex].image_url})` }}
           className="h-full rounded-2xl bg-cover bg-center bg-no-repeat duration-500"
         >
-          <div className="main-header absolute bottom-20 left-4 right-4 px-10 text-white">
+          <div className="main-header absolute bottom-20 left-4 right-4 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.4] px-10 py-4 text-white">
             <div className="title text-2xl font-bold">
-              The Main title for the Article
+              {slides[currentIndex].title}
             </div>
             <div className="main-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              faucibus justo ut risus consectetur, eu posuere elit dignissim.
-              Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
-              rhoncus felis at, ultricies dui.
+              {slides[currentIndex].description}
             </div>
             <div className="read-more">
-              <Link to={routes.home()}>Read More</Link>
+              <Link
+                to={routes.home()}
+                className="read-more-link group relative inline-block"
+              >
+                Read More
+                <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-emerald-400 transition-transform duration-300 group-hover:scale-x-100"></span>
+              </Link>
             </div>
           </div>
           <div className="absolute bottom-2 left-4 right-4 flex justify-center px-10 py-4">
