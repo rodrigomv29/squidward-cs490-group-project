@@ -12,8 +12,9 @@ export const schema = gql`
   }
 
   type Query {
-    articles: [Article!]! @requireAuth
-    article(id: Int!): Article @requireAuth
+    getArticles(category: String!): Article! @skipAuth
+    # articles: [Article!]! @requireAuth
+    # article(id: Int!): Article @requireAuth
   }
 
   input CreateArticleInput {
