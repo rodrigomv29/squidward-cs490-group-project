@@ -1,16 +1,16 @@
-import type { QueryResolvers, MutationResolvers } from 'types/graphql'
+import type { MutationResolvers } from 'types/graphql'
 
 import { db } from 'src/lib/db'
 
-export const articles: QueryResolvers['articles'] = () => {
-  return db.article.findMany()
-}
+// export const articles: QueryResolvers['articles'] = () => {
+//   return db.article.findMany()
+// }
 
-export const article: QueryResolvers['article'] = ({ id }) => {
-  return db.article.findUnique({
-    where: { id },
-  })
-}
+// export const article: QueryResolvers['article'] = ({ id }) => {
+//   return db.article.findUnique({
+//     where: { id },
+//   })
+// }
 
 export const createArticle: MutationResolvers['createArticle'] = ({
   input,
@@ -34,4 +34,17 @@ export const deleteArticle: MutationResolvers['deleteArticle'] = ({ id }) => {
   return db.article.delete({
     where: { id },
   })
+}
+
+export const getArticles = ({ category }) => {
+  return {
+    category,
+    author: 'Chris',
+    title: 'Breaking Story',
+    description: 'New Breaking Bad Season',
+    url: 'chrisnews.com',
+    urlToImage: 'chrisurl.com',
+    publishedAt: 'Wednesday',
+    content: 'New Breaking Bad Season',
+  }
 }

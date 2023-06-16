@@ -9216,6 +9216,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@whatwg-node/fetch@npm:^0.9.6":
+  version: 0.9.6
+  resolution: "@whatwg-node/fetch@npm:0.9.6"
+  dependencies:
+    "@whatwg-node/node-fetch": ^0.4.5
+    urlpattern-polyfill: ^9.0.0
+  checksum: f383954ece5ab00a233368d77eaa40844e0889e65bca75fed215b928cf001b79dd35e5cba32c95b90f09402c36997a2e6c203a49be99ab4d211817d5fada389b
+  languageName: node
+  linkType: hard
+
 "@whatwg-node/node-fetch@npm:^0.3.6":
   version: 0.3.6
   resolution: "@whatwg-node/node-fetch@npm:0.3.6"
@@ -9229,7 +9239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@whatwg-node/node-fetch@npm:^0.4.2":
+"@whatwg-node/node-fetch@npm:^0.4.2, @whatwg-node/node-fetch@npm:^0.4.5":
   version: 0.4.5
   resolution: "@whatwg-node/node-fetch@npm:0.4.5"
   dependencies:
@@ -9747,6 +9757,7 @@ __metadata:
     "@redwoodjs/api": 5.3.0
     "@redwoodjs/auth-dbauth-api": 5.3.0
     "@redwoodjs/graphql-server": 5.3.0
+    "@whatwg-node/fetch": ^0.9.6
   languageName: unknown
   linkType: soft
 
