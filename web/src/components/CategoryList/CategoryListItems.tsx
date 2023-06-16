@@ -14,7 +14,7 @@ function CategoryListItems({ categories }) {
             </span>
 
             <div className="category-container flex w-4/5 flex-col items-center justify-center py-2">
-              <span className="flex justify-center text-left font-bold">
+              <span className="flex justify-center text-left font-bold text-emerald-400">
                 {category.title}
               </span>
               <Link to={routes.home()}>
