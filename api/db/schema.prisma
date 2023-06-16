@@ -16,9 +16,9 @@ model User {
   resetToken          String?
   resetTokenExpiresAt DateTime?
   general             Boolean   @default(true)
-  business            Boolean
-  health              Boolean
-  science             Boolean
-  sports              Boolean
-  technology          Boolean
+  business            Boolean   @default(false)
+  health              Boolean   @default(false)
+  science             Boolean   @default(false)
+  sports              Boolean   @default(false)
+  technology          Boolean   @default(false)
 }
