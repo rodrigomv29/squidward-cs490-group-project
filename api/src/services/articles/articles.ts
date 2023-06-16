@@ -1,3 +1,4 @@
+import { fetch } from '@whatwg-node/fetch'
 import type { MutationResolvers } from 'types/graphql'
 
 import { db } from 'src/lib/db'
@@ -36,15 +37,20 @@ export const deleteArticle: MutationResolvers['deleteArticle'] = ({ id }) => {
   })
 }
 
-export const getArticles = ({ category }) => {
+export const getArticles = async ({ category }) => {
+  const response = await fetch(
+    `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+  )
+  const json = await response.json()
+
   return {
     category,
-    author: 'Chris',
-    title: 'Breaking Story',
-    description: 'New Breaking Bad Season',
-    url: 'chrisnews.com',
-    urlToImage: 'chrisurl.com',
-    publishedAt: 'Wednesday',
-    content: 'New Breaking Bad Season',
+    author: json.articles,
+    title: json.title,
+    description: json.description,
+    url: json.url,
+    urlToImage: json.urlToImage,
+    publishedAt: json.publishedAt,
+    content: json.content,
   }
 }
