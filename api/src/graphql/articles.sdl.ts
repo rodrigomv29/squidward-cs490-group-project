@@ -1,6 +1,7 @@
 export const schema = gql`
   type Article {
     id: Int!
+    category: String!
     author: String!
     title: String!
     description: String!
@@ -16,6 +17,7 @@ export const schema = gql`
   }
 
   input CreateArticleInput {
+    category: String!
     author: String!
     title: String!
     description: String!
@@ -26,6 +28,7 @@ export const schema = gql`
   }
 
   input UpdateArticleInput {
+    category: String
     author: String
     title: String
     description: String
