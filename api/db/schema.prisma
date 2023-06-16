@@ -24,13 +24,12 @@ model User {
 }
 
 model Article {
-  id          Int    @id @default(autoincrement())
-  category    String
-  author      String
-  title       String
-  description String
-  url         String
-  urlToImage  String
-  publishedAt String
-  content     String
+  id           Int        @id @default(autoincrement())
+  status       String
+  totalResults Int
+  articles     Articles[]
+  Article      Article?   @relation(fields: [articleId], references: [id])
+  articleId    Int?
 }
+
+model Article
