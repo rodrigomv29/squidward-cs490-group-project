@@ -22,3 +22,14 @@ model User {
   sports              Boolean   @default(false)
   technology          Boolean   @default(false)
 }
+
+model Article {
+  id          Int    @id @default(autoincrement())
+  author      String
+  title       String
+  description String
+  url         String
+  urlToImage  String
+  publishedAt String
+  content     String
+}
