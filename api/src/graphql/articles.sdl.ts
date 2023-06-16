@@ -1,42 +1,48 @@
 export const schema = gql`
   type Article {
     id: Int!
-    category: String!
-    author: String!
+    sourceId: String!
+    sourceName: String!
+    author: String
     title: String!
     description: String!
     url: String!
-    urlToImage: String!
-    publishedAt: String!
-    content: String!
+    urlToImage: String
+    publishedAt: DateTime!
+    content: String
+    Category: Category
+    categoryId: Int
   }
 
   type Query {
-    getArticles(category: String!): Article! @skipAuth
-    # articles: [Article!]! @requireAuth
-    # article(id: Int!): Article @requireAuth
+    articles: [Article!]! @requireAuth
+    article(id: Int!): Article @requireAuth
   }
 
   input CreateArticleInput {
-    category: String!
-    author: String!
+    sourceId: String!
+    sourceName: String!
+    author: String
     title: String!
     description: String!
     url: String!
-    urlToImage: String!
-    publishedAt: String!
-    content: String!
+    urlToImage: String
+    publishedAt: DateTime!
+    content: String
+    categoryId: Int
   }
 
   input UpdateArticleInput {
-    category: String
+    sourceId: String
+    sourceName: String
     author: String
     title: String
     description: String
     url: String
     urlToImage: String
-    publishedAt: String
+    publishedAt: DateTime
     content: String
+    categoryId: Int
   }
 
   type Mutation {

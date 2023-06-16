@@ -5,26 +5,22 @@ export const standard = defineScenario<Prisma.ArticleCreateArgs>({
   article: {
     one: {
       data: {
-        category: 'String',
-        author: 'String',
+        sourceId: 'String8389167',
+        sourceName: 'String',
         title: 'String',
         description: 'String',
         url: 'String',
-        urlToImage: 'String',
-        publishedAt: 'String',
-        content: 'String',
+        publishedAt: '2023-06-16T22:02:41.869Z',
       },
     },
     two: {
       data: {
-        category: 'String',
-        author: 'String',
+        sourceId: 'String7298795',
+        sourceName: 'String',
         title: 'String',
         description: 'String',
         url: 'String',
-        urlToImage: 'String',
-        publishedAt: 'String',
-        content: 'String',
+        publishedAt: '2023-06-16T22:02:41.869Z',
       },
     },
   },
