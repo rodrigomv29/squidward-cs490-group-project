@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
@@ -32,24 +32,34 @@ function SlidingPannel() {
     setCurrentIndex(newIndex)
   }
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     const isLastSlide = currentIndex === slides.length - 1
     const newIndex = isLastSlide ? 0 : currentIndex + 1
     setCurrentIndex(newIndex)
-  }
+  }, [currentIndex, slides.length])
 
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex)
   }
 
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      nextSlide()
+    }, 10000) // Change the delay (in milliseconds) to your desired interval
+
+    return () => {
+      clearInterval(slideInterval)
+    }
+  }, [currentIndex, nextSlide]) // Trigger the effect whenever currentIndex changes
+
   return (
     <>
-      <div className="group relative m-auto h-full w-full max-w-[1400px] px-4 py-16">
+      <div className="group relative m-auto h-full w-full max-w-full  px-4 py-4">
         <div
           style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-          className="h-full w-full rounded-2xl bg-cover bg-center duration-500"
+          className="h-full rounded-2xl bg-cover bg-center bg-no-repeat duration-500"
         >
-          <div className="main-header absolute bottom-20 left-4 right-4 text-white px-10">
+          <div className="main-header absolute bottom-20 left-4 right-4 px-10 text-white">
             <div className="title text-2xl font-bold">
               The Main title for the Article
             </div>
@@ -63,6 +73,28 @@ function SlidingPannel() {
               <Link to={routes.home()}>Read More</Link>
             </div>
           </div>
+          <div className="absolute bottom-2 left-4 right-4 flex justify-center px-10 py-4">
+            {slides.map((slide, slideIndex) => (
+              <div
+                key={slideIndex}
+                className={`cursor-pointer text-2xl ${
+                  currentIndex === slideIndex
+                    ? 'text-emerald-400'
+                    : 'text-gray-500'
+                }`}
+                role="button"
+                tabIndex={0}
+                onClick={() => goToSlide(slideIndex)}
+                onKeyPress={(event) => {
+                  if (event.key === 'Enter') {
+                    goToSlide(slideIndex)
+                  }
+                }}
+              >
+                <RxDotFilled />
+              </div>
+            ))}
+          </div>
         </div>
         {/* Left Arrow */}
         <div className="-tranlate-x-0 absolute left-5 top-[50%] hidden translate-y-[-50%] cursor-pointer rounded-full bg-black/20 p-2 text-2xl text-white group-hover:block">
@@ -71,24 +103,6 @@ function SlidingPannel() {
         {/* Right Arrow */}
         <div className="-tranlate-x-0 absolute right-5 top-[50%] hidden translate-y-[-50%] cursor-pointer rounded-full bg-black/20 p-2 text-2xl text-white group-hover:block">
           <BsChevronCompactRight onClick={nextSlide} size={30} />
-        </div>
-        <div className="top-4 flex justify-center py-2">
-          {slides.map((slide, slideIndex) => (
-            <div
-              key={slideIndex}
-              className="cursor-pointer text-2xl"
-              role="button"
-              tabIndex={0}
-              onClick={() => goToSlide(slideIndex)}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') {
-                  goToSlide(slideIndex)
-                }
-              }}
-            >
-              <RxDotFilled />
-            </div>
-          ))}
         </div>
       </div>
     </>
