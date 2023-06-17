@@ -1,4 +1,5 @@
 import type { Category } from '@prisma/client'
+import { Article } from 'types/graphql'
 
 import {
   categories,
@@ -6,6 +7,7 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
+  createCategoryAPI,
 } from './categories'
 import type { StandardScenario } from './categories.scenarios'
 
@@ -14,6 +16,7 @@ import type { StandardScenario } from './categories.scenarios'
 //           Please refer to the RedwoodJS Testing Docs:
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
+jest.setTimeout(10000)
 
 describe('categories', () => {
   scenario('returns all categories', async (scenario: StandardScenario) => {
@@ -55,5 +58,30 @@ describe('categories', () => {
     const result = await category({ id: original.id })
 
     expect(result).toEqual(null)
+  })
+
+  scenario('creates a category calling the api', async () => {
+    const category = 'Sports'
+    const fetchArticles = async () => {
+      const query = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+      const response = await fetch(query)
+      const data = await response.json()
+      return data
+    }
+
+    const articlesArr = await fetchArticles().then((data) => {
+      const articles: Array<Article> = data.articles
+      return articles
+    })
+
+    const input = {
+      input: {
+        name: category,
+        articles: articlesArr,
+      },
+    }
+
+    const result = await createCategoryAPI(input)
+    expect(result.name).toEqual(category)
   })
 })
