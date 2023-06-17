@@ -1,5 +1,5 @@
 // import { Link, routes } from '@redwoodjs/router'
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { MetaTags } from '@redwoodjs/web'
 
@@ -8,29 +8,30 @@ import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import SlidingPannel from '../../components/SlidingPannel/SlidingPannel'
 
 const DefaultHomePage = () => {
+
   const categories = [
     {
-      title: 'Business',
+      name: 'Business',
       description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
         Sed diam nonummy nibh euismod hetrt dolor sit amet, conse`,
     },
     {
-      title: 'Entertainment',
+      name: 'Entertainment',
       description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
         Sed diam nonummy nibh euismod hetrt dolor sit amet, consectetur adipiscing elit.`,
     },
     {
-      title: 'Sports',
+      name: 'Sports',
       description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
         Sed diam nonummy nibh euismod hetrt dolor sit amet, consectetur adipiscing elit.`,
     },
     {
-      title: 'World',
+      name: 'World',
       description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
         Sed diam nonummy nibh euismod hetrt dolor sit amet, consectetur adipiscing elit.`,
     },
     {
-      title: 'Politics',
+      name: 'Politics',
       description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
         Sed `,
     },
@@ -39,7 +40,9 @@ const DefaultHomePage = () => {
   return (
     <>
       <MetaTags title="DefaultHome" description="DefaultHome page" />
-      <div className="main-container h-screen max-h-screen w-full max-w-full ">
+      <div
+        className={`main-container h-screen max-h-screen w-full max-w-full transition-colors duration-300 `}
+      >
         <div className="main-header-contianer flex h-2/3 justify-center ">
           <div className="slding-pannel-containe my-10  w-2/3">
             <p className="flex justify-center px-4 text-5xl font-extrabold">
