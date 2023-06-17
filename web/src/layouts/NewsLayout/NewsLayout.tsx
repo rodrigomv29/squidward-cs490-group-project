@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import {
   Search2Icon,
@@ -8,15 +8,19 @@ import {
   SettingsIcon,
 } from '@chakra-ui/icons'
 import {
+  Box,
   Button,
   Icon,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  chakra,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Switch } from '@headlessui/react'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
@@ -25,6 +29,7 @@ import { useAuth } from 'src/auth'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
+import ThemeContext from '../../ThemeContext'
 
 type NewsLayoutProps = {
   children?: React.ReactNode
@@ -61,8 +66,16 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const [nav, setNav] = useState(false)
   const { isAuthenticated, currentUser, logOut } = useAuth()
   const currentUsername = currentUser != undefined ? currentUser.email : null
+  const [enabled, setEnabled] = useState(false)
 
   const status = getStatus()
+
+  const { theme, toggleTheme } = useContext(ThemeContext)
+
+  const handleTheme = () => {
+    setEnabled(!enabled)
+    toggleTheme()
+  }
 
   const signIn = () => {
     if (status === 0) {
@@ -88,16 +101,66 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     }
   }, [isLargeScreen, nav])
 
+  const AnimatedMenuItem = chakra(MenuItem, {
+    baseStyle: {
+      transition: 'background-color 0.3s ease',
+      _hover: {
+        bg: 'gray.300',
+      },
+    },
+  })
+
+  const CustomMenuItemLogout = ({ theme, handleLogout, ...rest }) => (
+    <AnimatedMenuItem
+      onClick={handleLogout}
+      as={Box}
+      className="mt-2 flex cursor-pointer justify-between"
+      bg={theme === 1 && status === 1 ? 'gray.600' : 'white'}
+      w="full"
+      px={4}
+    >
+      {rest.children}
+    </AnimatedMenuItem>
+  )
+
+  const CustomMenuItem = ({ theme, ...rest }) => {
+    const { onClose, onOpen } = useDisclosure()
+
+    const handleClick = () => {
+      onOpen()
+      onClose()
+    }
+
+    return (
+      <AnimatedMenuItem
+        as={Box}
+        className="mt-2 flex justify-between"
+        bg={theme === 1 && status === 1 ? 'gray.600' : 'white'}
+        w="full"
+        px={4}
+        onClick={handleClick}
+      >
+        {rest.children}
+      </AnimatedMenuItem>
+    )
+  }
+
   return (
     <>
       <header>
-        <div className={'main pt-4 '}>
+        <div
+          className={`main pt-2 transition-colors duration-300 ${
+            theme === 1 && status === 1 ? 'bg-gray-700' : ''
+          }`}
+        >
           <div className="flex items-center justify-between">
             <div className="hidden w-full justify-between md:flex">
               {/* Trending Link */}
               <div className="left-container hidden w-1/3 md:block">
                 <div
-                  className="trending delay-50 mx-6 my-6 text-lg font-extrabold transition duration-150 ease-in-out hover:underline"
+                  className={`trending delay-50 transition-color mx-6 my-6 text-lg font-extrabold transition duration-150 ease-in-out hover:underline ${
+                    theme === 1 && status === 1 ? 'text-white' : ''
+                  }`}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
@@ -116,7 +179,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     <div className="main-logo-squidward mx-2 h-10 rounded-md bg-emerald-400 px-3 py-1.5 text-2xl font-extrabold text-white">
                       Squidward
                     </div>
-                    <div className="main-logo-news text-4xl font-semibold">
+                    <div
+                      className={`main-logo-news text-4xl font-semibold transition-colors duration-300 ${
+                        theme === 1 && status === 1 ? 'text-white' : ''
+                      }`}
+                    >
                       News
                     </div>
                   </div>
@@ -152,26 +219,73 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                           >
                             {'My Account'}
                           </MenuButton>
-                          <MenuList className="bg-yello-200 mt-0 flex w-96 flex-col items-center justify-center font-semibold">
+                          <MenuList
+                            as={Box}
+                            mt={0}
+                            flex="1 0 auto"
+                            w="96"
+                            color={
+                              theme === 1 && status === 1 ? 'white' : 'black'
+                            }
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            fontWeight="semibold"
+                            bg={
+                              theme === 1 && status === 1 ? 'gray.600' : 'white'
+                            }
+                            borderColor={'teal.300'}
+                          >
                             {isAuthenticated && (
                               <div className="mt-0 flex w-full justify-center py-4">
                                 Signed In:&nbsp;{`${currentUsername}`}
                               </div>
                             )}
-                            <MenuItem className="mt-2 flex justify-between">
-                              Settings&nbsp;
-                              <SettingsIcon className="" />
-                            </MenuItem>
-                            <MenuItem
-                              onClick={handleLogout}
-                              className="mt-2 flex justify-between"
+                            <CustomMenuItem theme={theme}>
+                              <span className="space-between flex w-full cursor-pointer flex-row items-center justify-between">
+                                Settings&nbsp;
+                                <SettingsIcon className="mx-0" />
+                              </span>
+                            </CustomMenuItem>
+                            <CustomMenuItemLogout
+                              theme={theme}
+                              handleLogout={handleLogout}
                             >
                               Sign out
                               <FontAwesomeIcon
                                 icon={faRightToBracket}
-                                style={{ color: '#080808' }}
+                                style={
+                                  theme === 1 && status === 1
+                                    ? { color: '#00000' }
+                                    : { color: '#080808' }
+                                }
                               />
-                            </MenuItem>
+                            </CustomMenuItemLogout>
+                            <div className="theme-switch">
+                              <span className="mx-8">
+                                {theme === 1 && status === 1
+                                  ? 'Dark Theme'
+                                  : 'Light Theme'}
+                              </span>
+                              <Switch
+                                checked={true}
+                                onChange={handleTheme}
+                                className={`${
+                                  theme === 1 && status === 1
+                                    ? 'bg-emerald-400'
+                                    : 'bg-gray-200'
+                                } relative inline-flex h-6 w-11 items-center rounded-full`}
+                              >
+                                <span
+                                  className={`${
+                                    theme === 1
+                                      ? 'translate-x-6'
+                                      : 'translate-x-1'
+                                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                                />
+                              </Switch>
+                            </div>
                           </MenuList>
                         </>
                       )}
@@ -188,7 +302,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     <div className="main-logo-squidward mx-2 h-10 rounded-md bg-emerald-400 px-3 py-1.5 text-2xl font-extrabold text-white">
                       Squidward
                     </div>
-                    <div className="main-logo-news text-4xl font-semibold">
+                    <div
+                      className={`main-logo-news transition-color text-4xl font-semibold duration-300 ${
+                        theme === 1 && status === 1 ? 'text-white' : ''
+                      }`}
+                    >
                       News
                     </div>
                   </div>
@@ -213,7 +331,13 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 className={'mx-4 flex items-center justify-end'}
               >
                 {!nav ? (
-                  <AiOutlineMenu size={30} />
+                  theme === 1 && status === 1 ? (
+                    <AiOutlineMenu size={30} color={'white'} />
+                  ) : (
+                    <AiOutlineMenu size={30} />
+                  )
+                ) : theme === 1 && status === 1 ? (
+                  <AiOutlineClose size={30} color={'white'} />
                 ) : (
                   <AiOutlineClose size={30} />
                 )}
@@ -264,9 +388,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     Technology
                   </Link>
                 </li>
-                <li className="my-12 border-b text-xs transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  Search <Icon as={Search2Icon} boxSize={4} className="mx-2" />
-                </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
                   {status === 0 ? (
                     <Link to={routes.login()} onClick={signIn}>
@@ -286,40 +407,107 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               </div>
             </ul>
           </div>
-        </div>
-        {/* Main Navbar*/}
-        <div className="navbar hidden h-10 items-center bg-emerald-400 py-2 md:block">
-          <div className="navbar-container mx-0 w-full">
-            <ul className="flex justify-between text-lg text-white">
-              <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Home</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Business</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Entertainment</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Health</Link>
-              </li>
-              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Science</Link>
-              </li>
-              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Sports</Link>
-              </li>
-              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Technology</Link>
-              </li>
-              <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Icon as={Search2Icon} boxSize={6} />
-              </li>
-            </ul>
+          {/* Main Navbar*/}
+          <div className="navbar hidden h-10 items-center bg-emerald-400 py-2 md:block ">
+            <div className="navbar-container mx-0 w-full">
+              <ul className="flex justify-between text-lg text-white">
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Home</Link>
+                </li>
+                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Business</Link>
+                </li>
+                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Entertainment</Link>
+                </li>
+                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Health</Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                  <Link to={routes.home()}>Science</Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                  <Link to={routes.home()}>Sports</Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                  <Link to={routes.home()}>Technology</Link>
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Icon as={Search2Icon} boxSize={6} />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </header>
-      <main>{children}</main>
+
+      <main className="">{children}</main>
+      <footer
+        className={`w-full py-4 ${
+          theme === 1 && status === 1 ? 'bg-gray-800' : 'bg-gray-200'
+        }`}
+      >
+        <div
+          className={`container mx-auto text-center ${
+            theme === 1 && status === 1 ? 'text-white' : 'text-gray-600'
+          }`}
+        >
+          <span className="text-sm">
+            &copy; {new Date().getFullYear()} Squidward News. All rights
+            reserved.
+          </span>
+          <div className="mt-4 flex justify-center space-x-4">
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              Home
+            </Link>
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              Business
+            </Link>
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              Entertainment
+            </Link>
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              Health
+            </Link>
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              Science
+            </Link>
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              Sports
+            </Link>
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              Technology
+            </Link>
+            <Link
+              to={routes.home()}
+              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            >
+              About Us
+            </Link>
+          </div>
+        </div>
+      </footer>
     </>
   )
 }

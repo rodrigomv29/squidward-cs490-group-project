@@ -8,21 +8,23 @@ import Routes from 'src/Routes'
 
 import './scaffold.css'
 import './index.css'
-import theme from './theme'
-
 import { AuthProvider, useAuth } from './auth'
+import theme from './theme'
+import { ThemeProvider } from './ThemeContext'
 
 const App = () => (
   <ChakraProvider theme={theme}>
-    <FatalErrorBoundary page={FatalErrorPage}>
-      <RedwoodProvider titleTemplate="%PageTitle">
-        <AuthProvider>
-          <RedwoodApolloProvider useAuth={useAuth}>
-            <Routes />
-          </RedwoodApolloProvider>
-        </AuthProvider>
-      </RedwoodProvider>
-    </FatalErrorBoundary>
+    <ThemeProvider>
+      <FatalErrorBoundary page={FatalErrorPage}>
+        <RedwoodProvider titleTemplate="%PageTitle">
+          <AuthProvider>
+            <RedwoodApolloProvider useAuth={useAuth}>
+              <Routes />
+            </RedwoodApolloProvider>
+          </AuthProvider>
+        </RedwoodProvider>
+      </FatalErrorBoundary>
+    </ThemeProvider>
   </ChakraProvider>
 )
 
