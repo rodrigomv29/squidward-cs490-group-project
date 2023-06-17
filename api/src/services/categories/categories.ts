@@ -45,3 +45,30 @@ export const Category: CategoryRelationResolvers = {
     return db.category.findUnique({ where: { id: root?.id } }).articles()
   },
 }
+
+export const createCategoryAPI: MutationResolvers['createCategory'] = async ({
+  input,
+}) => {
+  const { name, articles } = input
+
+  const createdCategory = await db.category.create({
+    data: {
+      name: name, // Use the extracted 'name' property
+      articles: {
+        create: articles.map((article) => ({
+          sourceId: article.source.id,
+          sourceName: article.source.name,
+          author: article.author,
+          title: article.title,
+          description: article.description,
+          url: article.url,
+          urlToImage: article.urlToImage,
+          publishedAt: new Date(article.publishedAt),
+          content: article.content,
+        })),
+      },
+    },
+  })
+
+  return createdCategory
+}
