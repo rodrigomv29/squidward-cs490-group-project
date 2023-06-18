@@ -4,9 +4,9 @@ import { Link, routes } from '@redwoodjs/router'
 
 function Footer() {
   return (
-    <footer className={`w-full bg-gray-300 py-4`}>
+    <footer className={`mt-10 w-full bg-gray-300 py-4`}>
       <div className={`container mx-auto text-center `}>
-        <span className="text-md font-bold">
+        <span className="text-md font-bold text-gray-600">
           &copy; {new Date().getFullYear()} Squidward News. All rights reserved.
         </span>
         <div className="mt-4 flex justify-center space-x-4">
