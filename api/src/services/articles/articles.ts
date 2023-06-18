@@ -1,3 +1,4 @@
+import { fetch } from '@whatwg-node/fetch'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -44,4 +45,14 @@ export const Article: ArticleRelationResolvers = {
   Category: (_obj, { root }) => {
     return db.article.findUnique({ where: { id: root?.id } }).Category()
   },
+}
+
+export const getArticles = async ({ category }) => {
+  const response = await fetch(
+    `http://api.openweathermap.org/data/2.5/weather?zip=${category},US&appid=${process.env.NEWSAPI_KEY}`
+  )
+
+  const json = await response.json()
+
+  console.log(json)
 }

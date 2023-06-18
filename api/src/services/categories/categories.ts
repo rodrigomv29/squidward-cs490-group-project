@@ -1,7 +1,9 @@
+import { fetch } from '@whatwg-node/fetch'
 import type {
   QueryResolvers,
   MutationResolvers,
   CategoryRelationResolvers,
+  Article,
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
@@ -71,4 +73,27 @@ export const createCategoryAPI: MutationResolvers['createCategory'] = async ({
   })
 
   return createdCategory
+}
+
+export const getArticles = async ({ category }) => {
+  const response = await fetch(
+    `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+  )
+
+  const json = await response.json()
+
+  const articlesArr: Array<Article> = json.articles
+
+  const input = {
+    input: {
+      name: category,
+      articles: articlesArr,
+    },
+  }
+
+  const result = createCategoryAPI(input)
+
+  return {
+    result,
+  }
 }
