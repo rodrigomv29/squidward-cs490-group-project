@@ -1,8 +1,13 @@
 import React from 'react'
+import { useContext } from 'react'
 
 import { Link, routes } from '@redwoodjs/router'
 
+import CustomThemeContext from 'src/CustomThemeContext'
+
 function CategoryListItems({ categories }) {
+  const { theme } = useContext(CustomThemeContext)
+
   return (
     <div className="flex max-h-full flex-col">
       <div className="categories-container flex h-full flex-grow flex-col justify-between px-4 py-8">
@@ -10,7 +15,11 @@ function CategoryListItems({ categories }) {
           <div className="main-container overflow-auto ">
             {categories.map((category, index) => (
               <div key={category.name} className="mb-2 flex flex-wrap">
-                <span className="relative flex w-1/5 flex-col items-center justify-center text-3xl font-bold">
+                <span
+                  className={`relative flex w-1/5 flex-col items-center justify-center text-3xl font-bold transition-colors duration-200 ${
+                    theme === 1 ? 'text-white' : 'text-black'
+                  }`}
+                >
                   {index + 1}
                   <span className="mt-1 w-[25%] border-b-4 border-emerald-400"></span>
                 </span>
@@ -21,7 +30,11 @@ function CategoryListItems({ categories }) {
                   </span>
                   <Link to={routes.home()}>
                     <span className="flex justify-center px-4">
-                      <span className="hover:underline">
+                      <span
+                        className={`transition-colors duration-200 hover:underline ${
+                          theme === 1 ? 'text-white' : 'text-black'
+                        }`}
+                      >
                         {category.description.length > 100
                           ? category.description.slice(0, 100) + '...'
                           : category.description}
