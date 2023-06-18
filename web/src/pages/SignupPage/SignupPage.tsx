@@ -114,7 +114,7 @@ const SignupPage = () => {
     <>
       <MetaTags title="Signup" />
       <div className="sing-up-container mb-6 flex justify-center">
-        <main className="rw-main signUp-page m-0 h-[20%] w-3/5 rounded-3xl py-0 bg-gradient-to-br from-white to-emerald-400">
+        <main className="rw-main signUp-page m-0 h-[20%] w-3/5 rounded-3xl bg-gradient-to-br from-white to-emerald-400 py-0">
           <span className="my-10 flex justify-center text-4xl font-bold">
             Sign Up
           </span>
