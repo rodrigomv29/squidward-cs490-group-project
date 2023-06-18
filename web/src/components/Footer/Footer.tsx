@@ -1,15 +1,31 @@
 import React from 'react'
+import { useContext } from 'react'
 
 import { Link, routes } from '@redwoodjs/router'
 
+import CustomThemeContext from 'src/CustomThemeContext'
+
 function Footer() {
+  const { theme } = useContext(CustomThemeContext)
   return (
-    <footer className={`mt-10 w-full bg-gray-300 py-4`}>
-      <div className={`container mx-auto text-center `}>
-        <span className="text-md font-bold text-gray-600">
+    <footer
+      className={`w-fullpy-4 mt-0 transition-colors duration-300 ${
+        theme === 1 ? 'bg-gray-800' : 'bg-gray-300'
+      }`}
+    >
+      <div className={`container mx-auto py-4 text-center`}>
+        <span
+          className={`text-md font-bold transition-colors duration-300 ${
+            theme === 1 ? 'text-white' : 'text-gray-700'
+          }`}
+        >
           &copy; {new Date().getFullYear()} Squidward News. All rights reserved.
         </span>
-        <div className="mt-4 flex justify-center space-x-4">
+        <div
+          className={`mt-0 flex justify-center space-x-4 py-4 transition-colors duration-300 ${
+            theme === 1 ? 'text-white' : 'text-black'
+          }`}
+        >
           <Link
             to={routes.home()}
             className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"

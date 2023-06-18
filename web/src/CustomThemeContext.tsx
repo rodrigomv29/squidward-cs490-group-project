@@ -1,11 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react'
 
-const ThemeContext = createContext({
+const CustomThemeContext = createContext({
   theme: 0,
   toggleTheme: () => {},
 })
 
-export const ThemeProvider = ({ children }) => {
+export const CustomThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(0) // Initial theme value
 
   useEffect(() => {
@@ -19,10 +19,10 @@ export const ThemeProvider = ({ children }) => {
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <CustomThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
-    </ThemeContext.Provider>
+    </CustomThemeContext.Provider>
   )
 }
 
-export default ThemeContext
+export default CustomThemeContext

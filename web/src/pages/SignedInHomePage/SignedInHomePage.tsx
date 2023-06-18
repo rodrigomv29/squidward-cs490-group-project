@@ -1,4 +1,5 @@
 import React from 'react'
+import { useContext } from 'react'
 
 // import { Link, routes } from '@redwoodjs/router'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -8,11 +9,12 @@ import { MetaTags } from '@redwoodjs/web'
 
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
+import CustomThemeContext from 'src/CustomThemeContext'
 import { getTimeSincePublication } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
-const DefaultHomePage = () => {
+const SignedInHomePage = () => {
   const categories = [
     {
       name: 'General',
@@ -108,48 +110,95 @@ const DefaultHomePage = () => {
     },
   ]
 
+  const { theme } = useContext(CustomThemeContext)
+
   return (
     <>
-      <MetaTags title="Home" description="DefaultHome page" />
+      <MetaTags title="Home" description="SignedInHome page" />
       <div
-        className={`main-container h-screen max-h-screen w-full max-w-full transition-colors duration-300 `}
+        className={`main-container h-screen max-h-screen w-full max-w-full transition-colors duration-200 ${
+          theme === 1 ? 'bg-gray-700' : 'bg-white'
+        }`}
       >
         <div className="main-header-contianer flex h-2/3 justify-center">
           <div className="slding-pannel-containe my-10  w-2/3">
-            <p className="flex justify-center px-4 text-5xl font-extrabold">
+            <p
+              className={`flex justify-center px-4 text-5xl font-extrabold transition-colors duration-200 ${
+                theme === 1 ? 'text-white' : ''
+              }`}
+            >
               TOP 10 TODAY
             </p>
             <SlidingPanel />
           </div>
           <div className="top-news-container mx-4 w-1/3  justify-center">
-            <div className="Header my-6 flex w-full justify-center rounded-lg bg-emerald-400 py-4 text-3xl font-semibold uppercase">
-              Top Stories
+            <div
+              className={`Header my-6 flex w-full justify-center rounded-lg py-4 text-3xl font-semibold uppercase transition-colors duration-200 ${
+                theme === 1
+                  ? 'bg-gray-800 text-white'
+                  : 'bg-emerald-400 text-black'
+              }`}
+            >
+              Your Top Stories
             </div>
             <div className="category-list-container max-h-1/3 flex h-[79.9%] flex-col justify-start overflow-auto">
               <CategoryListItems categories={categories} />
             </div>
           </div>
         </div>
-        <div className="main-content flex h-screen w-full">
-          <div className="latest-news-container w-[70%]">
+        <div
+          className={`main-content flex h-screen w-full transition-colors duration-200 ${
+            theme === 1 ? 'bg-gray-700' : 'bg-white'
+          }`}
+        >
+          <div
+            className={`latest-news-container w-[70%] transition-colors duration-200 ${
+              theme === 1 ? 'bg-gray-700' : 'bg-whtie'
+            }`}
+          >
             <div className="h-full w-full px-10 ">
               <div className="title-refresh-container flex justify-between">
-                <h2 className="latest-news-heading">Latest News</h2>
+                <h2
+                  className={`latest-news-heading transition-colors duration-200 ${
+                    theme === 1 ? 'text-white' : 'text-black'
+                  }`}
+                >
+                  Personal News Feed
+                </h2>
                 <span style={{ cursor: 'not-allowed' }}>
                   <div className="flex items-center">
-                    <span className="text-xl font-bold text-gray-500">
+                    <span
+                      className={`text-xl font-bold ${
+                        theme === 1 ? 'text-gray-300' : 'text-gray-500'
+                      }`}
+                    >
                       Refresh Articles
                     </span>
-                    <IconButton
-                      aria-label="delete"
-                      size="large"
-                      sx={{
-                        width: 70,
-                        height: 70,
-                      }}
-                    >
-                      <RefreshIcon fontSize="inherit" />
-                    </IconButton>
+                    {theme === 1 ? (
+                      <IconButton
+                        aria-label="delete"
+                        size="large"
+                        sx={{
+                          width: 70,
+                          height: 70,
+                          color: 'white',
+                        }}
+                      >
+                        <RefreshIcon fontSize="inherit" />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        aria-label="delete"
+                        size="large"
+                        sx={{
+                          width: 70,
+                          height: 70,
+                          color: 'black',
+                        }}
+                      >
+                        <RefreshIcon fontSize="inherit" />
+                      </IconButton>
+                    )}
                   </div>
                 </span>
               </div>
@@ -162,9 +211,13 @@ const DefaultHomePage = () => {
                     <img
                       src={newsItem.image}
                       alt={newsItem.title}
-                      className="category-image h-56 w-full"
+                      className="category-image h-56 w-full rounded-lg"
                     />
-                    <p className="category-description text-lg font-semibold text-gray-800 ">
+                    <p
+                      className={`category-description text-lg font-semibold transition-colors duration-200 ${
+                        theme === 1 ? 'text-white' : 'text-gray-800'
+                      }`}
+                    >
                       {newsItem.description}
                     </p>
                     <div className="category-source-info justify-space flex w-full max-w-full">
@@ -187,7 +240,11 @@ const DefaultHomePage = () => {
                                   .minutes
                               } mins ago`}
                         </span>
-                        <span className=" font-bold text-gray-600">
+                        <span
+                          className={` font-bold  transition-colors duration-200 ${
+                            theme === 1 ? 'text-emerald-400' : 'text-gray-600'
+                          }`}
+                        >
                           {newsItem.sourceName}
                         </span>
                       </div>
@@ -197,27 +254,50 @@ const DefaultHomePage = () => {
               </div>
             </div>
           </div>
+          {/* Right Side Bar */}
           <div className="right-sidebar w-[30%]">
-            <div className="weather-container  mx-10 my-4 mt-8 h-2/5 bg-gradient-to-br from-emerald-400 to-white pt-6 text-center text-2xl font-bold text-white">
+            {/* Weather Widject Container */}
+            <div
+              className={`weather-container  mx-10 my-4 mt-8 h-2/5  rounded-lg pt-6 text-center text-2xl font-bold text-white ${
+                theme === 1
+                  ? 'bg-gradient-to-br from-emerald-400 to-gray-700'
+                  : 'bg-gradient-to-br from-emerald-400 to-white'
+              }`}
+            >
               Weather widget
               <p>Coming Soon</p>
             </div>
+            {/* Feat Article Container */}
             <div className="feat-article mt-0 flex h-3/5 flex-col justify-center">
-              <span className="py-2 text-center text-3xl font-bold">
+              <span
+                className={`py-2 text-center text-3xl font-bold ${
+                  theme === 1 ? 'text-white' : 'text-black'
+                }`}
+              >
                 Featured Article
               </span>
-              <div className="category-box max-w-400 max-h-600 mx-8 flex flex-col items-center justify-start bg-gradient-to-br from-emerald-400 to-white text-center">
+              <div
+                className={`category-box max-w-400 max-h-600 mx-8 flex flex-col items-center justify-start rounded-lg text-center ${
+                  theme === 1
+                    ? 'bg-gradient-to-br from-emerald-400 to-gray-600'
+                    : 'bg-gradient-to-br from-emerald-400 to-white'
+                }`}
+              >
                 <img
-                  src={latestNews[3].image}
+                  src={latestNews[0].image}
                   alt={latestNews[0].title}
                   className="category-image h-56 w-full rounded-es-full"
                 />
-                <p className="category-description text-xl font-bold text-gray-800">
+                <p
+                  className={`category-description text-lg font-semibold transition-colors duration-200 ${
+                    theme === 1 ? 'text-white' : 'text-gray-800'
+                  }`}
+                >
                   {latestNews[0].description}
                 </p>
                 <div className="category-source-info justify-space flex w-full max-w-full">
                   <div className="content-container flex w-full justify-center space-x-6 py-2">
-                    <span className="flex text-sm font-bold text-gray-400">
+                    <span className="flex text-sm font-bold text-gray-300">
                       {getTimeSincePublication(latestNews[0].publishedAt)
                         .hours > 0
                         ? getTimeSincePublication(latestNews[0].publishedAt)
@@ -235,7 +315,11 @@ const DefaultHomePage = () => {
                               .minutes
                           } mins ago`}
                     </span>
-                    <span className=" font-bold text-gray-600">
+                    <span
+                      className={`font-bold ${
+                        theme === 1 ? 'text-gray-900' : 'text-gray-600'
+                      }`}
+                    >
                       {latestNews[0].sourceName}
                     </span>
                   </div>
@@ -250,4 +334,4 @@ const DefaultHomePage = () => {
   )
 }
 
-export default DefaultHomePage
+export default SignedInHomePage

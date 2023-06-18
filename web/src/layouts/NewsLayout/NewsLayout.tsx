@@ -29,7 +29,7 @@ import { useAuth } from 'src/auth'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
-import ThemeContext from '../../ThemeContext'
+import CustomThemeContext from '../../CustomThemeContext'
 
 type NewsLayoutProps = {
   children?: React.ReactNode
@@ -70,7 +70,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
 
   const status = getStatus()
 
-  const { theme, toggleTheme } = useContext(ThemeContext)
+  const { theme, toggleTheme } = useContext(CustomThemeContext)
 
   const handleTheme = () => {
     setEnabled(!enabled)
@@ -201,7 +201,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 {status === 0 ? (
                   <Link to={routes.login()}>
                     <div className="sing-in-button mx-6 my-4 text-lg">
-                      <Button onClick={signIn} variant="custom_light">
+                      <Button
+                        onClick={signIn}
+                        variant="custom_light_menu"
+                        className="rounded-lg bg-emerald-400 px-16 py-3 font-bold uppercase text-white transition-opacity duration-300 hover:opacity-75"
+                      >
                         Sign In
                       </Button>
                     </div>
@@ -216,6 +220,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                             as={Button}
                             rightIcon={<ChevronDownIcon />}
                             variant="custom_light_menu"
+                            className="rounded-lg bg-emerald-400 px-12 py-3 font-bold uppercase text-white transition-opacity duration-300 hover:opacity-75"
                           >
                             {'My Account'}
                           </MenuButton>
