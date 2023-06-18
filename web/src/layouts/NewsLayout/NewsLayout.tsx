@@ -441,73 +441,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
         </div>
       </header>
 
-      <main className="">{children}</main>
-      <footer
-        className={`w-full py-4 ${
-          theme === 1 && status === 1 ? 'bg-gray-800' : 'bg-gray-200'
-        }`}
-      >
-        <div
-          className={`container mx-auto text-center ${
-            theme === 1 && status === 1 ? 'text-white' : 'text-gray-600'
-          }`}
-        >
-          <span className="text-sm">
-            &copy; {new Date().getFullYear()} Squidward News. All rights
-            reserved.
-          </span>
-          <div className="mt-4 flex justify-center space-x-4">
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              Home
-            </Link>
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              Business
-            </Link>
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              Entertainment
-            </Link>
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              Health
-            </Link>
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              Science
-            </Link>
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              Sports
-            </Link>
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              Technology
-            </Link>
-            <Link
-              to={routes.home()}
-              className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            >
-              About Us
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <main className="h-screen">{children}</main>
     </>
   )
 }
