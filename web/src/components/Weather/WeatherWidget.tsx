@@ -29,13 +29,6 @@ const WeatherWidget = ({ city = 'Newark' }) => {
       <h2 className="mb-2 rounded bg-emerald-400 p-2 text-3xl text-black">{`Weather in ${weatherData.location.name}, ${weatherData.location.region}`}</h2>
       <p className="text-2xl">{weatherData.current.condition.text}</p>
       <p className="text-2xl">{`Current Temperature: ${Math.round(weatherData.current.temp_f)}°F`}</p>
-      <a
-        href="http://www.weatherapi.com/weather"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Provided by WeatherAPI.com
-      </a>
       <div className="forecast-container flex justify-around overflow-auto p-4">
         {weatherData.forecast.forecastday.slice(0, 3).map((day, index) => (
           <div
@@ -49,7 +42,18 @@ const WeatherWidget = ({ city = 'Newark' }) => {
           </div>
         ))}
       </div>
+      <p>{`Sunrise: ${weatherData.forecast.forecastday[0].astro.sunrise}, Sunset: ${weatherData.forecast.forecastday[0].astro.sunset}`}</p>
+      <p>
+        <a
+          href="http://www.weatherapi.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Provieded by WeatherAPI.com
+        </a>
+      </p>
     </div>
   )
 }
+
 export default WeatherWidget
