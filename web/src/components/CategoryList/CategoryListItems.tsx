@@ -35,9 +35,9 @@ function CategoryListItems({ categories }) {
                           theme === 1 ? 'text-white' : 'text-black'
                         }`}
                       >
-                        {category.description.length > 100
-                          ? category.description.slice(0, 100) + '...'
-                          : category.description}
+                        {category.article.description.length > 200
+                          ? category.article.description.slice(0, 200) + '...'
+                          : category.article.description}
                       </span>
                     </span>
                   </Link>

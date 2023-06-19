@@ -44,44 +44,6 @@ const SignedInHomePage = () => {
     'Technology',
   ]
 
-  const catagories = [
-    {
-      name: 'General',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
-    },
-    {
-      name: 'Business',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
-    },
-    {
-      name: 'Entertainment',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
-    },
-    {
-      name: 'Sports',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
-    },
-    {
-      name: 'Health',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
-    },
-    {
-      name: 'Technology',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
-    },
-    {
-      name: 'Science',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
-    },
-  ]
-
   useEffect(() => {
     fetchDescriptionsForCategories(categoriesArray)
       .then((descriptions) => {
@@ -113,7 +75,21 @@ const SignedInHomePage = () => {
     return () => {
       clearInterval(interval)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const categoryDescriptions = categoriesArray.map((category) => ({
+    name: category,
+    article:
+      descriptionData && descriptionData[category]?.[0]
+        ? descriptionData[category][0]
+        : {
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sit amet arcu ac dolor scelerisque tincidunt. Phasellus faucibus, dui ut sollicitudin viverra, nibh velit vulputate mauris, sed posuere tortor purus vel elit. Proin placerat, lacus non viverra auctor, risus arcu semper velit, ac sollicitudin odio mauris ac lectus. Nulla non erat ut odio feugiat blandit.',
+          },
+  }))
+
+  const categories = categoryDescriptions
 
   const latestNews = [
     {
@@ -204,7 +180,7 @@ const SignedInHomePage = () => {
               Your Top Stories
             </div>
             <div className="category-list-container max-h-1/3 flex h-[79.9%] flex-col justify-start overflow-auto">
-              <CategoryListItems categories={catagories} />
+              <CategoryListItems categories={categories} />
             </div>
           </div>
         </div>

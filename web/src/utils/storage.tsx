@@ -55,6 +55,7 @@ export async function getTopTen() {
     })
 
     const topTenArticles = filteredArticles.slice(0, 10)
+    console.log('called top 10')
     return topTenArticles
   } catch (error) {
     console.log('Something went wrong', error)
