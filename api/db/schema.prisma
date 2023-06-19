@@ -17,6 +17,7 @@ model User {
   resetTokenExpiresAt DateTime?
   general             Boolean   @default(true)
   business            Boolean   @default(false)
+  entertainment       Boolean   @default(false)
   health              Boolean   @default(false)
   science             Boolean   @default(false)
   sports              Boolean   @default(false)
@@ -25,7 +26,7 @@ model User {
 
 model Article {
   id          Int       @id @default(autoincrement())
-  sourceId    String?   
+  sourceId    String?
   sourceName  String
   author      String?
   title       String

@@ -25,6 +25,7 @@ import { useAuth } from 'src/auth'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
+import SettingsPopup from '../../components/Settings/SettingsPopup'
 
 type NewsLayoutProps = {
   children?: React.ReactNode
@@ -61,6 +62,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const [nav, setNav] = useState(false)
   const { isAuthenticated, currentUser, logOut } = useAuth()
   const currentUsername = currentUser != undefined ? currentUser.email : null
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const status = getStatus()
 
@@ -73,6 +75,10 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
 
   const handleNav = () => {
     setNav(!nav)
+  }
+
+  const handleSettings = () => {
+    setSettingsOpen(!settingsOpen)
   }
 
   const handleLogout = () => {
@@ -152,16 +158,26 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                           >
                             {'My Account'}
                           </MenuButton>
+
                           <MenuList className="bg-yello-200 mt-0 flex w-96 flex-col items-center justify-center font-semibold">
                             {isAuthenticated && (
                               <div className="mt-0 flex w-full justify-center py-4">
                                 Signed In:&nbsp;{`${currentUsername}`}
                               </div>
                             )}
-                            <MenuItem className="mt-2 flex justify-between">
+                            <MenuItem
+                              className="mt-2 flex justify-between"
+                              onClick={handleSettings}
+                            >
                               Settings&nbsp;
                               <SettingsIcon className="" />
                             </MenuItem>
+                            {settingsOpen && (
+                              <SettingsPopup
+                                onClose={() => setSettingsOpen(false)}
+                                userId={currentUser.id}
+                              />
+                            )}
                             <MenuItem
                               onClick={handleLogout}
                               className="mt-2 flex justify-between"
