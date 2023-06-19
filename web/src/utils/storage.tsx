@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const setStatus = (status: number) => {
   localStorage.setItem('status', String(status))
 }
@@ -39,4 +41,42 @@ export function getTimeSincePublication(publishedAt) {
   minutes = Math.abs(parseInt(currentTime.minutes) - minutes)
 
   return { hours, minutes }
+}
+
+export async function getTopTen() {
+  try {
+    const response = await axios.get(
+      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWSAPI_KEY}`
+    )
+    const articles = response.data.articles
+
+    const filteredArticles = articles.filter((article) => {
+      return article.urlToImage && article.description
+    })
+
+    const topTenArticles = filteredArticles.slice(0, 10)
+    return topTenArticles
+  } catch (error) {
+    console.log('Something went wrong', error)
+    throw error
+  }
+}
+
+export async function getDescription(category: string) {
+  try {
+    const response = await axios.get(
+      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+    )
+    const data = response.data.articles
+
+    const filteredArticles = data.filter((article) => {
+      return article.description
+    })
+
+    const articles = filteredArticles.slice(0, 1)
+    return articles
+  } catch (error) {
+    console.log('Something went wrong', error)
+    throw error
+  }
 }
