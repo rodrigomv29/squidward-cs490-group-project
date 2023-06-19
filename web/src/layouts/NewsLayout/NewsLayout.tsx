@@ -77,10 +77,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     setNav(!nav)
   }
 
-  const handleSettings = () => {
-    setSettingsOpen(!settingsOpen)
-  }
-
   const handleLogout = () => {
     logOut()
     setStatus(0)
@@ -167,7 +163,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                             )}
                             <MenuItem
                               className="mt-2 flex justify-between"
-                              onClick={handleSettings}
+                              onClick={() => setSettingsOpen(true)}
                             >
                               Settings&nbsp;
                               <SettingsIcon className="" />
@@ -176,7 +172,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                               <SettingsPopup
                                 onClose={() => setSettingsOpen(false)}
                                 userId={currentUser?.id}
-                                prisma={undefined}
                               />
                             )}
                             <MenuItem
