@@ -11,38 +11,28 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { PrismaClient } from '@prisma/client'
 
 import { toast } from '@redwoodjs/web/toast'
 
 interface SettingsPopupProps {
   onClose: () => void
   userId: number
-  prisma: PrismaClient
 }
 
-const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId, prisma }) => {
+const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId }) => {
   const [elements, setElements] = useState<
     { id: number; name: string; enabled: boolean }[]
   >([])
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     const fetchElements = async () => {
       try {
-        const userData = await prisma.user.findUnique({
-          where: { id: userId },
-          select: {
-            general: true,
-            business: true,
-            entertainment: true,
-            health: true,
-            science: true,
-            sports: true,
-            technology: true,
-          },
-        })
+        const response = await fetch(`/api/users/${userId}`)
+        if (!response.ok) {
+          throw new Error('Error fetching user')
+        }
+        const userData = await response.json()
 
         const elementsData = [
           { id: 1, name: 'General', enabled: userData.general },
@@ -61,7 +51,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId, prisma }) => {
     }
 
     fetchElements()
-  }, [prisma.user, userId])
+  }, [userId])
 
   const toggleElement = async (id: number) => {
     const element = elements.find((el) => el.id === id)
@@ -74,10 +64,18 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId, prisma }) => {
     setElements(updatedElements)
 
     try {
-      await prisma.user.update({
-        where: { id: userId },
-        data: { [element.name.toLowerCase()]: !element.enabled },
+      const response = await fetch(`/api/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          [element.name.toLowerCase()]: !element.enabled,
+        }),
       })
+      if (!response.ok) {
+        throw new Error(`Error updating ${element.name}`)
+      }
       toast.success(`${element.name} updated`)
     } catch (error) {
       console.error(`Error updating ${element.name}:`, error)
@@ -87,7 +85,6 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId, prisma }) => {
 
   return (
     <>
-      <Button onClick={onOpen}>Open Settings</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
