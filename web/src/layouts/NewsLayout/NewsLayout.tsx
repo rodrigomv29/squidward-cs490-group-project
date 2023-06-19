@@ -26,6 +26,7 @@ import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 import { Link, routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
+import AccountMenu from 'src/components/AccountMenu/AccountMenu'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
@@ -211,91 +212,92 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     </div>
                   </Link>
                 ) : (
-                  <div className="my-account-menu mx-6 my-4">
-                    <Menu>
-                      {({ isOpen }) => (
-                        <>
-                          <MenuButton
-                            isActive={isOpen}
-                            as={Button}
-                            rightIcon={<ChevronDownIcon />}
-                            variant="custom_light_menu"
-                            className="rounded-lg bg-emerald-400 px-12 py-3 font-bold uppercase text-white transition-opacity duration-300 hover:opacity-75"
-                          >
-                            {'My Account'}
-                          </MenuButton>
-                          <MenuList
-                            as={Box}
-                            mt={0}
-                            flex="1 0 auto"
-                            w="96"
-                            color={
-                              theme === 1 && status === 1 ? 'white' : 'black'
-                            }
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontWeight="semibold"
-                            bg={
-                              theme === 1 && status === 1 ? 'gray.600' : 'white'
-                            }
-                            borderColor={'teal.300'}
-                          >
-                            {isAuthenticated && (
-                              <div className="mt-0 flex w-full justify-center py-4">
-                                Signed In:&nbsp;{`${currentUsername}`}
-                              </div>
-                            )}
-                            <CustomMenuItem theme={theme}>
-                              <span className="space-between flex w-full cursor-pointer flex-row items-center justify-between">
-                                Settings&nbsp;
-                                <SettingsIcon className="mx-0" />
-                              </span>
-                            </CustomMenuItem>
-                            <CustomMenuItemLogout
-                              theme={theme}
-                              handleLogout={handleLogout}
-                            >
-                              Sign out
-                              <FontAwesomeIcon
-                                icon={faRightToBracket}
-                                style={
-                                  theme === 1 && status === 1
-                                    ? { color: '#00000' }
-                                    : { color: '#080808' }
-                                }
-                              />
-                            </CustomMenuItemLogout>
-                            <div className="theme-switch">
-                              <span className="mx-8">
-                                {theme === 1 && status === 1
-                                  ? 'Dark Theme'
-                                  : 'Light Theme'}
-                              </span>
-                              <Switch
-                                checked={true}
-                                onChange={handleTheme}
-                                className={`${
-                                  theme === 1 && status === 1
-                                    ? 'bg-emerald-400'
-                                    : 'bg-gray-200'
-                                } relative inline-flex h-6 w-11 items-center rounded-full`}
-                              >
-                                <span
-                                  className={`${
-                                    theme === 1
-                                      ? 'translate-x-6'
-                                      : 'translate-x-1'
-                                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                                />
-                              </Switch>
-                            </div>
-                          </MenuList>
-                        </>
-                      )}
-                    </Menu>
-                  </div>
+                  <AccountMenu />
+                  // <div className="my-account-menu mx-6 my-4">
+                  //   <Menu>
+                  //     {({ isOpen }) => (
+                  //       <>
+                  //         <MenuButton
+                  //           isActive={isOpen}
+                  //           as={Button}
+                  //           rightIcon={<ChevronDownIcon />}
+                  //           variant="custom_light_menu"
+                  //           className="rounded-lg bg-emerald-400 px-12 py-3 font-bold uppercase text-white transition-opacity duration-300 hover:opacity-75"
+                  //         >
+                  //           {'My Account'}
+                  //         </MenuButton>
+                  //         <MenuList
+                  //           as={Box}
+                  //           mt={0}
+                  //           flex="1 0 auto"
+                  //           w="96"
+                  //           color={
+                  //             theme === 1 && status === 1 ? 'white' : 'black'
+                  //           }
+                  //           display="flex"
+                  //           flexDirection="column"
+                  //           alignItems="center"
+                  //           justifyContent="center"
+                  //           fontWeight="semibold"
+                  //           bg={
+                  //             theme === 1 && status === 1 ? 'gray.600' : 'white'
+                  //           }
+                  //           borderColor={'teal.300'}
+                  //         >
+                  //           {isAuthenticated && (
+                  //             <div className="mt-0 flex w-full justify-center py-4">
+                  //               Signed In:&nbsp;{`${currentUsername}`}
+                  //             </div>
+                  //           )}
+                  //           <CustomMenuItem theme={theme}>
+                  //             <span className="space-between flex w-full cursor-pointer flex-row items-center justify-between">
+                  //               Settings&nbsp;
+                  //               <SettingsIcon className="mx-0" />
+                  //             </span>
+                  //           </CustomMenuItem>
+                  //           <CustomMenuItemLogout
+                  //             theme={theme}
+                  //             handleLogout={handleLogout}
+                  //           >
+                  //             Sign out
+                  //             <FontAwesomeIcon
+                  //               icon={faRightToBracket}
+                  //               style={
+                  //                 theme === 1 && status === 1
+                  //                   ? { color: '#00000' }
+                  //                   : { color: '#080808' }
+                  //               }
+                  //             />
+                  //           </CustomMenuItemLogout>
+                  //           <div className="theme-switch">
+                  //             <span className="mx-8">
+                  //               {theme === 1 && status === 1
+                  //                 ? 'Dark Theme'
+                  //                 : 'Light Theme'}
+                  //             </span>
+                  //             <Switch
+                  //               checked={true}
+                  //               onChange={handleTheme}
+                  //               className={`${
+                  //                 theme === 1 && status === 1
+                  //                   ? 'bg-emerald-400'
+                  //                   : 'bg-gray-200'
+                  //               } relative inline-flex h-6 w-11 items-center rounded-full`}
+                  //             >
+                  //               <span
+                  //                 className={`${
+                  //                   theme === 1
+                  //                     ? 'translate-x-6'
+                  //                     : 'translate-x-1'
+                  //                 } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                  //               />
+                  //             </Switch>
+                  //           </div>
+                  //         </MenuList>
+                  //       </>
+                  //     )}
+                  //   </Menu>
+                  // </div>
                 )}
               </div>
             </div>
@@ -413,9 +415,17 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
             </ul>
           </div>
           {/* Main Navbar*/}
-          <div className="navbar hidden h-10 items-center bg-emerald-400 py-2 md:block ">
+          <div
+            className={`navbar hidden h-12 items-center py-2 md:block ${
+              theme === 1 ? 'bg-gray-800' : 'bg-emerald-400'
+            }`}
+          >
             <div className="navbar-container mx-0 w-full">
-              <ul className="flex justify-between text-lg text-white">
+              <ul
+                className={`flex justify-between text-lg ${
+                  theme === 1 ? 'text-emerald-400' : 'text-white'
+                }`}
+              >
                 <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
                   <Link to={routes.home()}>Home</Link>
                 </li>
