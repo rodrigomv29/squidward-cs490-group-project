@@ -45,7 +45,7 @@ const WeatherWidget = ({ city = 'Newark' }) => {
       <p>{`Sunrise: ${weatherData.forecast.forecastday[0].astro.sunrise}, Sunset: ${weatherData.forecast.forecastday[0].astro.sunset}`}</p>
       <p>
         <a
-          href="http://www.weatherapi.com/"
+          href="http://www.weatherapi.com/weather"
           target="_blank"
           rel="noopener noreferrer"
         >
