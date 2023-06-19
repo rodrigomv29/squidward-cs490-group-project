@@ -76,6 +76,9 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const handleNav = () => {
     setNav(!nav)
   }
+  const handleOpenSettings = () => {
+    setSettingsOpen(true)
+  }
 
   const handleLogout = () => {
     logOut()
@@ -163,7 +166,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                             )}
                             <MenuItem
                               className="mt-2 flex justify-between"
-                              onClick={() => setSettingsOpen(true)}
+                              onClick={handleOpenSettings}
                             >
                               Settings&nbsp;
                               <SettingsIcon className="" />
