@@ -8,11 +8,10 @@ import { MetaTags } from '@redwoodjs/web'
 
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
+import WeatherWidget from 'src/components/Weather/WeatherWidget'
 import { getTimeSincePublication } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
-
-import WeatherWidget from 'src/components/Weather/WeatherWidget'
 
 const DefaultHomePage = () => {
   const categories = [
