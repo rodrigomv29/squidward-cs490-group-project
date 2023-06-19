@@ -175,7 +175,8 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                             {settingsOpen && (
                               <SettingsPopup
                                 onClose={() => setSettingsOpen(false)}
-                                userId={currentUser.id}
+                                userId={currentUser?.id}
+                                prisma={undefined}
                               />
                             )}
                             <MenuItem

@@ -15,14 +15,13 @@ import { PrismaClient } from '@prisma/client'
 
 import { toast } from '@redwoodjs/web/toast'
 
-const prisma = new PrismaClient()
-
 interface SettingsPopupProps {
   onClose: () => void
   userId: number
+  prisma: PrismaClient
 }
 
-const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId }) => {
+const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId, prisma }) => {
   const [elements, setElements] = useState<
     { id: number; name: string; enabled: boolean }[]
   >([])
@@ -62,7 +61,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({ userId }) => {
     }
 
     fetchElements()
-  }, [userId])
+  }, [prisma.user, userId])
 
   const toggleElement = async (id: number) => {
     const element = elements.find((el) => el.id === id)
