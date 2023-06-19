@@ -49,7 +49,7 @@ const WeatherWidget = ({ city = 'Newark' }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Provieded by WeatherAPI.com
+          Provided by WeatherAPI.com
         </a>
       </p>
     </div>
