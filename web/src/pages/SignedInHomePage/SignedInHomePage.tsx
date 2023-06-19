@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
 
 // import { Link, routes } from '@redwoodjs/router'
@@ -9,49 +9,111 @@ import { MetaTags } from '@redwoodjs/web'
 
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
+import WeatherWidget from 'src/components/Weather/WeatherWidget'
 import CustomThemeContext from 'src/CustomThemeContext'
-import { getTimeSincePublication } from 'src/utils/storage'
+import { getTimeSincePublication, getDescription } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
+async function fetchDescriptionsForCategories(categories) {
+  try {
+    const descriptionArticle = {}
+
+    for (const category of categories) {
+      const categoryDescription = await getDescription(category)
+      descriptionArticle[category] = categoryDescription
+    }
+
+    return descriptionArticle
+  } catch (error) {
+    console.log('Error fetching description article for categories:', error)
+    throw error
+  }
+}
+
 const SignedInHomePage = () => {
-  const categories = [
+  const [descriptionData, setDescriptionData] = useState(null)
+
+  const categoriesArray = [
+    'General',
+    'Business',
+    'Entertainment',
+    'Sports',
+    'Health',
+    'Science',
+    'Technology',
+  ]
+
+  const catagories = [
     {
       name: 'General',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-        Sed diam nonummy nibh euismod hetrt dolor sit amet, conse`,
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
     },
     {
       name: 'Business',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-        Sed diam nonummy nibh euismod hetrt dolor sit amet, conse`,
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
     },
     {
       name: 'Entertainment',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-        Sed diam nonummy nibh euismod hetrt dolor sit amet, consectetur adipiscing elit.`,
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
     },
     {
       name: 'Sports',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-        Sed diam nonummy nibh euismod hetrt dolor sit amet, consectetur adipiscing elit.`,
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
     },
     {
       name: 'Health',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-        Sed diam nonummy nibh euismod hetrt dolor sit amet, consectetur adipiscing elit.`,
-    },
-    {
-      name: 'Science',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-        Sed `,
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
     },
     {
       name: 'Technology',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-        Sed `,
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
+    },
+    {
+      name: 'Science',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ligula ac finibus ultrices. Nunc vel tristique eros. Donec sagittis eleifend risus, vitae lacinia ex facilisis in. Vestibulum id nisl et nunc venenatis semper. Aliquam eu efficitur enim. Sed iaculis volutpat justo, a scelerisque tortor.',
     },
   ]
+
+  useEffect(() => {
+    fetchDescriptionsForCategories(categoriesArray)
+      .then((descriptions) => {
+        const updatedDescriptions = {
+          ...descriptions,
+          ...descriptions,
+        }
+        setDescriptionData(updatedDescriptions)
+      })
+      .catch((error) => {
+        console.log('Error fetching descriptions:', error)
+      })
+
+    const interval = setInterval(() => {
+      fetchDescriptionsForCategories(categoriesArray)
+        .then((descriptions) => {
+          const updatedDescriptions = {
+            ...descriptions,
+            ...descriptions,
+          }
+
+          setDescriptionData(updatedDescriptions)
+        })
+        .catch((error) => {
+          console.log('Error fetching descriptions:', error)
+        })
+    }, 3600000) // 1 hour in milliseconds
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   const latestNews = [
     {
@@ -142,7 +204,7 @@ const SignedInHomePage = () => {
               Your Top Stories
             </div>
             <div className="category-list-container max-h-1/3 flex h-[79.9%] flex-col justify-start overflow-auto">
-              <CategoryListItems categories={categories} />
+              <CategoryListItems categories={catagories} />
             </div>
           </div>
         </div>
@@ -257,15 +319,8 @@ const SignedInHomePage = () => {
           {/* Right Side Bar */}
           <div className="right-sidebar w-[30%]">
             {/* Weather Widject Container */}
-            <div
-              className={`weather-container  mx-10 my-4 mt-8 h-2/5  rounded-lg pt-6 text-center text-2xl font-bold text-white ${
-                theme === 1
-                  ? 'bg-gradient-to-br from-emerald-400 to-gray-700'
-                  : 'bg-gradient-to-br from-emerald-400 to-white'
-              }`}
-            >
-              Weather widget
-              <p>Coming Soon</p>
+            <div>
+              <WeatherWidget city="Newark,NJ,USA" />
             </div>
             {/* Feat Article Container */}
             <div className="feat-article mt-0 flex h-3/5 flex-col justify-center">
