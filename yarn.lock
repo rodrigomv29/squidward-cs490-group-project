@@ -8593,7 +8593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^20.3.1":
   version: 20.3.1
   resolution: "@types/node@npm:20.3.1"
   checksum: 7e8a6f5d6fc1ad3778f038f5f8df570741459984280fd2e9539af32620d93438c955fd1b90d00f9cc438cd132ec04d7669ada9e32502336e78713a3ad9b51d10
@@ -14758,7 +14758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.17.1, express@npm:^4.17.3":
+"express@npm:^4.17.1, express@npm:^4.17.3, express@npm:^4.18.2":
   version: 4.18.2
   resolution: "express@npm:4.18.2"
   dependencies:
@@ -23591,12 +23591,15 @@ __metadata:
     "@mui/styled-engine-sc": ^5.12.0
     "@redwoodjs/auth-dbauth-setup": 5.3.0
     "@redwoodjs/core": 5.3.0
+    "@types/node": ^20.3.1
+    express: ^4.18.2
     framer-motion: ^10.12.16
     prettier-plugin-tailwindcss: ^0.3.0
     react-icons: ^4.9.0
     react-router-dom: latest
     styled-components: ^6.0.0-rc.3
     tailwindcss: ^3.3.2
+    ts-node: ^10.9.1
   languageName: unknown
   linkType: soft
 
@@ -25713,7 +25716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:10.9.1":
+"ts-node@npm:10.9.1, ts-node@npm:^10.9.1":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
