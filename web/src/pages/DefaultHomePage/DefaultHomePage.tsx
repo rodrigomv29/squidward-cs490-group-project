@@ -12,6 +12,8 @@ import { getTimeSincePublication } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
+import WeatherWidget from 'src/components/Weather/WeatherWidget'
+
 const DefaultHomePage = () => {
   const categories = [
     {
@@ -198,9 +200,8 @@ const DefaultHomePage = () => {
             </div>
           </div>
           <div className="right-sidebar w-[30%]">
-            <div className="weather-container  mx-10 my-4 mt-8 h-2/5 bg-gradient-to-br from-emerald-400 to-white pt-6 text-center text-2xl font-bold text-white">
-              Weather widget
-              <p>Coming Soon</p>
+            <div className="weather-container  mx-10 my-4 mt-8 h-2/5 text-center text-2xl font-bold text-black">
+              <WeatherWidget city="Newark,NJ,USA" />
             </div>
             <div className="feat-article mt-0 flex h-3/5 flex-col justify-center">
               <span className="py-2 text-center text-3xl font-bold">
