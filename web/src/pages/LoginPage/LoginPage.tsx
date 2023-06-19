@@ -65,7 +65,7 @@ const LoginPage = () => {
             }}
           />
           <div className="rw-login-container flex w-[75%] justify-center rounded-3xl py-4">
-            <div className="flex w-full w-full flex-col justify-center justify-center rounded-lg bg-white px-2 py-8">
+            <div className="flex w-full flex-col justify-center rounded-lg bg-white px-2 py-8">
               <div className="rw-form-wrapper">
                 <Form
                   onSubmit={onSubmit}
