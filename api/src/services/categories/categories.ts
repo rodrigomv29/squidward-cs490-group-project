@@ -91,9 +91,10 @@ export const getArticles = async ({ category }) => {
     },
   }
 
-  const result = createCategoryAPI(input)
+  const _result = createCategoryAPI(input)
 
   return {
-    result,
+    category,
+    author: json.author,
   }
 }
