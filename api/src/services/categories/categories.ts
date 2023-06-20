@@ -51,24 +51,15 @@ export const Category: CategoryRelationResolvers = {
 export const createCategoryAPI: MutationResolvers['createCategory'] = async ({
   input,
 }) => {
-  const { name } = input
-
-  const response = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=us&category=${name.toLowerCase()}&apiKey=${
-      process.env.NEWSAPI_KEY
-    }`
-  )
-
-  const json = await response.json()
-  const articlesArr: Array<Article> = json.articles
+  const { name, articles } = input
 
   const createdCategory = await db.category.create({
     data: {
-      name,
+      name: name, // Use the extracted 'name' property
       articles: {
-        create: articlesArr.map((article) => ({
-          sourceId: article.sourceId,
-          sourceName: article.sourceName,
+        create: articles.map((article) => ({
+          sourceId: article.source.id,
+          sourceName: article.source.name,
           author: article.author,
           title: article.title,
           description: article.description,
@@ -78,9 +69,6 @@ export const createCategoryAPI: MutationResolvers['createCategory'] = async ({
           content: article.content,
         })),
       },
-    },
-    include: {
-      articles: true, // Include the associated articles in the response
     },
   })
 
@@ -100,8 +88,7 @@ export const getArticles = async ({ category }) => {
       articles: articlesArr,
     },
   }
-  const _result = createCategoryAPI(input)
+  const result = await createCategoryAPI(input)
 
-  console.log(JSON.stringify(json))
-  return json
+  return result
 }
