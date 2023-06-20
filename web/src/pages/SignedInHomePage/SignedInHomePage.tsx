@@ -236,15 +236,19 @@ const SignedInHomePage = () => {
                             alt={newsItem.title}
                             className="category-image h-56 w-full"
                           />
-                          <p
-                            className={`category-description text-lg font-semibold transition-colors duration-200 ${
-                              theme === 1 ? 'text-white' : 'text-gray-800'
-                            }  `}
-                          >
-                            {newsItem.description.length > 110
-                              ? newsItem.description.slice(0, 110) + '...'
-                              : newsItem.description}
-                          </p>
+                          <div className="description-container h-[50%] max-w-full">
+                            <p
+                              className={`category-description text-lg font-semibold transition-colors duration-200 ${
+                                theme === 1 ? 'text-white' : 'text-gray-800'
+                              }  `}
+                            >
+                              {newsItem.description != ''
+                                ? newsItem.description.length > 110
+                                  ? newsItem.description.slice(0, 110) + '...'
+                                  : newsItem.description
+                                : 'This article does not have a decription'}
+                            </p>
+                          </div>
                           <div className="category-source-info justify-space flex w-full max-w-full">
                             <div className="content-container flex w-full max-w-sm justify-center space-x-6 py-2">
                               <span className="flex text-sm font-bold text-gray-400">
