@@ -1,3 +1,4 @@
+import fetch from 'node-fetch'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -6,8 +7,6 @@ import type {
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
-
-const fetch = require('node-fetch')
 
 export const categories: QueryResolvers['categories'] = () => {
   return db.category.findMany()
@@ -76,59 +75,21 @@ export const createCategoryAPI: MutationResolvers['createCategory'] = async ({
   return createdCategory
 }
 
-// export const getArticles = async ({ category }) => {
-//   try {
-//     const query = `https://newsapi.org/v2/top-headlines/`
-//     const result = await fetch(query, {
-//       headers: {
-//         Authorization: `Bearer ${process.env.NEWSAPI_KEY}`,
-//       },
-//       params: {
-//         country: `us`,
-//         category: `${category}`,
-//         apiKey: `${process.env.NEWSAPI_KEY}`,
-//       },
-//     })
-
-//     const json = await result.json()
-//     const articlesArr: Array<Article> = json.articles
-
-//     const input = {
-//       input: {
-//         name: category,
-//         articles: articlesArr,
-//       },
-//     }
-//     const _result = createCategoryAPI(input)
-
-//     return {
-//       category,
-//       articles: articlesArr,
-//     }
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
-
 export const getArticles = async ({ category }) => {
-  const query = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&`
+  const query = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
   const response = await fetch(query)
 
   const json = await response.json()
 
   const articlesArr: Array<Article> = json.articles
-
   const input = {
     input: {
       name: category,
       articles: articlesArr,
     },
   }
-
   const _result = createCategoryAPI(input)
 
-  return {
-    category,
-    articles: articlesArr,
-  }
+  console.log(JSON.stringify(json))
+  return json
 }
