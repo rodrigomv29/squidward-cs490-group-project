@@ -9,6 +9,39 @@ import {
   ModalCloseButton,
   ModalBody,
 } from '@chakra-ui/react'
+import { gql } from 'graphql-tag'
+
+import { useMutation, useQuery } from '@redwoodjs/web'
+
+const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUserMutation($id: Int!, $input: UpdateUserInput!) {
+    updateUser(id: $id, input: $input) {
+      id
+      general
+      business
+      entertainment
+      health
+      science
+      sports
+      technology
+    }
+  }
+`
+
+const GET_USER_QUERY = gql`
+  query GetUserQuery($id: Int!) {
+    user(id: $id) {
+      id
+      general
+      business
+      entertainment
+      health
+      science
+      sports
+      technology
+    }
+  }
+`
 
 interface SettingsPopupProps {
   onClose: () => void
@@ -17,12 +50,41 @@ interface SettingsPopupProps {
 
 const SettingsPopup: React.FC<SettingsPopupProps> = ({
   onClose: closePopup,
+  userId,
 }) => {
   const [elements, setElements] = useState<
     { id: number; name: string; enabled: boolean }[]
   >([])
 
   const [isOpen, setIsOpen] = useState(false)
+
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION)
+  const { data, loading } = useQuery(GET_USER_QUERY, {
+    variables: { id: userId },
+  })
+
+  useEffect(() => {
+    if (!loading && data && data.user) {
+      const {
+        general,
+        business,
+        entertainment,
+        health,
+        science,
+        sports,
+        technology,
+      } = data.user
+      setElements([
+        { id: 1, name: 'General', enabled: general },
+        { id: 2, name: 'Business', enabled: business },
+        { id: 3, name: 'Entertainment', enabled: entertainment },
+        { id: 4, name: 'Health', enabled: health },
+        { id: 5, name: 'Science', enabled: science },
+        { id: 6, name: 'Sports', enabled: sports },
+        { id: 7, name: 'Technology', enabled: technology },
+      ])
+    }
+  }, [data, loading])
 
   const toggleElement = (id: number) => {
     setElements((prevElements) =>
@@ -32,13 +94,27 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
     )
   }
 
-  useEffect(() => {
-    setIsOpen(true) // Open the popup when the component is referenced
-  }, [])
-
   const handleClose = () => {
     setIsOpen(false)
     closePopup()
+  }
+
+  const handleSave = async () => {
+    const updatedSettings = elements.reduce((acc, element) => {
+      acc[element.name.toLowerCase()] = element.enabled
+      return acc
+    }, {})
+
+    await updateUser({
+      variables: { id: userId, input: updatedSettings },
+    })
+
+    handleClose()
+  }
+
+  if (loading) {
+    // Handle loading state
+    return <div>Loading...</div>
   }
 
   return (
@@ -63,6 +139,9 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
                 </div>
               ))}
             </div>
+            <Button mt={4} onClick={handleSave}>
+              Save
+            </Button>
             <Button mt={4} onClick={handleClose}>
               Close
             </Button>
