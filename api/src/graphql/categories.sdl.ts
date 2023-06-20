@@ -2,7 +2,7 @@ export const schema = gql`
   type Category {
     id: Int!
     name: String!
-    articles: [Article]!
+    articles: [Article!]!
   }
 
   type Query {

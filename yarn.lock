@@ -23251,6 +23251,7 @@ __metadata:
     prettier-plugin-tailwindcss: ^0.3.0
     react-icons: ^4.9.0
     tailwindcss: ^3.3.2
+    ts-node: ^10.9.1
   languageName: unknown
   linkType: soft
 
@@ -25336,7 +25337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:10.9.1":
+"ts-node@npm:10.9.1, ts-node@npm:^10.9.1":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
