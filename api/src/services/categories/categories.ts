@@ -88,7 +88,10 @@ export const getArticles = async ({ category }) => {
       articles: articlesArr,
     },
   }
-  const result = await createCategoryAPI(input)
+  const _result = await createCategoryAPI(input)
 
-  return result
+  return {
+    category,
+    articlesArr,
+  }
 }
