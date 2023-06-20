@@ -85,7 +85,7 @@ export async function getDescription(category: string) {
 export async function getLatest() {
   try {
     const response = await axios.get(
-    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWSAPI_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWSAPI_KEY}`
     )
     const data = response.data.articles
 
