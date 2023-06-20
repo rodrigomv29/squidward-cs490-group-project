@@ -299,16 +299,16 @@ const SignedInHomePage = () => {
               <WeatherWidget city="Newark,NJ,USA" />
             </div>
             {/* Feat Article Container */}
-            <div className="feat-article mt-0 flex h-3/5 flex-col justify-center">
+            <div className="feat-article mt-0 flex h-max flex-col justify-center">
               <span
-                className={`py-2 text-center text-3xl font-bold ${
+                className={`py-2.5 text-center text-2xl font-bold ${
                   theme === 1 ? 'text-white' : 'text-black'
                 }`}
               >
                 Featured Article
               </span>
               <div
-                className={`category-box max-w-400 max-h-600 mx-8 flex flex-col items-center justify-start rounded-lg text-center ${
+                className={`category-box max-w-400 mx-8 flex flex-col items-center justify-start rounded-lg text-center h-[10%]${
                   theme === 1
                     ? 'bg-gradient-to-br from-emerald-400 to-gray-600'
                     : 'bg-gradient-to-br from-emerald-400 to-white'
@@ -347,8 +347,8 @@ const SignedInHomePage = () => {
                           } mins ago`}
                     </span>
                     <span
-                      className={`font-bold ${
-                        theme === 1 ? 'text-gray-900' : 'text-gray-600'
+                      className={`font-bold transition-colors duration-200 ${
+                        theme === 1 ? 'text-white' : 'text-gray-600'
                       }`}
                     >
                       {latestNews[0].sourceName}

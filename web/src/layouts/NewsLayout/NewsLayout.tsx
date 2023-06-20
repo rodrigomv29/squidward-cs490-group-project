@@ -1,26 +1,10 @@
-import React from 'react'
+import * as React from 'react'
 import { useState, useEffect, useContext } from 'react'
 
-import {
-  Search2Icon,
-  ArrowRightIcon,
-  ChevronDownIcon,
-  SettingsIcon,
-} from '@chakra-ui/icons'
-import {
-  Box,
-  Button,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  chakra,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Switch } from '@headlessui/react'
+import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
+import { Icon } from '@chakra-ui/react'
+import Button, { ButtonProps } from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
@@ -61,22 +45,29 @@ const useWindowWidth = (threshold: number) => {
   return isLargeScreen
 }
 
+const SignInButton = styled(Button)<ButtonProps>(() => ({
+  color: '#FFFFFF',
+  backgroundColor: '#34d399',
+  '&:hover': {
+    backgroundColor: '#059669',
+  },
+  fontWeight: 'bold',
+  width: 175,
+  height: 60,
+  fontSize: '1.3rem',
+  borderRadius: '30px', // Set the border radius to make it more rounded
+}))
+
 const NewsLayout = ({ children }: NewsLayoutProps) => {
   const [isHovered, setIsHovered] = useState(false)
   const isLargeScreen = useWindowWidth(768)
   const [nav, setNav] = useState(false)
-  const { isAuthenticated, currentUser, logOut } = useAuth()
+  const { currentUser, logOut } = useAuth()
   const currentUsername = currentUser != undefined ? currentUser.email : null
-  const [enabled, setEnabled] = useState(false)
 
   const status = getStatus()
 
   const { theme, toggleTheme } = useContext(CustomThemeContext)
-
-  const handleTheme = () => {
-    setEnabled(!enabled)
-    toggleTheme()
-  }
 
   const signIn = () => {
     if (status === 0) {
@@ -93,7 +84,9 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     logOut()
     setStatus(0)
     navigate(routes.home()) // Redirect to home page after signing out
-    handleNav()
+    if (theme === 1) {
+      toggleTheme()
+    }
   }
 
   useEffect(() => {
@@ -101,50 +94,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
       setNav(false)
     }
   }, [isLargeScreen, nav])
-
-  const AnimatedMenuItem = chakra(MenuItem, {
-    baseStyle: {
-      transition: 'background-color 0.3s ease',
-      _hover: {
-        bg: 'gray.300',
-      },
-    },
-  })
-
-  const CustomMenuItemLogout = ({ theme, handleLogout, ...rest }) => (
-    <AnimatedMenuItem
-      onClick={handleLogout}
-      as={Box}
-      className="mt-2 flex cursor-pointer justify-between"
-      bg={theme === 1 && status === 1 ? 'gray.600' : 'white'}
-      w="full"
-      px={4}
-    >
-      {rest.children}
-    </AnimatedMenuItem>
-  )
-
-  const CustomMenuItem = ({ theme, ...rest }) => {
-    const { onClose, onOpen } = useDisclosure()
-
-    const handleClick = () => {
-      onOpen()
-      onClose()
-    }
-
-    return (
-      <AnimatedMenuItem
-        as={Box}
-        className="mt-2 flex justify-between"
-        bg={theme === 1 && status === 1 ? 'gray.600' : 'white'}
-        w="full"
-        px={4}
-        onClick={handleClick}
-      >
-        {rest.children}
-      </AnimatedMenuItem>
-    )
-  }
 
   return (
     <>
@@ -202,102 +151,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 {status === 0 ? (
                   <Link to={routes.login()}>
                     <div className="sing-in-button mx-6 my-4 text-lg">
-                      <Button
-                        onClick={signIn}
-                        variant="custom_light_menu"
-                        className="rounded-lg bg-emerald-400 px-16 py-3 font-bold uppercase text-white transition-opacity duration-300 hover:opacity-75"
-                      >
-                        Sign In
-                      </Button>
+                      <SignInButton variant="contained">Sign In</SignInButton>
                     </div>
                   </Link>
                 ) : (
                   <AccountMenu />
-                  // <div className="my-account-menu mx-6 my-4">
-                  //   <Menu>
-                  //     {({ isOpen }) => (
-                  //       <>
-                  //         <MenuButton
-                  //           isActive={isOpen}
-                  //           as={Button}
-                  //           rightIcon={<ChevronDownIcon />}
-                  //           variant="custom_light_menu"
-                  //           className="rounded-lg bg-emerald-400 px-12 py-3 font-bold uppercase text-white transition-opacity duration-300 hover:opacity-75"
-                  //         >
-                  //           {'My Account'}
-                  //         </MenuButton>
-                  //         <MenuList
-                  //           as={Box}
-                  //           mt={0}
-                  //           flex="1 0 auto"
-                  //           w="96"
-                  //           color={
-                  //             theme === 1 && status === 1 ? 'white' : 'black'
-                  //           }
-                  //           display="flex"
-                  //           flexDirection="column"
-                  //           alignItems="center"
-                  //           justifyContent="center"
-                  //           fontWeight="semibold"
-                  //           bg={
-                  //             theme === 1 && status === 1 ? 'gray.600' : 'white'
-                  //           }
-                  //           borderColor={'teal.300'}
-                  //         >
-                  //           {isAuthenticated && (
-                  //             <div className="mt-0 flex w-full justify-center py-4">
-                  //               Signed In:&nbsp;{`${currentUsername}`}
-                  //             </div>
-                  //           )}
-                  //           <CustomMenuItem theme={theme}>
-                  //             <span className="space-between flex w-full cursor-pointer flex-row items-center justify-between">
-                  //               Settings&nbsp;
-                  //               <SettingsIcon className="mx-0" />
-                  //             </span>
-                  //           </CustomMenuItem>
-                  //           <CustomMenuItemLogout
-                  //             theme={theme}
-                  //             handleLogout={handleLogout}
-                  //           >
-                  //             Sign out
-                  //             <FontAwesomeIcon
-                  //               icon={faRightToBracket}
-                  //               style={
-                  //                 theme === 1 && status === 1
-                  //                   ? { color: '#00000' }
-                  //                   : { color: '#080808' }
-                  //               }
-                  //             />
-                  //           </CustomMenuItemLogout>
-                  //           <div className="theme-switch">
-                  //             <span className="mx-8">
-                  //               {theme === 1 && status === 1
-                  //                 ? 'Dark Theme'
-                  //                 : 'Light Theme'}
-                  //             </span>
-                  //             <Switch
-                  //               checked={true}
-                  //               onChange={handleTheme}
-                  //               className={`${
-                  //                 theme === 1 && status === 1
-                  //                   ? 'bg-emerald-400'
-                  //                   : 'bg-gray-200'
-                  //               } relative inline-flex h-6 w-11 items-center rounded-full`}
-                  //             >
-                  //               <span
-                  //                 className={`${
-                  //                   theme === 1
-                  //                     ? 'translate-x-6'
-                  //                     : 'translate-x-1'
-                  //                 } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                  //               />
-                  //             </Switch>
-                  //           </div>
-                  //         </MenuList>
-                  //       </>
-                  //     )}
-                  //   </Menu>
-                  // </div>
                 )}
               </div>
             </div>
@@ -310,7 +168,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                       Squidward
                     </div>
                     <div
-                      className={`main-logo-news transition-color text-4xl font-semibold duration-300 ${
+                      className={`main-logo-news transition-color text-4xl font-semibold duration-200 ${
                         theme === 1 && status === 1 ? 'text-white' : ''
                       }`}
                     >

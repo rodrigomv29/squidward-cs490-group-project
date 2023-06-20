@@ -29,17 +29,17 @@ const WeatherWidget = ({ city = 'Newark' }) => {
 
   return (
     <div
-      className={`weather-container mx-30 my-4 mt-8 h-2/5 pt-6 text-center text-lg font-bold transition-colors duration-200 ${
+      className={`weather-container mx-30 h-2/5 pt-2 text-center text-md font-bold transition-colors duration-200 ${
         theme === 1 ? 'text-white' : 'text-black'
       }`}
     >
       <h2
-        className={`mb-2 rounded p-2 text-3xl transition-colors duration-200 ${
+        className={`mb-2 rounded p-2 text-2xl transition-colors duration-200 ${
           theme === 1 ? 'bg-gray-800 text-white' : 'bg-emerald-400 text-black'
         }`}
       >{`Weather in ${weatherData.location.name}, ${weatherData.location.region}`}</h2>
-      <p className="text-2xl">{weatherData.current.condition.text}</p>
-      <p className="text-2xl">{`Current Temperature: ${Math.round(
+      <p className="text-xl">{weatherData.current.condition.text}</p>
+      <p className="text-xl">{`Current Temperature: ${Math.round(
         weatherData.current.temp_f
       )}°F`}</p>
       <div className="forecast-container flex justify-around overflow-auto p-4">
