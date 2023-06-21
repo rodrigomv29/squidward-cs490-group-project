@@ -35,8 +35,8 @@ model Article {
   urlToImage  String?
   publishedAt DateTime
   content     String?
-  Category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  Int?
+  Category    Category? @relation(fields: [categoryId], references: [id])
 }
 
 model Category {
