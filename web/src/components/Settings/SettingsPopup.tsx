@@ -84,6 +84,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
         { id: 7, name: 'Technology', enabled: technology },
       ])
     }
+    setIsOpen(true)
   }, [data, loading])
 
   const toggleElement = (id: number) => {

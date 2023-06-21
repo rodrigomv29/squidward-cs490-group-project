@@ -336,7 +336,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
         </div>
       </header>
       <main>{children}</main>
-      <ArticleCell category="Business" />
+      <ArticleCell category="Technology" />
     </>
   )
 }
