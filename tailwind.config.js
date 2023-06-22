@@ -2,7 +2,13 @@
 module.exports = {
   content: [],
   theme: {
-    extend: {},
+    backgroundSize: {
+      'auto': 'auto',
+      'cover': 'cover',
+      'contain': 'contain',
+      'fifty': '50%',
+      '16': '4rem',
+    }
   },
   plugins: [],
 }
