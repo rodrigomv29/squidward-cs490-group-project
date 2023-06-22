@@ -56,6 +56,7 @@ const DefaultHomePage = () => {
     'Technology',
   ]
 
+  // Use effect to control api fetching
   useEffect(() => {
     fetchDescriptionsForCategories(categoriesArray)
       .then((descriptions) => {
@@ -132,11 +133,11 @@ const DefaultHomePage = () => {
     <>
       <MetaTags title="Home" description="DefaultHome page" />
       <div
-        className={`main-container h-screen max-h-screen w-full max-w-full transition-colors duration-300 `}
+        className={`main-container h-screen max-h-screen w-full max-w-full transition-colors duration-300`}
       >
         <div className="main-header-contianer flex h-2/3 justify-center">
           <div className="slding-pannel-containe my-10  w-2/3">
-            <p className="flex justify-center px-4 text-5xl font-extrabold">
+            <p className="flex justify-center px-4 text-5xl font-extrabold ">
               TOP 10 TODAY
             </p>
             <SlidingPanel />
@@ -264,7 +265,7 @@ const DefaultHomePage = () => {
                                 ).hours
                               } hour`
                           : `${
-                              getTimeSincePublication(latestData[9].publishedAt)
+                              getTimeSincePublication(latestData[8].publishedAt)
                                 .minutes
                             } mins ago`}
                       </span>
