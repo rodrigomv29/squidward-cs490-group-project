@@ -1,31 +1,35 @@
 import React from 'react'
 
-import { Link } from '@redwoodjs/router'
+import { Box, Heading, Link } from '@chakra-ui/react'
 
-import SearchResultLayout from 'src/layouts/SearchResultsLayout/SearchResultsLayout'
+import NewsLayout from 'src/layouts/NewsLayout/NewsLayout'
 
 const SearchResultsPage = () => {
   // Placeholder search results data
   const searchResults = [
     { id: 1, title: 'Article 1', url: '/article-1' },
     { id: 2, title: 'Article 2', url: '/article-2' },
-    // Add more placeholder search results as needed
+    //placeholder search results
   ]
 
   return (
-    <SearchResultLayout>
-      <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold my-4">Search Results</h1>
+    <NewsLayout>
+      <Box textAlign="center" py={8}>
+        <Heading as="h1" fontSize="6xl" fontWeight="bold" mb={8}>
+          Search Results
+        </Heading>
         {/* Render your search results here */}
-        <ul>
+        <Box marginLeft={0}>
           {searchResults.map((result) => (
-            <li key={result.id}>
-              <Link to={result.url}>{result.title}</Link>
-            </li>
+            <Box key={result.id} mb={4}>
+              <Link href={result.url} fontWeight="bold" fontSize="xl">
+                {result.title}
+              </Link>
+            </Box>
           ))}
-        </ul>
-      </div>
-    </SearchResultLayout>
+        </Box>
+      </Box>
+    </NewsLayout>
   )
 }
 
