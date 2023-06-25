@@ -8,9 +8,11 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Router, Route, Set } from '@redwoodjs/router'
+
 import NewsLayout from 'src/layouts/NewsLayout'
 import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 import SignInSignUpLayout from 'src/layouts/SignInSignUpLayout'
+import SearchResultsPage from 'src/pages/SearchResultsPage/SearchResultsPage'
 
 import { useAuth } from './auth'
 
