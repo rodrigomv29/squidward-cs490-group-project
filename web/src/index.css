@@ -66,17 +66,22 @@
   font-weight: bold;
 }
 
-.search-input {
+.search-input-container {
   width: 0;
-  transition: width 0.5s;
+  transition: width 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.search-input-container.show {
+  width: 200px;
+  justify-content: flex-start;
+}
+
+.search-exit {
   position: absolute;
-  right: 0;
+  left: calc(-100% + 10px);
   top: 50%;
   transform: translateY(-50%);
 }
-
-.search-icon:hover + .search-input,
-.search-input:hover {
-  width: 200px;
-}
-

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useState, useEffect, useContext } from 'react'
 
-import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
-import { Icon, Input } from '@chakra-ui/react'
+import { ArrowRightIcon } from '@chakra-ui/icons'
+import { Icon } from '@chakra-ui/react'
 import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
@@ -11,6 +11,7 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import AccountMenu from 'src/components/AccountMenu/AccountMenu'
+import SearchBox from 'src/components/Search/SearchBox'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
@@ -306,19 +307,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   <Link to={routes.home()}>Technology</Link>
                 </li>
                 <li className="relative mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Icon
-                    as={Search2Icon}
-                    aria-label="search"
-                    className="search-icon"
-                    boxSize={6}
-                  />
-                  <Input
-                    id="search-input"
-                    type="text"
-                    placeholder="Search..."
-                    className="search-input"
-                    onBlurCapture={() => setIsHovered(false)}
-                  />
+                  <SearchBox />
                 </li>
               </ul>
             </div>
