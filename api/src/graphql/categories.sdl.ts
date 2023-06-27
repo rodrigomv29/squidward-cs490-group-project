@@ -9,7 +9,6 @@ export const schema = gql`
     getArticles(category: String!): Category! @skipAuth
     categories: [Category!]! @requireAuth
     category(id: Int!): Category @requireAuth
-    articles: [Article!]! @skipAuth
   }
 
   input CreateCategoryInput {
