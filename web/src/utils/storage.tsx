@@ -46,7 +46,7 @@ export function getTimeSincePublication(publishedAt) {
 export async function getTopTen() {
   try {
     const response = await axios.get(
-     `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWSAPI_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWSAPI_KEY}`
     )
     const articles = response.data.articles
 
