@@ -5,7 +5,11 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 export const QUERY = gql`
   query FindArticleQuery($category: String!) {
     article: getArticles(category: $category) {
-      name
+      articles {
+        author
+        title
+        description
+      }
     }
   }
 `

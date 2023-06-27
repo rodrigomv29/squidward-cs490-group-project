@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
+import { useLazyQuery } from '@apollo/react-hooks'
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
