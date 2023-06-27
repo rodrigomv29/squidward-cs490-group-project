@@ -1,11 +1,11 @@
-generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native"]
-}
-
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
 }
 
 model User {
@@ -15,32 +15,4 @@ model User {
   salt                String
   resetToken          String?
   resetTokenExpiresAt DateTime?
-  general             Boolean   @default(true)
-  business            Boolean   @default(false)
-  entertainment       Boolean   @default(false)
-  health              Boolean   @default(false)
-  science             Boolean   @default(false)
-  sports              Boolean   @default(false)
-  technology          Boolean   @default(false)
-}
-
-model Article {
-  id          Int       @id @default(autoincrement())
-  sourceId    String?
-  sourceName  String
-  author      String?
-  title       String
-  description String?
-  url         String
-  urlToImage  String?
-  publishedAt DateTime
-  content     String?
-  categoryId  Int?
-  Category    Category? @relation(fields: [categoryId], references: [id])
-}
-
-model Category {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  articles Article[]
 }
