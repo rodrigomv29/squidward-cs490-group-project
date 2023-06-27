@@ -15,8 +15,32 @@ export const schema = gql`
     technology: Boolean!
   }
 
+  type Query {
+    users: [User!]! @requireAuth
+    user(id: Int!): User @requireAuth
+  }
+
+  input CreateUserInput {
+    email: String!
+    hashedPassword: String!
+    salt: String!
+    resetToken: String
+    resetTokenExpiresAt: DateTime
+    general: Boolean!
+    business: Boolean!
+    entertainment: Boolean!
+    health: Boolean!
+    science: Boolean!
+    sports: Boolean!
+    technology: Boolean!
+  }
+
   input UpdateUserInput {
-    id: Int!
+    email: String
+    hashedPassword: String
+    salt: String
+    resetToken: String
+    resetTokenExpiresAt: DateTime
     general: Boolean
     business: Boolean
     entertainment: Boolean
@@ -26,11 +50,9 @@ export const schema = gql`
     technology: Boolean
   }
 
-  type Query {
-    user(id: Int!): User! @requireAuth
-  }
-
   type Mutation {
+    createUser(input: CreateUserInput!): User! @requireAuth
     updateUser(id: Int!, input: UpdateUserInput!): User! @requireAuth
+    deleteUser(id: Int!): User! @requireAuth
   }
 `

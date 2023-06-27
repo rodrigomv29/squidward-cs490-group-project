@@ -22,7 +22,7 @@ import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 import { Link, routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
-import ArticleCell from 'src/components/ArticleCell'
+import ArticleCell from 'src/components/ArticleCell/'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
