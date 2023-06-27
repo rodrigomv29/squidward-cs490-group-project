@@ -19,6 +19,7 @@ import { useAuth } from 'src/auth'
 import { setStatus, getStatus } from 'src/utils/storage'
 
 import CustomThemeContext from '../../CustomThemeContext'
+import SettingsPopup from '../Settings/SettingsPopup'
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -29,6 +30,7 @@ export default function AccountMenu() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -43,6 +45,10 @@ export default function AccountMenu() {
     if (theme === 1) {
       toggleTheme()
     }
+  }
+
+  const handleOpenSettings = () => {
+    setSettingsOpen(true)
   }
 
   const handleTheme = () => {
@@ -164,7 +170,7 @@ export default function AccountMenu() {
           </Switch>
         </div>
         <div className="flex justify-center">
-          <MenuItem onClick={handleClose} className="w-full">
+          <MenuItem onClick={handleOpenSettings} className="w-full">
             <ListItemIcon>
               <Settings fontSize="small" sx={{ color: themeColor }} />
             </ListItemIcon>
@@ -176,6 +182,12 @@ export default function AccountMenu() {
               Settings
             </span>
           </MenuItem>
+          {settingsOpen && (
+            <SettingsPopup
+              onClose={() => setSettingsOpen(false)}
+              userId={currentUser?.id}
+            />
+          )}
         </div>
         <div className="flex justify-center">
           <MenuItem onClick={handleLogout} className="w-full">
