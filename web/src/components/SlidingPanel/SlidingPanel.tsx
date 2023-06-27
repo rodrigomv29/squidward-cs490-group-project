@@ -1,53 +1,40 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
 import { Link, routes } from '@redwoodjs/router'
 
+import { getTopTen } from 'src/utils/storage'
+
 function SlidingPannel() {
-  const slides = [
-    {
-      image_url:
-        'https://images.unsplash.com/photo-1533228876829-65c94e7b5025?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-      title: 'The Main title for the Article 1',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
-                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
-                    rhoncus felis at, ultricies dui.`,
-    },
-    {
-      image_url:
-        'https://images.unsplash.com/photo-1504194104404-433180773017?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-      title: 'Still the main title of the article',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
-                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
-                    rhoncus felis at, ultricies dui.`,
-    },
-    {
-      image_url:
-        'https://images.unsplash.com/photo-1624454218532-350e24b012b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
-      title: 'Yet another sample article title',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
-                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
-                    rhoncus felis at, ultricies dui.`,
-    },
-    {
-      image_url:
-        'https://plus.unsplash.com/premium_photo-1671830697504-4e1e21962584?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80',
-      title: 'The Main title for the Article 5',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
-                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
-                    rhoncus felis at, ultricies dui.`,
-    },
-    {
-      image_url:
-        'https://images.unsplash.com/photo-1626626925024-aaf056134c20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1631&q=80',
-      title: 'This is a sample title that needs to be replaced',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus justo ut risus consectetur, eu posuere elit dignissim.
-                    Nulla facilisi. Donec in dapibus odio. Aliquam eu ligula eleifend,
-                    rhoncus felis at, ultricies dui.`,
-    },
-  ]
+  const [topTenData, setTopTenData] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getTopTen()
+        setTopTenData(response)
+      } catch (error) {
+        console.log('Error fetching top 10 data:', error)
+      }
+    }
+
+    fetchData()
+
+    const interval = setInterval(() => {
+      fetchData()
+    }, 3600000) // 1 hour in milliseconds
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  const slides =
+    topTenData != undefined
+      ? topTenData
+      : [{ title: 'Something went wrong', urlToImage: '' }]
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -70,18 +57,18 @@ function SlidingPannel() {
   useEffect(() => {
     const slideInterval = setInterval(() => {
       nextSlide()
-    }, 10000) // Change the delay (in milliseconds) to your desired interval
+    }, 15000) // Change the delay (in milliseconds) to your desired interval
 
     return () => {
       clearInterval(slideInterval)
     }
-  }, [currentIndex, nextSlide]) // Trigger the effect whenever currentIndex changes
+  }, [currentIndex, nextSlide])
 
   return (
     <>
       <div className="group relative m-auto h-full w-full max-w-full  px-4 py-4">
         <div
-          style={{ backgroundImage: `url(${slides[currentIndex].image_url})` }}
+          style={{ backgroundImage: `url(${slides[currentIndex].urlToImage})` }}
           className="h-full rounded-2xl bg-cover bg-center bg-no-repeat duration-500"
         >
           <div className="main-header absolute bottom-20 left-4 right-4 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.4] px-10 py-4 text-white">

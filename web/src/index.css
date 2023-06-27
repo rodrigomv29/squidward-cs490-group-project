@@ -55,8 +55,13 @@
   opacity: 1;
 }
 
+.category-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
 
-
-
-
-
+.latest-news-heading {
+  font-size: 50px;
+  font-weight: bold;
+}
