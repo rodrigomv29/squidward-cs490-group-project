@@ -1,8 +1,15 @@
 import * as React from 'react'
 import { useState, useEffect, useContext } from 'react'
 
-import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
-import { Icon } from '@chakra-ui/react'
+import {
+  Search2Icon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+  SettingsIcon,
+} from '@chakra-ui/icons'
+import { Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
@@ -12,6 +19,7 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import AccountMenu from 'src/components/AccountMenu/AccountMenu'
 import ArticleCell from 'src/components/ArticleCell/'
+import { isAuthenticated } from 'src/lib/auth'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
@@ -161,54 +169,56 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     </div>
                   </Link>
                 ) : (
-                  <div className="my-account-menu mx-6 my-4">
-                    <Menu>
-                      {({ isOpen }) => (
-                        <>
-                          <MenuButton
-                            isActive={isOpen}
-                            as={Button}
-                            rightIcon={<ChevronDownIcon />}
-                            variant="custom_light_menu"
-                          >
-                            {'My Account'}
-                          </MenuButton>
+                  <>
+                    <div className="my-account-menu mx-6 my-4">
+                      <Menu>
+                        {({ isOpen }) => (
+                          <>
+                            <MenuButton
+                              isActive={isOpen}
+                              as={Button}
+                              rightIcon={<ChevronDownIcon />}
+                              variant="custom_light_menu"
+                            >
+                              {'My Account'}
+                            </MenuButton>
 
-                          <MenuList className="bg-yello-200 mt-0 flex w-96 flex-col items-center justify-center font-semibold">
-                            {isAuthenticated && (
-                              <div className="mt-0 flex w-full justify-center py-4">
-                                Signed In:&nbsp;{`${currentUsername}`}
-                              </div>
-                            )}
-                            <MenuItem
-                              className="mt-2 flex justify-between"
-                              onClick={handleOpenSettings}
-                            >
-                              Settings&nbsp;
-                              <SettingsIcon className="" />
-                            </MenuItem>
-                            {settingsOpen && (
-                              <SettingsPopup
-                                onClose={() => setSettingsOpen(false)}
-                                userId={currentUser?.id}
-                              />
-                            )}
-                            <MenuItem
-                              onClick={handleLogout}
-                              className="mt-2 flex justify-between"
-                            >
-                              Sign out
-                              <FontAwesomeIcon
-                                icon={faRightToBracket}
-                                style={{ color: '#080808' }}
-                              />
-                            </MenuItem>
-                          </MenuList>
-                        </>
-                      )}
-                    </Menu>
-                  </div>
-                  <AccountMenu />
+                            <MenuList className="bg-yello-200 mt-0 flex w-96 flex-col items-center justify-center font-semibold">
+                              {isAuthenticated && (
+                                <div className="mt-0 flex w-full justify-center py-4">
+                                  Signed In:&nbsp;{`${currentUsername}`}
+                                </div>
+                              )}
+                              <MenuItem
+                                className="mt-2 flex justify-between"
+                                onClick={handleOpenSettings}
+                              >
+                                Settings&nbsp;
+                                <SettingsIcon className="" />
+                              </MenuItem>
+                              {settingsOpen && (
+                                <SettingsPopup
+                                  onClose={() => setSettingsOpen(false)}
+                                  userId={currentUser?.id}
+                                />
+                              )}
+                              <MenuItem
+                                onClick={handleLogout}
+                                className="mt-2 flex justify-between"
+                              >
+                                Sign out
+                                <FontAwesomeIcon
+                                  icon={faRightToBracket}
+                                  style={{ color: '#080808' }}
+                                />
+                              </MenuItem>
+                            </MenuList>
+                          </>
+                        )}
+                      </Menu>
+                    </div>
+                    <AccountMenu />
+                  </>
                 )}
               </div>
             </div>
@@ -365,6 +375,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
             </div>
           </div>
         </div>
+      </header>
       <main className="h-screen">{children}</main>
       <ArticleCell category="Technology" />
     </>
