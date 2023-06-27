@@ -5,17 +5,21 @@ import { Box, Heading, Link, Image, Text } from '@chakra-ui/react'
 import NewsLayout from 'src/layouts/NewsLayout/NewsLayout'
 
 const SearchResultsPage = () => {
-  // Placeholder search results data
-  /*
+  // Placeholder search results data with dates
   const searchResults = [
-    { id: 1, title: 'Article 1', url: '/article-1' },
-    { id: 2, title: 'Article 2', url: '/article-2' },
-    { id: 3, title: 'Article 3', url: '/article-3' },
+    { id: 1, title: 'Article 1', url: '/article-1', date: new Date('2023-06-27') },
+    { id: 2, title: 'Article 2', url: '/article-2', date: new Date('2023-06-26') },
+    { id: 3, title: 'Article 3', url: '/article-3', date: new Date('2023-06-28') },
+    { id: 4, title: 'Article 4', url: '/article-4', date: new Date('2023-06-25') },
+    { id: 5, title: 'Article 5', url: '/article-5', date: new Date('2023-06-29') },
   ]
-*/
-  //To test the no results feature use an empty array for now
 
+  /*to test if search results return nothing
   const searchResults = []
+  */
+
+  // Sorting results by date in descending order
+  searchResults.sort((a, b) => b.date - a.date)
 
   return (
     <NewsLayout>
@@ -46,6 +50,9 @@ const SearchResultsPage = () => {
                 <Link href={result.url} fontWeight="bold" fontSize="xl">
                   {result.title}
                 </Link>
+                <Text fontSize="md" color="gray.500">
+                  Published on {result.date.toLocaleDateString()}
+                </Text>
               </Box>
             ))}
           </Box>
