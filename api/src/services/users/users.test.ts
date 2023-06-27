@@ -9,6 +9,10 @@ import type { StandardScenario } from './users.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
+/**
+ * describe users
+ * returns all users
+ */
 describe('users', () => {
   scenario('returns all users', async (scenario: StandardScenario) => {
     const result = await users()
@@ -25,13 +29,13 @@ describe('users', () => {
   scenario('creates a user', async () => {
     const result = await createUser({
       input: {
-        email: 'String8132392',
+        email: 'String4541703',
         hashedPassword: 'String',
         salt: 'String',
       },
     })
 
-    expect(result.email).toEqual('String8132392')
+    expect(result.email).toEqual('String4541703')
     expect(result.hashedPassword).toEqual('String')
     expect(result.salt).toEqual('String')
   })
@@ -40,10 +44,10 @@ describe('users', () => {
     const original = (await user({ id: scenario.user.one.id })) as User
     const result = await updateUser({
       id: original.id,
-      input: { email: 'String1564802' },
+      input: { email: 'String42277052' },
     })
 
-    expect(result.email).toEqual('String1564802')
+    expect(result.email).toEqual('String42277052')
   })
 
   scenario('deletes a user', async (scenario: StandardScenario) => {

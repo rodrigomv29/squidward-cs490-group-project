@@ -114,7 +114,7 @@ const SignupPage = () => {
     <>
       <MetaTags title="Signup" />
       <div className="sing-up-container mb-6 flex justify-center">
-        <main className="rw-main signUp-page m-0 h-[20%] w-3/5 rounded-3xl bg-emerald-400 py-0 ">
+        <main className="rw-main signUp-page m-0 h-[20%] w-3/5 rounded-3xl bg-gradient-to-br from-white to-emerald-400 py-0">
           <span className="my-10 flex justify-center text-4xl font-bold">
             Sign Up
           </span>
@@ -140,7 +140,7 @@ const SignupPage = () => {
                   >
                     <TextField
                       name="username"
-                      className="rw-input bg-gray-30 rounded-full border-gray-400 py-4 text-center"
+                      className="rw-input bg-gray-30 rounded-full border-none py-4 text-center"
                       errorClassName=""
                       ref={usernameRef}
                       validation={{
@@ -160,7 +160,7 @@ const SignupPage = () => {
 
                     <PasswordField
                       name="password"
-                      className="rw-input bg-gray-30 rounded-full border-gray-400 py-4 text-center"
+                      className="rw-input bg-gray-30 rounded-full border-none py-4 text-center"
                       errorClassName=""
                       autoComplete="current-password"
                       validation={{
@@ -180,7 +180,7 @@ const SignupPage = () => {
 
                     <PasswordField
                       name="confirmPassword"
-                      className="rw-input bg-gray-30 rounded-full border-gray-400 py-4 text-center"
+                      className="rw-input bg-gray-30 rounded-full border-none py-4 text-center"
                       errorClassName=""
                       autoComplete=""
                       validation={{

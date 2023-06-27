@@ -1,32 +1,22 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import * as React from 'react'
+import { useState, useEffect, useContext } from 'react'
 
-import {
-  Search2Icon,
-  ArrowRightIcon,
-  ChevronDownIcon,
-  SettingsIcon,
-} from '@chakra-ui/icons'
-import {
-  Button,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from '@chakra-ui/react'
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
+import { Icon } from '@chakra-ui/react'
+import Button, { ButtonProps } from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
+import AccountMenu from 'src/components/AccountMenu/AccountMenu'
 import ArticleCell from 'src/components/ArticleCell/'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
 import SettingsPopup from '../../components/Settings/SettingsPopup'
+import CustomThemeContext from '../../CustomThemeContext'
 
 type NewsLayoutProps = {
   children?: React.ReactNode
@@ -57,15 +47,30 @@ const useWindowWidth = (threshold: number) => {
   return isLargeScreen
 }
 
+const SignInButton = styled(Button)<ButtonProps>(() => ({
+  color: '#FFFFFF',
+  backgroundColor: '#34d399',
+  '&:hover': {
+    backgroundColor: '#059669',
+  },
+  fontWeight: 'bold',
+  width: 175,
+  height: 60,
+  fontSize: '1.3rem',
+  borderRadius: '30px', // Set the border radius to make it more rounded
+}))
+
 const NewsLayout = ({ children }: NewsLayoutProps) => {
   const [isHovered, setIsHovered] = useState(false)
   const isLargeScreen = useWindowWidth(768)
   const [nav, setNav] = useState(false)
-  const { isAuthenticated, currentUser, logOut } = useAuth()
+  const { currentUser, logOut } = useAuth()
   const currentUsername = currentUser != undefined ? currentUser.email : null
   const [settingsOpen, setSettingsOpen] = useState(false)
 
   const status = getStatus()
+
+  const { theme, toggleTheme } = useContext(CustomThemeContext)
 
   const signIn = () => {
     if (status === 0) {
@@ -85,7 +90,9 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     logOut()
     setStatus(0)
     navigate(routes.home()) // Redirect to home page after signing out
-    handleNav()
+    if (theme === 1) {
+      toggleTheme()
+    }
   }
 
   useEffect(() => {
@@ -97,13 +104,19 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   return (
     <>
       <header>
-        <div className={'main pt-4 '}>
+        <div
+          className={`main pt-2 transition-colors duration-300 ${
+            theme === 1 && status === 1 ? 'bg-gray-700' : ''
+          }`}
+        >
           <div className="flex items-center justify-between">
             <div className="hidden w-full justify-between md:flex">
               {/* Trending Link */}
               <div className="left-container hidden w-1/3 md:block">
                 <div
-                  className="trending delay-50 mx-6 my-6 text-lg font-extrabold transition duration-150 ease-in-out hover:underline"
+                  className={`trending delay-50 transition-color mx-6 my-6 text-lg font-extrabold transition duration-150 ease-in-out hover:underline ${
+                    theme === 1 && status === 1 ? 'text-white' : ''
+                  }`}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
@@ -122,7 +135,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     <div className="main-logo-squidward mx-2 h-10 rounded-md bg-emerald-400 px-3 py-1.5 text-2xl font-extrabold text-white">
                       Squidward
                     </div>
-                    <div className="main-logo-news text-4xl font-semibold">
+                    <div
+                      className={`main-logo-news text-4xl font-semibold transition-colors duration-300 ${
+                        theme === 1 && status === 1 ? 'text-white' : ''
+                      }`}
+                    >
                       News
                     </div>
                   </div>
@@ -140,9 +157,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 {status === 0 ? (
                   <Link to={routes.login()}>
                     <div className="sing-in-button mx-6 my-4 text-lg">
-                      <Button onClick={signIn} variant="custom_light">
-                        Sign In
-                      </Button>
+                      <SignInButton variant="contained">Sign In</SignInButton>
                     </div>
                   </Link>
                 ) : (
@@ -193,6 +208,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                       )}
                     </Menu>
                   </div>
+                  <AccountMenu />
                 )}
               </div>
             </div>
@@ -204,7 +220,11 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     <div className="main-logo-squidward mx-2 h-10 rounded-md bg-emerald-400 px-3 py-1.5 text-2xl font-extrabold text-white">
                       Squidward
                     </div>
-                    <div className="main-logo-news text-4xl font-semibold">
+                    <div
+                      className={`main-logo-news transition-color text-4xl font-semibold duration-200 ${
+                        theme === 1 && status === 1 ? 'text-white' : ''
+                      }`}
+                    >
                       News
                     </div>
                   </div>
@@ -229,7 +249,13 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 className={'mx-4 flex items-center justify-end'}
               >
                 {!nav ? (
-                  <AiOutlineMenu size={30} />
+                  theme === 1 && status === 1 ? (
+                    <AiOutlineMenu size={30} color={'white'} />
+                  ) : (
+                    <AiOutlineMenu size={30} />
+                  )
+                ) : theme === 1 && status === 1 ? (
+                  <AiOutlineClose size={30} color={'white'} />
                 ) : (
                   <AiOutlineClose size={30} />
                 )}
@@ -280,9 +306,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                     Technology
                   </Link>
                 </li>
-                <li className="my-12 border-b text-xs transition-opacity duration-300  hover:opacity-75 hover:shadow">
-                  Search <Icon as={Search2Icon} boxSize={4} className="mx-2" />
-                </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
                   {status === 0 ? (
                     <Link to={routes.login()} onClick={signIn}>
@@ -302,40 +325,47 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               </div>
             </ul>
           </div>
-        </div>
-        {/* Main Navbar*/}
-        <div className="navbar hidden h-10 items-center bg-emerald-400 py-2 md:block">
-          <div className="navbar-container mx-0 w-full">
-            <ul className="flex justify-between text-lg text-white">
-              <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Home</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Business</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Entertainment</Link>
-              </li>
-              <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Link to={routes.home()}>Health</Link>
-              </li>
-              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Science</Link>
-              </li>
-              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Sports</Link>
-              </li>
-              <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                <Link to={routes.home()}>Technology</Link>
-              </li>
-              <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                <Icon as={Search2Icon} boxSize={6} />
-              </li>
-            </ul>
+          {/* Main Navbar*/}
+          <div
+            className={`navbar hidden h-12 items-center py-2 md:block ${
+              theme === 1 ? 'bg-gray-800' : 'bg-emerald-400'
+            }`}
+          >
+            <div className="navbar-container mx-0 w-full">
+              <ul
+                className={`flex justify-between text-lg ${
+                  theme === 1 ? 'text-emerald-400' : 'text-white'
+                }`}
+              >
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Home</Link>
+                </li>
+                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Business</Link>
+                </li>
+                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Entertainment</Link>
+                </li>
+                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>Health</Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                  <Link to={routes.home()}>Science</Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                  <Link to={routes.home()}>Sports</Link>
+                </li>
+                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
+                  <Link to={routes.home()}>Technology</Link>
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Icon as={Search2Icon} boxSize={6} />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </header>
-      <main>{children}</main>
+      <main className="h-screen">{children}</main>
       <ArticleCell category="Technology" />
     </>
   )
