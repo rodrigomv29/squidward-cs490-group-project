@@ -61,7 +61,7 @@ describe('categories', () => {
   })
 
   scenario('creates a category calling the api', async () => {
-    const category = 'Sports'
+    const category = 'Science'
     const fetchArticles = async () => {
       const query = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
       const response = await fetch(query)

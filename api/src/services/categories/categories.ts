@@ -53,23 +53,23 @@ export const createCategoryAPI: MutationResolvers['createCategory'] = async ({
 }) => {
   const { name, articles } = input
 
-  // Check if a category with the same name already exists
-  const existingCategory = await db.category.findUnique({
-    where: { name },
-  })
+  // // Check if a category with the same name already exists
+  // const existingCategory = await db.category.findUnique({
+  //   where: { name },
+  // })
 
-  if (existingCategory) {
-    // Category with the same name already exists, handle the error or return an appropriate response
-    throw new Error('Category with the same name already exists')
-  }
+  // if (existingCategory) {
+  //   // Category with the same name already exists, handle the error or return an appropriate response
+  //   throw new Error('Category with the same name already exists')
+  // }
 
   const createdCategory = await db.category.create({
     data: {
-      name: name,
+      name: name, // Use the extracted 'name' property
       articles: {
         create: articles.map((article) => ({
-          sourceId: article.sourceId,
-          sourceName: article.sourceId,
+          sourceId: article.source.id,
+          sourceName: article.source.name,
           author: article.author,
           title: article.title,
           description: article.description,
