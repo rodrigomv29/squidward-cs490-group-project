@@ -288,6 +288,9 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   <Link to={routes.home()}>Home</Link>
                 </li>
                 <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <Link to={routes.home()}>General</Link>
+                </li>
+                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
                   <Link to={routes.home()}>Business</Link>
                 </li>
                 <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
