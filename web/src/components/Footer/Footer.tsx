@@ -9,7 +9,7 @@ function Footer() {
   const { theme } = useContext(CustomThemeContext)
   return (
     <footer
-      className={`w-fullpy-4 mt-0 transition-colors duration-300 ${
+      className={`mt-0 w-full transition-colors duration-300 ${
         theme === 1 ? 'bg-gray-800' : 'bg-gray-300'
       }`}
     >

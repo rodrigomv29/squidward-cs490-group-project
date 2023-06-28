@@ -6,6 +6,7 @@ import { IconButton } from '@mui/material'
 
 import { MetaTags } from '@redwoodjs/web'
 
+import ArticleList from 'src/components/ArticleList/ArticleList'
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
@@ -176,56 +177,7 @@ const DefaultHomePage = () => {
                 </span>
               </div>
               <div className="category-grid-container h-[90%] overflow-auto">
-                <div className="category-grid grid w-full max-w-full grid-cols-3 gap-4">
-                  {latestData != null
-                    ? latestData.map((newsItem, index) => (
-                        <div
-                          key={index}
-                          className="category-box max-w-400 max-h-600 flex flex-col items-center justify-start rounded-lg text-center"
-                        >
-                          <img
-                            src={newsItem.image}
-                            alt={newsItem.title}
-                            className="category-image h-56 w-full"
-                          />
-                          <p className="category-description text-lg font-semibold text-gray-800 ">
-                            {newsItem.description.length > 110
-                              ? newsItem.description.slice(0, 110) + '...'
-                              : newsItem.description}
-                          </p>
-                          <div className="category-source-info justify-space flex w-full max-w-full">
-                            <div className="content-container flex w-full max-w-sm justify-center space-x-6 py-2">
-                              <span className="flex text-sm font-bold text-gray-400">
-                                {getTimeSincePublication(newsItem.publishedAt)
-                                  .hours > 0
-                                  ? getTimeSincePublication(
-                                      newsItem.publishedAt
-                                    ).hours > 1
-                                    ? `${
-                                        getTimeSincePublication(
-                                          newsItem.publishedAt
-                                        ).hours
-                                      } hours`
-                                    : `${
-                                        getTimeSincePublication(
-                                          newsItem.publishedAt
-                                        ).hours
-                                      } hour`
-                                  : `${
-                                      getTimeSincePublication(
-                                        newsItem.publishedAt
-                                      ).minutes
-                                    } mins ago`}
-                              </span>
-                              <span className=" font-bold text-gray-600">
-                                {newsItem.sourceName}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    : ''}
-                </div>
+                <ArticleList />
               </div>
             </div>
           </div>
@@ -240,37 +192,37 @@ const DefaultHomePage = () => {
               {latestData != null && latestData ? (
                 <div className="category-box max-w-400 max-h-600 mx-8 flex flex-col items-center justify-start bg-gradient-to-br from-emerald-400 to-white text-center">
                   <img
-                    src={latestData[8].image}
-                    alt={latestData[8].image}
+                    src={latestData[0].image}
+                    alt={latestData[0].image}
                     className="category-image h-56 w-full rounded-es-full"
                   />
                   <p className="category-description text-xl font-bold text-gray-800">
-                    {latestData[8].description}
+                    {latestData[0].description}
                   </p>
                   <div className="category-source-info justify-space flex w-full max-w-full">
                     <div className="content-container flex w-full justify-center space-x-6 py-2">
                       <span className="flex text-sm font-bold text-gray-400">
-                        {getTimeSincePublication(latestData[8].publishedAt)
+                        {getTimeSincePublication(latestData[0].publishedAt)
                           .hours > 0
-                          ? getTimeSincePublication(latestData[8].publishedAt)
+                          ? getTimeSincePublication(latestData[0].publishedAt)
                               .hours > 1
                             ? `${
                                 getTimeSincePublication(
-                                  latestData[8].publishedAt
+                                  latestData[0].publishedAt
                                 ).hours
                               } hours`
                             : `${
                                 getTimeSincePublication(
-                                  latestData[8].publishedAt
+                                  latestData[0].publishedAt
                                 ).hours
                               } hour`
                           : `${
-                              getTimeSincePublication(latestData[8].publishedAt)
+                              getTimeSincePublication(latestData[0].publishedAt)
                                 .minutes
                             } mins ago`}
                       </span>
                       <span className=" font-bold text-gray-600">
-                        {latestData[8].sourceName}
+                        {latestData[0].sourceName}
                       </span>
                     </div>
                   </div>

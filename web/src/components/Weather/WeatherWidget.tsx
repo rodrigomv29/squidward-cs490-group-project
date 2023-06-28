@@ -29,10 +29,9 @@ const WeatherWidget = ({ city = 'Newark' }) => {
 
   return (
     <div
-      className={`weather-container mx-30 text-md pt-2 text-center font-bold transition-colors duration-200 overflow-auto ${
+      className={`weather-container mx-30 text-md overflow-auto py-6 text-center font-bold transition-colors duration-200 ${
         theme === 1 ? 'text-white' : 'text-black'
       }`}
-      style={{ height: '100%' }}
     >
       <h2
         className={`mb-2 rounded p-2 text-2xl transition-colors duration-200 ${
