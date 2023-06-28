@@ -35,6 +35,7 @@ const Routes = () => {
       <Set wrap={NewsLayout}>
         <Route path="/" page={HomePage} name="home" />
         <Route path="/signed-in-home" page={SignedInHomePage} name="signedInHome" />
+        <Route path="/category" page={CategoryPage} name="category" />
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
