@@ -1,19 +1,23 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useContext } from 'react'
 
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
 import { Link, routes } from '@redwoodjs/router'
 
+import CurrentPageContext from 'src/CurrentPageContext'
 import { getTopTen } from 'src/utils/storage'
 
 function SlidingPannel() {
   const [topTenData, setTopTenData] = useState(null)
+  const { currentPage } = useContext(CurrentPageContext)
+
+  const category = currentPage === 'home' ? 'general' : currentPage
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getTopTen()
+        const response = await getTopTen(category)
         setTopTenData(response)
       } catch (error) {
         console.log('Error fetching top 10 data:', error)
@@ -29,6 +33,7 @@ function SlidingPannel() {
     return () => {
       clearInterval(interval)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const slides =
