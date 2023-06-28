@@ -74,6 +74,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@apollo/client@npm:^3.7.16":
+  version: 3.7.16
+  resolution: "@apollo/client@npm:3.7.16"
+  dependencies:
+    "@graphql-typed-document-node/core": ^3.1.1
+    "@wry/context": ^0.7.0
+    "@wry/equality": ^0.5.0
+    "@wry/trie": ^0.4.0
+    graphql-tag: ^2.12.6
+    hoist-non-react-statics: ^3.3.2
+    optimism: ^0.16.2
+    prop-types: ^15.7.2
+    response-iterator: ^0.2.6
+    symbol-observable: ^4.0.0
+    ts-invariant: ^0.10.3
+    tslib: ^2.3.0
+    zen-observable-ts: ^1.2.5
+  peerDependencies:
+    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    graphql-ws: ^5.5.5
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    subscriptions-transport-ws: ^0.9.0 || ^0.11.0
+  peerDependenciesMeta:
+    graphql-ws:
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+    subscriptions-transport-ws:
+      optional: true
+  checksum: 0fb9cfdb2b6d764f7dee16dad03eb02b844c0ec3d983a091745bc7b8685b73323ce19e5ed24ea7cae586b016afca14348ba948c02e0091610f6a425f7a2ece22
+  languageName: node
+  linkType: hard
+
 "@apollo/protobufjs@npm:1.2.7":
   version: 1.2.7
   resolution: "@apollo/protobufjs@npm:1.2.7"
@@ -23606,6 +23642,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@apollo/client": ^3.7.16
     "@chakra-ui/icons": ^2.0.19
     "@chakra-ui/react": ^2.7.0
     "@emotion/react": ^11.11.1
