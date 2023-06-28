@@ -43,10 +43,10 @@ export function getTimeSincePublication(publishedAt) {
   return { hours, minutes }
 }
 
-export async function getTopTen() {
+export async function getTopTen(category: string) {
   try {
     const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWSAPI_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
     )
     const articles = response.data.articles
 
@@ -82,10 +82,10 @@ export async function getDescription(category: string) {
   }
 }
 
-export async function getLatest() {
+export async function getLatest(category: string) {
   try {
     const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWSAPI_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
     )
     const data = response.data.articles
 
@@ -93,16 +93,35 @@ export async function getLatest() {
       return article.urlToImage
     })
 
-    const articles = filteredArticles.slice(10, 24).map((article) => ({
-      title: article.title,
-      description: article.description,
-      image: article.urlToImage,
-      sourceId: article.source.id,
-      sourceName: article.source.name,
-      publishedAt: article.publishedAt,
-    }))
+    const articles = filteredArticles
+      .slice(10, filteredArticles.length() - 1)
+      .map((article) => ({
+        title: article.title,
+        description: article.description,
+        image: article.urlToImage,
+        sourceId: article.source.id,
+        sourceName: article.source.name,
+        publishedAt: article.publishedAt,
+      }))
 
     return articles
+  } catch (error) {
+    console.log('Something went wrong', error)
+    throw error
+  }
+}
+
+export async function getArticles(category: string) {
+  try {
+    const response = await axios.get(
+      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+    )
+    const data = response.data.articles
+
+    const filteredArticles = data.filter((article) => {
+      return article.description && article.urlToImage
+    })
+    return filteredArticles
   } catch (error) {
     console.log('Something went wrong', error)
     throw error
