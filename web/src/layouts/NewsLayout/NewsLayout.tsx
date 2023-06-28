@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState, useEffect, useContext } from 'react'
 
-import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
+import { ArrowRightIcon } from '@chakra-ui/icons'
 import { Icon } from '@chakra-ui/react'
 import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
@@ -14,6 +14,7 @@ import AccountMenu from 'src/components/AccountMenu/AccountMenu'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
+import CurrentPageContext from '../../CurrentPageContext'
 import CustomThemeContext from '../../CustomThemeContext'
 
 type NewsLayoutProps = {
@@ -27,7 +28,6 @@ const useWindowWidth = (threshold: number) => {
   const [isLargeScreen, setIsLargeScreen] = useState(
     window.innerWidth > threshold
   )
-
   useEffect(() => {
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth > threshold)
@@ -68,6 +68,13 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const status = getStatus()
 
   const { theme, toggleTheme } = useContext(CustomThemeContext)
+  const { currentPage, toggleCurrentPage } = useContext(CurrentPageContext)
+
+  const handlePageChange = (page) => {
+    toggleCurrentPage(page)
+  }
+
+  console.log(`Current Page ${currentPage}`)
 
   const signIn = () => {
     if (status === 0) {
@@ -94,6 +101,58 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
       setNav(false)
     }
   }, [isLargeScreen, nav])
+
+  const CustomLink = (props) => {
+    return (
+      <>
+        {props.category === 'home' ? (
+          <Link
+            to={routes.home()}
+            onClick={() => {
+              handlePageChange(props.category)
+            }}
+          >
+            <div
+              className={`${
+                currentPage === props.category
+                  ? `h-full w-full rounded-full px-4 transition-colors duration-200 ${
+                      theme === 1
+                        ? 'bg-emerald-400 text-white'
+                        : 'bg-white text-emerald-400 '
+                    }`
+                  : ''
+              }`}
+            >
+              <span className="uppercase">{props.category.slice(0, 1)}</span>
+              <span className="">{props.category.slice(1)}</span>
+            </div>
+          </Link>
+        ) : (
+          <Link
+            to={routes.category({ category: props.category })}
+            onClick={() => {
+              handlePageChange(props.category)
+            }}
+          >
+            <div
+              className={`${
+                currentPage === props.category
+                  ? `h-full w-full rounded-full px-4 transition-colors duration-200 ${
+                      theme === 1
+                        ? 'bg-emerald-400 text-white'
+                        : 'bg-white text-emerald-400 '
+                    }`
+                  : ''
+              }`}
+            >
+              <span className="uppercase">{props.category.slice(0, 1)}</span>
+              <span className="">{props.category.slice(1)}</span>
+            </div>
+          </Link>
+        )}
+      </>
+    )
+  }
 
   return (
     <>
@@ -218,11 +277,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
           >
             <ul className=" text-md h-[100%] bg-emerald-400 bg-opacity-70 text-white">
               <div className="list-items px-3 py-5 uppercase">
-                <li className="my-12 border-b text-xs transition-opacity hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()} onClick={handleNav}>
-                    Home
-                  </Link>
-                </li>
+                <li className="my-12 border-b text-xs transition-opacity hover:opacity-75 hover:shadow"></li>
                 <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
                   <Link to={routes.home()} onClick={handleNav}>
                     Business
@@ -274,42 +329,39 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
           </div>
           {/* Main Navbar*/}
           <div
-            className={`navbar hidden h-12 items-center py-2 md:block ${
+            className={`navbar hidden h-12 items-center md:block ${
               theme === 1 ? 'bg-gray-800' : 'bg-emerald-400'
             }`}
           >
-            <div className="navbar-container mx-0 w-full">
+            <div className="navbar-container mx-0 flex h-[100%] w-full items-center justify-center">
               <ul
-                className={`flex justify-between text-lg ${
+                className={`flex w-full justify-between text-lg ${
                   theme === 1 ? 'text-emerald-400' : 'text-white'
                 }`}
               >
                 <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Home</Link>
-                </li>
-                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>General</Link>
-                </li>
-                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Business</Link>
-                </li>
-                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Entertainment</Link>
-                </li>
-                <li className="transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()}>Health</Link>
-                </li>
-                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                  <Link to={routes.home()}>Science</Link>
-                </li>
-                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                  <Link to={routes.home()}>Sports</Link>
-                </li>
-                <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
-                  <Link to={routes.home()}>Technology</Link>
+                  <CustomLink category="home" />
                 </li>
                 <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Icon as={Search2Icon} boxSize={6} />
+                  <CustomLink category="general" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="business" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="entertainment" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="health" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="science" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="sports" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="technology" />
                 </li>
               </ul>
             </div>
