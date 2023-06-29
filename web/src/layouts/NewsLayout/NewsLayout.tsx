@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState, useEffect, useContext } from 'react'
 
-import { Search2Icon, ArrowRightIcon } from '@chakra-ui/icons'
+import { ArrowRightIcon } from '@chakra-ui/icons'
 import { Icon } from '@chakra-ui/react'
 import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
@@ -11,6 +11,7 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import AccountMenu from 'src/components/AccountMenu/AccountMenu'
+import SearchBox from 'src/components/Search/SearchBox'
 import { getStatus, setStatus } from 'src/utils/storage'
 
 import SquidwardLogo from '../../../public/squidward_logo.png'
@@ -305,8 +306,8 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 <li className="transition-opacityy hover:shadowduration-300 hover:opacity-75">
                   <Link to={routes.home()}>Technology</Link>
                 </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <Icon as={Search2Icon} boxSize={6} />
+                <li className="relative mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <SearchBox />
                 </li>
               </ul>
             </div>
