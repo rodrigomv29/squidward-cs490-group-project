@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 // import { Link, routes } from '@redwoodjs/router'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { IconButton } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import { MetaTags } from '@redwoodjs/web'
 
@@ -10,11 +11,7 @@ import ArticleList from 'src/components/ArticleList/ArticleList'
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
-import {
-  getDescription,
-  getTimeSincePublication,
-  getLatest,
-} from 'src/utils/storage'
+import { getDescription } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
@@ -33,19 +30,16 @@ async function fetchDescriptionsForCategories(categories) {
   }
 }
 
-async function fetchLatest() {
-  try {
-    const latestData = await getLatest()
-    return latestData
-  } catch (error) {
-    console.log('Error fetching description article for categories:', error)
-    throw error
-  }
-}
-
 const DefaultHomePage = () => {
   const [descriptionData, setDescriptionData] = useState(null)
-  const [latestData, setLatestData] = useState(null)
+  const [refreshToggle, setRefreshToggle] = useState(true)
+
+  const handleRefreshClick = () => {
+    setRefreshToggle(false)
+    setTimeout(() => {
+      setRefreshToggle(true)
+    }, 800)
+  }
 
   const categoriesArray = [
     'General',
@@ -92,31 +86,6 @@ const DefaultHomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    fetchLatest()
-      .then((data) => {
-        setLatestData(data)
-      })
-      .catch((error) => {
-        console.log('Error fetching descriptions:', error)
-      })
-
-    const interval = setInterval(() => {
-      fetchLatest()
-        .then((data) => {
-          setLatestData(data)
-        })
-        .catch((error) => {
-          console.log('Error fetching descriptions:', error)
-        })
-    }, 3600000) // 1 hour in milliseconds
-
-    return () => {
-      clearInterval(interval)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const categoryDescriptions = categoriesArray.map((category) => ({
     name: category,
     article:
@@ -138,13 +107,13 @@ const DefaultHomePage = () => {
       >
         <div className="main-header-contianer flex h-2/3 justify-center">
           <div className="slding-pannel-containe my-10  w-2/3">
-            <p className="flex justify-center px-4 text-5xl font-extrabold ">
+            <p className="flex justify-center px-4 text-4xl font-extrabold ">
               TOP 10 TODAY
             </p>
             <SlidingPanel />
           </div>
           <div className="top-news-container mx-4 w-1/3  justify-center">
-            <div className="Header my-6 flex w-full justify-center rounded-lg bg-emerald-400 py-4 text-3xl font-semibold uppercase">
+            <div className="Header my-6 flex w-full justify-center rounded-lg bg-emerald-400 py-2 text-2xl font-semibold uppercase">
               Top Stories
             </div>
             <div className="category-list-container max-h-1/3 flex h-[79.9%] flex-col justify-start overflow-auto">
@@ -169,7 +138,7 @@ const DefaultHomePage = () => {
                         width: 70,
                         height: 70,
                       }}
-                      onClick={fetchLatest}
+                      onClick={handleRefreshClick}
                     >
                       <RefreshIcon fontSize="inherit" />
                     </IconButton>
@@ -177,59 +146,29 @@ const DefaultHomePage = () => {
                 </span>
               </div>
               <div className="category-grid-container h-[90%] overflow-auto">
-                <ArticleList />
+                {refreshToggle ? (
+                  <ArticleList />
+                ) : (
+                  <div className="h-[80%]">
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        height: '100%',
+                        alignItems: 'center',
+                        color: '#34D399',
+                      }}
+                    >
+                      <CircularProgress size={300} sx={{ color: '#34D399' }} />
+                    </Box>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className="right-sidebar w-[30%]">
-            <div className="weather-container text-black ">
+          <div className="right-sidebar flex w-[30%] items-center">
+            <div className="weather-container text-black">
               <WeatherWidget city="Newark,NJ,USA" />
-            </div>
-            <div className="feat-article mt-0 flex h-[45%] flex-col justify-center">
-              <span className="py-4 text-center text-3xl font-bold">
-                Featured Article
-              </span>
-              {latestData != null && latestData ? (
-                <div className="category-box max-w-400 max-h-600 mx-8 flex flex-col items-center justify-start bg-gradient-to-br from-emerald-400 to-white text-center">
-                  <img
-                    src={latestData[0].image}
-                    alt={latestData[0].image}
-                    className="category-image h-56 w-full rounded-es-full"
-                  />
-                  <p className="category-description text-xl font-bold text-gray-800">
-                    {latestData[0].description}
-                  </p>
-                  <div className="category-source-info justify-space flex w-full max-w-full">
-                    <div className="content-container flex w-full justify-center space-x-6 py-2">
-                      <span className="flex text-sm font-bold text-gray-400">
-                        {getTimeSincePublication(latestData[0].publishedAt)
-                          .hours > 0
-                          ? getTimeSincePublication(latestData[0].publishedAt)
-                              .hours > 1
-                            ? `${
-                                getTimeSincePublication(
-                                  latestData[0].publishedAt
-                                ).hours
-                              } hours`
-                            : `${
-                                getTimeSincePublication(
-                                  latestData[0].publishedAt
-                                ).hours
-                              } hour`
-                          : `${
-                              getTimeSincePublication(latestData[0].publishedAt)
-                                .minutes
-                            } mins ago`}
-                      </span>
-                      <span className=" font-bold text-gray-600">
-                        {latestData[0].sourceName}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                ''
-              )}
             </div>
           </div>
         </div>

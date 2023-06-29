@@ -70,11 +70,15 @@ export default function AccountMenu() {
       >
         {theme === 1 ? (
           <Typography sx={{ minWidth: 100, color: 'white' }}>
-            <span className="font-['Arvo'] text-xl">My Account</span>
+            <span className="font-['Arvo'] text-xl font-semibold">
+              My Account
+            </span>
           </Typography>
         ) : (
           <Typography sx={{ minWidth: 100, color: 'black' }}>
-            <span className="font-['Arvo'] text-xl">My Account</span>
+            <span className="font-['Arvo'] text-xl font-semibold">
+              My Account
+            </span>
           </Typography>
         )}
         <Tooltip title="Account settings">
@@ -90,7 +94,9 @@ export default function AccountMenu() {
               sx={{ width: 64, height: 64, bgcolor: iconColor }}
               className="uppercase"
             >
-              {currentUser && currentUser.email[0]}
+              <span className="font-['Arvo'] text-xl font-bold">
+                {currentUser && currentUser.email[0]}
+              </span>
             </Avatar>
           </IconButton>
         </Tooltip>

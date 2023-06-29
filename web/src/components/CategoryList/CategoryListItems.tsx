@@ -31,7 +31,7 @@ function CategoryListItems({ categories }) {
                   <Link to={routes.home()}>
                     <span className="flex justify-center px-4">
                       <span
-                        className={`transition-colors duration-200 hover:underline ${
+                        className={`text-sm transition-colors duration-200 hover:underline ${
                           theme === 1 ? 'text-white' : 'text-black'
                         }`}
                       >
