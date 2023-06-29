@@ -113,11 +113,6 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
     handleClose()
   }
 
-  if (loading) {
-    // Handle loading state
-    return <div>Loading...</div>
-  }
-
   return (
     <>
       <Modal isOpen={isOpen} onClose={handleClose}>
