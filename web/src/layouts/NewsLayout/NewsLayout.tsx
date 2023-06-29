@@ -74,8 +74,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     toggleCurrentPage(page)
   }
 
-  console.log(`Current Page ${currentPage}`)
-
   const signIn = () => {
     if (status === 0) {
       navigate(routes.login()) // Redirect to sign-in page
