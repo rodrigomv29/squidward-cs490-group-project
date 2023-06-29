@@ -4,7 +4,7 @@
 //
 // Examples:
 //
-// 'src/pages/HomePage/HomePage.js'         -> HomePage
+// 'src/pages/HomePage/HomePage.js' -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Router, Route, Set } from '@redwoodjs/router'
@@ -35,7 +35,6 @@ const Routes = () => {
       <Set wrap={NewsLayout}>
         <Route path="/" page={HomePage} name="home" />
         <Route path="/signed-in-home" page={SignedInHomePage} name="signedInHome" />
-        <Route path="/category" page={CategoryPage} name="category" />
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
