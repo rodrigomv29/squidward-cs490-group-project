@@ -314,8 +314,10 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
           </div>
         </div>
       </header>
-
       <main className="h-screen">{children}</main>
+      <ArticleCell category="Business" />
+      <ArticleCell category="General" />
+      <ArticleCell category="Sports" />
     </>
   )
 }

@@ -1,11 +1,22 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
+import { useLazyQuery } from '@apollo/react-hooks'
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
 import { Link, routes } from '@redwoodjs/router'
 
 import { getTopTen } from 'src/utils/storage'
+
+export const QUERY = gql`
+  query FindArticlesQuery {
+    articles {
+      author
+      title
+      description
+    }
+  }
+`
 
 function SlidingPannel() {
   const [topTenData, setTopTenData] = useState(null)

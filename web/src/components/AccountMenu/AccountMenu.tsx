@@ -1,17 +1,19 @@
 import * as React from 'react'
 import { useState } from 'react'
 
-import { Switch } from '@headlessui/react'
+import { Switch } from '@chakra-ui/react'
 import Logout from '@mui/icons-material/Logout'
 import Settings from '@mui/icons-material/Settings'
-import Avatar from '@mui/material/Avatar'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
+import {
+  Avatar,
+  Box,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 
 import { navigate, routes } from '@redwoodjs/router'
 
@@ -19,6 +21,7 @@ import { useAuth } from 'src/auth'
 import { setStatus, getStatus } from 'src/utils/storage'
 
 import CustomThemeContext from '../../CustomThemeContext'
+import SettingsPopup from '../Settings/SettingsPopup'
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -29,21 +32,23 @@ export default function AccountMenu() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  const { theme, toggleTheme } = React.useContext(CustomThemeContext)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const handleLogout = () => {
     logOut()
     setStatus(0)
     navigate(routes.home()) // Redirect to home page after signing out
-    handleClose()
     if (theme === 1) {
       toggleTheme()
     }
   }
+
+  const handleOpenSettings = () => {
+    setAnchorEl(null)
+    setSettingsOpen(true)
+  }
+
+  const { theme, toggleTheme } = React.useContext(CustomThemeContext)
 
   const handleTheme = () => {
     setEnabled(!enabled)
@@ -94,7 +99,7 @@ export default function AccountMenu() {
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
-        onClose={handleClose}
+        onClose={() => setAnchorEl(null)}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -164,7 +169,7 @@ export default function AccountMenu() {
           </Switch>
         </div>
         <div className="flex justify-center">
-          <MenuItem onClick={handleClose} className="w-full">
+          <MenuItem onClick={handleOpenSettings} className="w-full">
             <ListItemIcon>
               <Settings fontSize="small" sx={{ color: themeColor }} />
             </ListItemIcon>
@@ -192,6 +197,12 @@ export default function AccountMenu() {
           </MenuItem>
         </div>
       </Menu>
+      {settingsOpen && (
+        <SettingsPopup
+          onClose={() => setSettingsOpen(false)}
+          userId={currentUser?.id}
+        />
+      )}
     </React.Fragment>
   )
 }
