@@ -8,15 +8,18 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Router, Route, Set } from '@redwoodjs/router'
+
 import NewsLayout from 'src/layouts/NewsLayout'
 import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 import SignInSignUpLayout from 'src/layouts/SignInSignUpLayout'
+import SearchResultsPage from 'src/pages/SearchResultsPage/SearchResultsPage'
 
 import { useAuth } from './auth'
 
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
+      <Route path="/search-results" page={SearchResultsPage} name="searchResults" />
       <Set wrap={ScaffoldLayout} title="Users" titleTo="users" buttonLabel="New User" buttonTo="newUser">
         <Route path="/users/new" page={UserNewUserPage} name="newUser" />
         <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />
