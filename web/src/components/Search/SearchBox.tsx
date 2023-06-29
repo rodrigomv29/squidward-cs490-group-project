@@ -63,9 +63,9 @@ const SearchBox = () => {
             onKeyPress={handleKeyPress}
             placeholder="Search..."
             className="search-input"
-            placeholder={{ color: 'black' }}
             color="black"
           />
+
           <button
             aria-label="Exit"
             className="search-exit"
