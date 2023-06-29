@@ -334,7 +334,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               theme === 1 ? 'bg-gray-800' : 'bg-emerald-400'
             }`}
           >
-            <div className="navbar-container mx-0 flex h-[100%] w-full items-center justify-center">
+            <div className="navbar-container mx-0 flex h-[100%] w-full items-center justify-center px-8">
               <ul
                 className={`flex w-full justify-between text-lg ${
                   theme === 1 ? 'text-emerald-400' : 'text-white'
@@ -343,18 +343,34 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
                   <CustomLink category="home" />
                 </li>
-                <li className="relative mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <SearchBox />
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="general" />
                 </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="business" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="entertainment" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="health" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="science" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="sports" />
+                </li>
+                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                  <CustomLink category="technology" />
+                </li>
+                <SearchBox></SearchBox>
               </ul>
             </div>
           </div>
         </div>
       </header>
       <main className="h-screen">{children}</main>
-      <ArticleCell category="Business" />
-      <ArticleCell category="General" />
-      <ArticleCell category="Sports" />
     </>
   )
 }
