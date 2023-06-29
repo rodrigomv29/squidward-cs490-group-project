@@ -47,14 +47,12 @@ const SearchBox = () => {
       onMouseLeave={handleMouseLeave}
     >
       {!isInputVisible && (
-        <div className="">
-          <Icon
+        <Icon
           as={SearchIcon}
           boxSize={6}
           className={`search-icon ${isHovered ? 'hidden' : ''}`}
           onClick={handleIconClick}
         />
-        </div>
       )}
       {isInputVisible && (
         <div className="search-input-container">
@@ -65,7 +63,7 @@ const SearchBox = () => {
             onKeyPress={handleKeyPress}
             placeholder="Search..."
             className="search-input"
-            _placeholder={{ color: 'black' }}
+            placeholder={{ color: 'black' }}
             color="black"
           />
           <button
