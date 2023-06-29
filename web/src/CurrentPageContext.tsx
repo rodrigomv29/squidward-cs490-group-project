@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState } from 'react'
 
 const CurrentPageContext = createContext({
   currentPage: 'home',
@@ -6,12 +6,7 @@ const CurrentPageContext = createContext({
 })
 
 export const CurrentPageProvider = ({ children }) => {
-  const [currentPage, setCurrentPage] = useState('')
-
-  useEffect(() => {
-    const savedPage = localStorage.getItem('currentPage')
-    setCurrentPage(savedPage ? savedPage : '')
-  }, [])
+  const [currentPage, setCurrentPage] = useState('home')
 
   const toggleCurrentPage = (_page: string) => {
     setCurrentPage(_page)
