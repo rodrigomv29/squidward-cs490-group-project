@@ -107,7 +107,124 @@ const SignedInHomePage = () => {
                   </div>
                 </span>
               </div>
-              <ArticleList />
+              <div className="grid-container h-[90%] overflow-auto">
+                <div className="category-grid grid w-full max-w-full grid-cols-3 gap-4 ">
+                  {latestData != null
+                    ? latestData.map((newsItem, index) => (
+                        <div
+                          key={index}
+                          className="category-box max-w-400 max-h-600 flex flex-col items-center justify-start rounded-lg text-center"
+                        >
+                          <img
+                            src={newsItem.image}
+                            alt={newsItem.title}
+                            className="category-image h-56 w-full"
+                          />
+                          <div className="description-container h-[50%] max-w-full">
+                            <p
+                              className={`category-description text-lg font-semibold transition-colors duration-200 ${
+                                theme === 1 ? 'text-white' : 'text-gray-800'
+                              }  `}
+                            >
+                              {newsItem.description != ''
+                                ? newsItem.description.length > 110
+                                  ? newsItem.description.slice(0, 110) + '...'
+                                  : newsItem.description
+                                : 'This article does not have a decription'}
+                            </p>
+                          </div>
+                          <div className="category-source-info justify-space flex w-full max-w-full">
+                            <div className="content-container flex w-full max-w-sm justify-center space-x-6 py-2">
+                              <span className="flex text-sm font-bold text-gray-400">
+                                {getTimeSincePublication(newsItem.publishedAt)
+                                  .hours > 0
+                                  ? getTimeSincePublication(
+                                      newsItem.publishedAt
+                                    ).hours > 1
+                                    ? `${
+                                        getTimeSincePublication(
+                                          newsItem.publishedAt
+                                        ).hours
+                                      } hours`
+                                    : `${
+                                        getTimeSincePublication(
+                                          newsItem.publishedAt
+                                        ).hours
+                                      } hour`
+                                  : `${
+                                      getTimeSincePublication(
+                                        newsItem.publishedAt
+                                      ).minutes
+                                    } mins ago`}
+                              </span>
+                              <span
+                                className={` font-bold ${
+                                  theme === 1 ? 'text-white' : 'text-gray-600'
+                                }`}
+                              >
+                                {newsItem.sourceName}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Right Side Bar */}
+          <div className="right-sidebar w-[30%]">
+            {/* Weather Widject Container */}
+            <div>
+              <WeatherWidget city="Newark,NJ,USA" />
+            </div>
+            {/* Feat Article Container */}
+            <div className="feat-article mt-0 flex h-[45%] flex-col justify-center">
+              <span className="py-4 text-center text-3xl font-bold">
+                Featured Article
+              </span>
+              {latestData != null && latestData[8] ? (
+                <div className="category-box max-w-400 max-h-600 mx-8 flex flex-col items-center justify-start bg-gradient-to-br from-emerald-400 to-white text-center">
+                  <img
+                    src={latestData[8].image}
+                    alt={latestData[8].image}
+                    className="category-image h-56 w-full rounded-es-full"
+                  />
+                  <p className="category-description text-xl font-bold text-gray-800">
+                    {latestData[8].description}
+                  </p>
+                  <div className="category-source-info justify-space flex w-full max-w-full">
+                    <div className="content-container flex w-full justify-center space-x-6 py-2">
+                      <span className="flex text-sm font-bold text-gray-400">
+                        {getTimeSincePublication(latestData[8].publishedAt)
+                          .hours > 0
+                          ? getTimeSincePublication(latestData[8].publishedAt)
+                              .hours > 1
+                            ? `${
+                                getTimeSincePublication(
+                                  latestData[8].publishedAt
+                                ).hours
+                              } hours`
+                            : `${
+                                getTimeSincePublication(
+                                  latestData[8].publishedAt
+                                ).hours
+                              } hour`
+                          : `${
+                              getTimeSincePublication(latestData[9].publishedAt)
+                                .minutes
+                            } mins ago`}
+                      </span>
+                      <span className=" font-bold text-gray-600">
+                        {latestData[8].sourceName}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                ''
+              )}
             </div>
           </div>
         </div>
