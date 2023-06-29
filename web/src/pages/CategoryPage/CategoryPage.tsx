@@ -39,6 +39,7 @@ const CategoryPage = (categoryObject) => {
   }
 
   const category = categoryObject.category
+  localStorage.setItem('currentPage', category)
 
   const [articles, setArticles] = useState([])
   const [latest, setLatest] = useState([])
@@ -107,6 +108,8 @@ const CategoryPage = (categoryObject) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category])
+
+  // Test Data to use if the api is not working
 
   // const fillerData = [
   //   {
@@ -352,7 +355,7 @@ const CategoryPage = (categoryObject) => {
                   {category.slice(1)}
                 </h2>
                 <span style={{ cursor: 'not-allowed' }}>
-                  <div className="flex items-center">
+                  <div className="mt-8 flex items-center">
                     <span
                       className={`text-xl font-bold ${handleTheme(
                         'text-white',
