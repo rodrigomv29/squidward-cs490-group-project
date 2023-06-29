@@ -300,7 +300,7 @@ const SignedInHomePage = () => {
               <span className="py-4 text-center text-3xl font-bold">
                 Featured Article
               </span>
-              {latestData != null && latestData ? (
+              {latestData != null && latestData[8] ? (
                 <div className="category-box max-w-400 max-h-600 mx-8 flex flex-col items-center justify-start bg-gradient-to-br from-emerald-400 to-white text-center">
                   <img
                     src={latestData[8].image}
