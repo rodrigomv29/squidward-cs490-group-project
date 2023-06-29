@@ -47,12 +47,14 @@ const SearchBox = () => {
       onMouseLeave={handleMouseLeave}
     >
       {!isInputVisible && (
-        <Icon
+        <div className="">
+          <Icon
           as={SearchIcon}
           boxSize={6}
           className={`search-icon ${isHovered ? 'hidden' : ''}`}
           onClick={handleIconClick}
         />
+        </div>
       )}
       {isInputVisible && (
         <div className="search-input-container">
