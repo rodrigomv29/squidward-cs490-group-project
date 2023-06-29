@@ -334,7 +334,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
           >
             <div className="navbar-container mx-0 flex h-[100%] w-full items-center justify-center">
               <ul
-                className={`flex w-full justify-between text-lg ${
+                className={`flex w-full justify-between px-8 text-lg ${
                   theme === 1 ? 'text-emerald-400' : 'text-white'
                 }`}
               >
@@ -369,7 +369,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
         </div>
       </header>
       <main className="h-screen">{children}</main>
-
     </>
   )
 }

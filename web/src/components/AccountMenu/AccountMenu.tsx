@@ -34,6 +34,8 @@ export default function AccountMenu() {
   }
   const [settingsOpen, setSettingsOpen] = useState(false)
 
+  console.log(currentUser)
+
   const handleLogout = () => {
     logOut()
     setStatus(0)
@@ -46,7 +48,7 @@ export default function AccountMenu() {
   const handleOpenSettings = () => {
     setAnchorEl(null)
     setSettingsOpen(true)
-  }
+  } 
 
   const { theme, toggleTheme } = React.useContext(CustomThemeContext)
 
