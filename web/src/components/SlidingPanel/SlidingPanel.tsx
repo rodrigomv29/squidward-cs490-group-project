@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useContext } from 'react'
 
 import { useLazyQuery } from '@apollo/react-hooks'
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
@@ -6,6 +6,7 @@ import { RxDotFilled } from 'react-icons/rx'
 
 import { Link, routes } from '@redwoodjs/router'
 
+import CurrentPageContext from 'src/CurrentPageContext'
 import { getTopTen } from 'src/utils/storage'
 
 export const QUERY = gql`
@@ -20,11 +21,14 @@ export const QUERY = gql`
 
 function SlidingPannel() {
   const [topTenData, setTopTenData] = useState(null)
+  const { currentPage } = useContext(CurrentPageContext)
+
+  const category = currentPage === 'home' ? 'general' : currentPage
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getTopTen()
+        const response = await getTopTen(category)
         setTopTenData(response)
       } catch (error) {
         console.log('Error fetching top 10 data:', error)
@@ -40,6 +44,7 @@ function SlidingPannel() {
     return () => {
       clearInterval(interval)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const slides =
@@ -77,29 +82,29 @@ function SlidingPannel() {
 
   return (
     <>
-      <div className="group relative m-auto h-full w-full max-w-full  px-4 py-4">
+      <div className="group relative m-auto h-[95%] max-h-[90%] w-full max-w-full  px-12 py-4">
         <div
           style={{ backgroundImage: `url(${slides[currentIndex].urlToImage})` }}
           className="h-full rounded-2xl bg-cover bg-center bg-no-repeat duration-500"
         >
-          <div className="main-header absolute bottom-20 left-4 right-4 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.4] px-10 py-4 text-white">
-            <div className="title text-2xl font-bold">
+          <div className="main-header absolute bottom-10 left-8 right-8 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.4] px-10 py-4 text-white">
+            <div className="title text-xl font-bold">
               {slides[currentIndex].title}
             </div>
-            <div className="main-description">
+            <div className="main-description text-sm">
               {slides[currentIndex].description}
             </div>
             <div className="read-more">
               <Link
                 to={routes.home()}
-                className="read-more-link group relative inline-block"
+                className="read-more-link group relative inline-block transition-opacity duration-300 hover:opacity-60"
               >
                 Read More
                 <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-emerald-400 transition-transform duration-300 group-hover:scale-x-100"></span>
               </Link>
             </div>
           </div>
-          <div className="absolute bottom-2 left-4 right-4 flex justify-center px-10 py-4">
+          <div className="absolute bottom-0 left-4 right-4 flex justify-center px-10 py-4">
             {slides.map((slide, slideIndex) => (
               <div
                 key={slideIndex}
@@ -123,11 +128,11 @@ function SlidingPannel() {
           </div>
         </div>
         {/* Left Arrow */}
-        <div className="-tranlate-x-0 absolute left-5 top-[50%] hidden translate-y-[-50%] cursor-pointer rounded-full bg-black/20 p-2 text-2xl text-white group-hover:block">
+        <div className="-tranlate-x-0 absolute left-12 top-[50%] hidden translate-y-[-50%] cursor-pointer rounded-full bg-black/20 p-2 text-2xl text-white group-hover:block">
           <BsChevronCompactLeft onClick={prevSlide} size={30} />
         </div>
         {/* Right Arrow */}
-        <div className="-tranlate-x-0 absolute right-5 top-[50%] hidden translate-y-[-50%] cursor-pointer rounded-full bg-black/20 p-2 text-2xl text-white group-hover:block">
+        <div className="-tranlate-x-0 absolute right-12 top-[50%] hidden translate-y-[-50%] cursor-pointer rounded-full bg-black/20 p-2 text-2xl text-white group-hover:block">
           <BsChevronCompactRight onClick={nextSlide} size={30} />
         </div>
       </div>

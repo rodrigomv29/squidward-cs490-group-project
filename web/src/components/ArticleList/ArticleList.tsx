@@ -6,7 +6,7 @@ import { getLatest, getTimeSincePublication } from 'src/utils/storage'
 
 async function fetchLatest() {
   try {
-    const latestData = await getLatest()
+    const latestData = await getLatest('general')
     return latestData
   } catch (error) {
     console.log('Error fetching description article for categories:', error)
