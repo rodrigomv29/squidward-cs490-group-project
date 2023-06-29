@@ -34,32 +34,21 @@ export default function AccountMenu() {
   }
   const [settingsOpen, setSettingsOpen] = useState(false)
 
-  const handleClose = (event: React.MouseEvent<HTMLElement>) => {
-    const clickedInsideMenu = Boolean(
-      anchorEl?.contains(event.target as HTMLElement)
-    )
-    if (!clickedInsideMenu) {
-      setAnchorEl(null)
-    }
-  }
-
-  const { theme, toggleTheme } = React.useContext(CustomThemeContext)
-
-  const handleLogout = (event: React.MouseEvent<HTMLElement>) => {
+  const handleLogout = () => {
     logOut()
     setStatus(0)
     navigate(routes.home()) // Redirect to home page after signing out
-    handleClose(event)
     if (theme === 1) {
       toggleTheme()
     }
   }
 
   const handleOpenSettings = () => {
-    if (!settingsOpen) {
-      setSettingsOpen(true)
-    }
+    setAnchorEl(null)
+    setSettingsOpen(true)
   }
+
+  const { theme, toggleTheme } = React.useContext(CustomThemeContext)
 
   const handleTheme = () => {
     setEnabled(!enabled)
@@ -110,7 +99,7 @@ export default function AccountMenu() {
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
-        onClose={handleClose}
+        onClose={() => setAnchorEl(null)}
         PaperProps={{
           elevation: 0,
           sx: {

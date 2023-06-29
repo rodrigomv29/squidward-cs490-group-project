@@ -136,7 +136,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
             flexDirection="row"
             justifyContent="center"
             alignItems="center"
-            w="20%"
+            w="10%"
           >
             <span>Settings</span>
             <ModalCloseButton />
@@ -147,7 +147,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
             alignItems="center"
             justifyContent="center"
             className="bg-emerald-400 bg-opacity-80"
-            w="20%"
+            w="10%"
           >
             <div>
               <VStack spacing={4} align="start" fontSize="lg">
