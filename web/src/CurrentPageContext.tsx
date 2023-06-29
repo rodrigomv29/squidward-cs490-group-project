@@ -1,12 +1,23 @@
 import React, { createContext, useState } from 'react'
 
+import { setFirstRender } from 'src/utils/storage'
+
 const CurrentPageContext = createContext({
-  currentPage: 'home',
+  currentPage: '',
   toggleCurrentPage: (_page: string) => {},
 })
 
 export const CurrentPageProvider = ({ children }) => {
-  const [currentPage, setCurrentPage] = useState('home')
+  const isFirstRender = setFirstRender()
+  const [currentPage, setCurrentPage] = useState(() => {
+    const storedPage = localStorage.getItem('currentPage')
+    if (isFirstRender) {
+      setCurrentPage('home')
+      localStorage.setItem('currentPage', 'home')
+      return 'home'
+    }
+    return storedPage || 'home'
+  })
 
   const toggleCurrentPage = (_page: string) => {
     setCurrentPage(_page)
