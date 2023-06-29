@@ -94,7 +94,7 @@ export async function getLatest(category: string) {
     })
 
     const articles = filteredArticles
-      .slice(10, filteredArticles.length() - 1)
+      .slice(10, filteredArticles.length - 1)
       .map((article) => ({
         title: article.title,
         description: article.description,

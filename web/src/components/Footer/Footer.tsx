@@ -13,7 +13,7 @@ function Footer() {
         theme === 1 ? 'bg-gray-800' : 'bg-gray-300'
       }`}
     >
-      <div className={`container mx-auto py-4 text-center pt-8`}>
+      <div className={`container mx-auto py-4 pt-8 text-center`}>
         <span
           className={`text-mdfont-bold transition-colors duration-300 ${
             theme === 1 ? 'text-white' : 'text-gray-700'
@@ -29,6 +29,7 @@ function Footer() {
           <Link
             to={routes.home()}
             className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
+            onClick={() => {}}
           >
             Home
           </Link>
