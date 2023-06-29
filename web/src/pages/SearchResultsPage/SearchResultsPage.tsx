@@ -1,25 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Box, Heading, Link, Image, Text } from '@chakra-ui/react'
+import axios from 'axios'
+
+import { useLocation } from '@redwoodjs/router'
 
 import NewsLayout from 'src/layouts/NewsLayout/NewsLayout'
 
 const SearchResultsPage = () => {
-  // Placeholder search results data with dates
-  const searchResults = [
-    { id: 1, title: 'Article 1', url: '/article-1', date: new Date('2023-06-27') },
-    { id: 2, title: 'Article 2', url: '/article-2', date: new Date('2023-06-26') },
-    { id: 3, title: 'Article 3', url: '/article-3', date: new Date('2023-06-28') },
-    { id: 4, title: 'Article 4', url: '/article-4', date: new Date('2023-06-25') },
-    { id: 5, title: 'Article 5', url: '/article-5', date: new Date('2023-06-29') },
-  ]
+  const [searchResults, setSearchResults] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const location = useLocation()
 
-  /*to test if search results return nothing
-  const searchResults = []
-  */
+  useEffect(() => {
+    const query = new URLSearchParams(location.search).get('query')
+    if (query) {
+      const apiKey = 'e1d9b8e504f94c2aaccc50b3b6bba68f';
+      const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${apiKey}`
 
-  // Sorting results by date in descending order
-  searchResults.sort((a, b) => b.date - a.date)
+      axios
+        .get(url)
+        .then((response) => {
+          const articles = response.data.articles
+          articles.sort(
+(a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+          )
+          setSearchResults(articles)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          console.error(error)
+          setIsLoading(false)
+})
+    } else {
+      setIsLoading(false)
+    }
+  }, [location.search])
 
   return (
     <NewsLayout>
@@ -27,7 +43,9 @@ const SearchResultsPage = () => {
         <Heading as="h1" fontSize="6xl" fontWeight="bold" mb={8}>
           Search Results
         </Heading>
-        {searchResults.length === 0 ? (
+        {isLoading ? (
+          <Text>Loading...</Text>
+) : searchResults.length === 0 ? (
           <Box>
             <Image
               src="https://media1.tenor.com/images/2025c85773b942247e4565847e43a5d0/tenor.gif?itemid=7619217"
@@ -46,12 +64,12 @@ const SearchResultsPage = () => {
         ) : (
           <Box marginLeft={0}>
             {searchResults.map((result) => (
-              <Box key={result.id} mb={4}>
+              <Box key={result.url} mb={4}>
                 <Link href={result.url} fontWeight="bold" fontSize="xl">
                   {result.title}
                 </Link>
                 <Text fontSize="md" color="gray.500">
-                  Published on {result.date.toLocaleDateString()}
+                  Published on {new Date(result.publishedAt).toLocaleDateString()}
                 </Text>
               </Box>
             ))}

@@ -6591,6 +6591,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@redwoodjs/project-config@npm:5.3.1":
+  version: 5.3.1
+  resolution: "@redwoodjs/project-config@npm:5.3.1"
+  dependencies:
+    "@iarna/toml": 2.2.5
+    deepmerge: 4.3.1
+    fast-glob: 3.2.12
+    string-env-interpolation: 1.0.1
+  checksum: 45f28b71d4cc4df8ad852bad58e15a4c7028bdd7a3ac4aee9726fb2ef495551377866355e1813d0e09e51c83a98ff772db5f3d62d96490e0754de8a2a377d380
+  languageName: node
+  linkType: hard
+
 "@redwoodjs/project-config@npm:5.3.2":
   version: 5.3.2
   resolution: "@redwoodjs/project-config@npm:5.3.2"
@@ -9515,6 +9527,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@whatwg-node/fetch@npm:^0.9.6":
+  version: 0.9.7
+  resolution: "@whatwg-node/fetch@npm:0.9.7"
+  dependencies:
+    "@whatwg-node/node-fetch": ^0.4.6
+    urlpattern-polyfill: ^9.0.0
+  checksum: 6bc286375be4855078608a4e0af69a8f09bb923f563b7f438ef277118b966282dbef727d180c1dab106d360ec193d9e6ab25139013880bc2380884ab3b2b54d7
+  languageName: node
+  linkType: hard
+
 "@whatwg-node/node-fetch@npm:^0.3.6":
   version: 0.3.6
   resolution: "@whatwg-node/node-fetch@npm:0.3.6"
@@ -9538,6 +9560,19 @@ __metadata:
     fast-url-parser: ^1.1.3
     tslib: ^2.3.1
   checksum: 5767a5650e1ac435cfff9bb54acd673068d964f5bab9ee78cdb9f4f5558f1ecd8e29f2ae8e9744194f309e36dac59db9b729f51d86f312b8523b8d9c62bc0a8d
+  languageName: node
+  linkType: hard
+
+"@whatwg-node/node-fetch@npm:^0.4.6":
+  version: 0.4.6
+  resolution: "@whatwg-node/node-fetch@npm:0.4.6"
+  dependencies:
+    "@whatwg-node/events": ^0.1.0
+    busboy: ^1.6.0
+    fast-querystring: ^1.1.1
+    fast-url-parser: ^1.1.3
+    tslib: ^2.3.1
+  checksum: 4a3e140fab7712c9af9cdcd65c48fc6fb06830b2e0f764aa475a6a8c302c58086bd68c535b8bd012dc4344902c05e56e2f2f82a623ebfb517aebdac1fca080a7
   languageName: node
   linkType: hard
 
@@ -10043,9 +10078,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
-    "@redwoodjs/api": 5.3.1
-    "@redwoodjs/auth-dbauth-api": 5.3.1
-    "@redwoodjs/graphql-server": 5.3.1
+    "@redwoodjs/api": 5.3.2
+    "@redwoodjs/auth-dbauth-api": 5.3.2
+    "@redwoodjs/graphql-server": 5.3.2
     "@whatwg-node/fetch": ^0.9.6
   languageName: unknown
   linkType: soft
@@ -11964,13 +11999,6 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: d44f4afc7a3e48dba4c2d3fada5f781a1adeeff371b875c3b578bc33815c6c29d5d06483c2abfd43a32d35b104b27b67bfa39c2e8a422fa858068bd756cfbd42
-  languageName: node
-  linkType: hard
-
-"classnames@npm:^2.2.5":
-  version: 2.3.2
-  resolution: "classnames@npm:2.3.2"
-  checksum: cd50ead57b4f97436aaa9f9885c6926323efc7c2bea8e3d4eb10e4e972aa6a1cfca1c7a0e06f8a199ca7498d4339e30bb6002e589e61c9f21248cbf3e8b0b18d
   languageName: node
   linkType: hard
 
@@ -14017,13 +14045,6 @@ __metadata:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
   checksum: 69984a7990913948b4150855aed26a84afb4cb1c5a94fb8e3a65bd00729a73fc2eaff6871fb8e345377f294831afe349615c93560f2f54d61b43cdfdf668f19a
-  languageName: node
-  linkType: hard
-
-"enquire.js@npm:^2.1.6":
-  version: 2.1.6
-  resolution: "enquire.js@npm:2.1.6"
-  checksum: 3ab739ed0885b5dda973de3fe610d2e3ce261a3ee77321ee4c0c876294c1c37f87f6cccead3ee1de8ead24b31f730586847f89118f083e776677f7c3cd71abaa
   languageName: node
   linkType: hard
 
@@ -18686,15 +18707,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json2mq@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "json2mq@npm:0.2.0"
-  dependencies:
-    string-convert: ^0.2.0
-  checksum: fc9e2f2306572522d3e61d246afdf70b56ca9ea32f4ad5924c30949867851ab59c926bd0ffc821ebb54d32f3e82e95225f3906eacdb3e54c1ad49acdadf7e0c7
-  languageName: node
-  linkType: hard
-
 "json5@npm:^0.5.1":
   version: 0.5.1
   resolution: "json5@npm:0.5.1"
@@ -22905,22 +22917,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-slick@npm:^0.29.0":
-  version: 0.29.0
-  resolution: "react-slick@npm:0.29.0"
-  dependencies:
-    classnames: ^2.2.5
-    enquire.js: ^2.1.6
-    json2mq: ^0.2.0
-    lodash.debounce: ^4.0.8
-    resize-observer-polyfill: ^1.5.0
-  peerDependencies:
-    react: ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 965e2957b7d72435397adfa062911e62310e181c14b8667b528f9fe88bda490b86fd94d685c186a4b7704b77e10ef3d6c7be24541652a9787baa80b98000190f
-  languageName: node
-  linkType: hard
-
 "react-style-singleton@npm:^2.2.1":
   version: 2.2.1
   resolution: "react-style-singleton@npm:2.2.1"
@@ -23431,13 +23427,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resize-observer-polyfill@npm:^1.5.0":
-  version: 1.5.1
-  resolution: "resize-observer-polyfill@npm:1.5.1"
-  checksum: 5e882475067f0b97dc07e0f37c3e335ac5bc3520d463f777cec7e894bb273eddbfecb857ae668e6fb6881fd6f6bb7148246967172139302da50fa12ea3a15d95
-  languageName: node
-  linkType: hard
-
 "resolve-cwd@npm:^3.0.0":
   version: 3.0.0
   resolution: "resolve-cwd@npm:3.0.0"
@@ -23702,7 +23691,6 @@ __metadata:
     react-icons: ^4.9.0
     react-router: ^6.13.0
     react-router-dom: ^6.13.0
-    react-slick: ^0.29.0
     styled-components: ^6.0.0-rc.3
     tailwindcss: ^3.3.2
   languageName: unknown
@@ -24784,13 +24772,6 @@ __metadata:
   version: 0.4.6
   resolution: "strict-event-emitter@npm:0.4.6"
   checksum: d0231ef081cb1937b1445da59a1ec202d1c097d825c504f398600532490a4104e200b0dce4137467a8eaac5f8f9718d01c99869687afad78cad3b14c4b2e6a39
-  languageName: node
-  linkType: hard
-
-"string-convert@npm:^0.2.0":
-  version: 0.2.1
-  resolution: "string-convert@npm:0.2.1"
-  checksum: 00673ed8a3106137395436537ace7d3672c91a3290da73466055daa0134331dc84bc58c54ba2d2ea40711adc5744426d3c8239dbfc30290438fa3e9ff65db528
   languageName: node
   linkType: hard
 
@@ -26871,10 +26852,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
-    "@redwoodjs/auth-dbauth-web": 5.3.1
-    "@redwoodjs/forms": 5.3.1
-    "@redwoodjs/router": 5.3.1
-    "@redwoodjs/web": 5.3.1
+    "@redwoodjs/auth-dbauth-web": 5.3.2
+    "@redwoodjs/forms": 5.3.2
+    "@redwoodjs/router": 5.3.2
+    "@redwoodjs/web": 5.3.2
     autoprefixer: ^10.4.14
     humanize-string: 2.1.0
     postcss: ^8.4.24
