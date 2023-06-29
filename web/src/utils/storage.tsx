@@ -4,11 +4,29 @@ export const setStatus = (status: number) => {
   localStorage.setItem('status', String(status))
 }
 
+export const getFirstRender = () => {
+  const status = localStorage.getItem('first_render')
+  return status ? parseInt(status, 10) : null
+}
+
 // Get the status from local storage
 export const getStatus = () => {
   const status = localStorage.getItem('status')
   return status ? parseInt(status, 10) : null
 }
+
+// Set the status in local storage
+export const setFirstRender = () => {
+  const isFirstRender = getFirstRender()
+
+  if (isFirstRender === null) {
+    localStorage.setItem('first_render', '1')
+    return true
+  } else {
+    return false
+  }
+}
+
 export function getCurrentMilitaryTime(): {
   hours: string
   minutes: string
