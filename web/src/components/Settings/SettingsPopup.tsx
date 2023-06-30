@@ -8,6 +8,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  VStack,
 } from '@chakra-ui/react'
 import { gql } from 'graphql-tag'
 
@@ -55,9 +56,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
   const [elements, setElements] = useState<
     { id: number; name: string; enabled: boolean }[]
   >([])
-
   const [isOpen, setIsOpen] = useState(false)
-
   const [updateUser] = useMutation(UPDATE_USER_MUTATION)
   const { data, loading } = useQuery(GET_USER_QUERY, {
     variables: { id: userId },
@@ -113,39 +112,62 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({
     handleClose()
   }
 
-  if (loading) {
-    // Handle loading state
-    return <div>Loading...</div>
-  }
-
   return (
     <>
       <Modal isOpen={isOpen} onClose={handleClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Settings</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
+        <ModalContent
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyItems="center"
+          alignSelf="center"
+          justifySelf="center"
+          //className="bg-emerald-400 bg-opacity-70"
+          w="full"
+        >
+          <ModalHeader
+            fontSize="xl"
+            bg="#ad902c"
+            py={2}
+            textAlign="center"
+            //color="white"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            w="10%"
+          >
+            <span>Settings</span>
+            <ModalCloseButton />
+          </ModalHeader>
+          <ModalBody
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            className="bg-emerald-400 bg-opacity-80"
+            w="10%"
+          >
             <div>
-              {elements.map((element) => (
-                <div key={element.id}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={element.enabled}
-                      onChange={() => toggleElement(element.id)}
-                    />
-                    {element.name}
-                  </label>
-                </div>
-              ))}
+              <VStack spacing={4} align="start" fontSize="lg">
+                {elements.map((element) => (
+                  <div key={element.id}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={element.enabled}
+                        onChange={() => toggleElement(element.id)}
+                      />
+                      {element.name}
+                    </label>
+                  </div>
+                ))}
+              </VStack>
+              <Button bgColor="#ad902c" onClick={handleSave} mt={4} w="full">
+                Save
+              </Button>
             </div>
-            <Button mt={4} onClick={handleSave}>
-              Save
-            </Button>
-            <Button mt={4} onClick={handleClose}>
-              Close
-            </Button>
           </ModalBody>
         </ModalContent>
       </Modal>
