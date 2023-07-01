@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { Switch } from '@chakra-ui/react'
 import Logout from '@mui/icons-material/Logout'
@@ -18,6 +18,7 @@ import {
 import { navigate, routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
+import CurrentPageContext from 'src/CurrentPageContext'
 import { setStatus, getStatus } from 'src/utils/storage'
 
 import CustomThemeContext from '../../CustomThemeContext'
@@ -27,6 +28,7 @@ export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [enabled, setEnabled] = useState(false)
   const { currentUser, logOut } = useAuth()
+  const { toggleCurrentPage } = useContext(CurrentPageContext)
   const open = Boolean(anchorEl)
   const status = getStatus()
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,11 +36,14 @@ export default function AccountMenu() {
   }
   const [settingsOpen, setSettingsOpen] = useState(false)
 
-  console.log(currentUser)
+  const handlePageChange = (page: string) => {
+    toggleCurrentPage(page)
+  }
 
   const handleLogout = () => {
     logOut()
     setStatus(0)
+    handlePageChange('home')
     navigate(routes.home()) // Redirect to home page after signing out
     if (theme === 1) {
       toggleTheme()
@@ -48,7 +53,7 @@ export default function AccountMenu() {
   const handleOpenSettings = () => {
     setAnchorEl(null)
     setSettingsOpen(true)
-  } 
+  }
 
   const { theme, toggleTheme } = React.useContext(CustomThemeContext)
 

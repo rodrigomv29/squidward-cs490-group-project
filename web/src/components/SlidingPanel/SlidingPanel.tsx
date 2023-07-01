@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react'
 
-import { useLazyQuery } from '@apollo/react-hooks'
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
@@ -23,12 +22,17 @@ function SlidingPannel() {
   const [topTenData, setTopTenData] = useState(null)
   const { currentPage } = useContext(CurrentPageContext)
 
+  console.log(`This is the current page ${currentPage}`)
+
   const category = currentPage === 'home' ? 'general' : currentPage
+
+  console.log(`But category is ${category}`)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getTopTen(category)
+        console.log(`got top ten data with category ${category}`)
         setTopTenData(response)
       } catch (error) {
         console.log('Error fetching top 10 data:', error)
@@ -46,12 +50,11 @@ function SlidingPannel() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  console.log(`this is top ten ${topTenData}`)
   const slides =
     topTenData != undefined && topTenData.length != 0
       ? topTenData
       : [{ title: 'Something went wrong', urlToImage: '' }]
-
 
   const [currentIndex, setCurrentIndex] = useState(0)
 

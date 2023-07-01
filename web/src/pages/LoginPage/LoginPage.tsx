@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useContext, useRef } from 'react'
 import { useEffect } from 'react'
 
 import {
@@ -13,14 +13,20 @@ import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import CurrentPageContext from 'src/CurrentPageContext'
 import { setStatus } from 'src/utils/storage'
 
 const LoginPage = () => {
   const { logIn } = useAuth()
+  const { toggleCurrentPage } = useContext(CurrentPageContext)
   const usernameRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
     usernameRef.current?.focus()
   }, [])
+
+  const handlePageChange = (page) => {
+    toggleCurrentPage(page)
+  }
 
   const onSubmit = async (data: Record<string, string>) => {
     const response = await logIn({
@@ -33,7 +39,18 @@ const LoginPage = () => {
     } else if (response.error) {
       toast.error(response.error)
     } else {
-      toast.success('Welcome back!')
+      await toast.promise(
+        new Promise((resolve) => {
+          setTimeout(resolve, 2000) // Adjust the delay to your desired duration
+        }),
+        {
+          loading: `Welcome back ${data.username}!`,
+          success: 'Loading..',
+          error: 'Error',
+        }
+      )
+
+      handlePageChange('home')
       signIn()
     }
   }

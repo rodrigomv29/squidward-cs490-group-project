@@ -337,7 +337,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               theme === 1 ? 'bg-gray-800' : 'bg-emerald-400'
             }`}
           >
-            <div className="navbar-container mx-0 flex h-[100%] w-full items-center justify-center px-8">
+            <div className="navbar-container mx-0 flex h-[100%] w-full items-center justify-center px-12">
               <ul
                 className={`flex w-full justify-between text-lg ${
                   theme === 1 ? 'text-emerald-400' : 'text-white'

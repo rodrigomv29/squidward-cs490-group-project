@@ -1,29 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import { Box, Heading, Link, Image, Text } from '@chakra-ui/react'
 import axios from 'axios'
 
 import { useLocation } from '@redwoodjs/router'
 
+import CurrentPageContext from 'src/CurrentPageContext'
 import NewsLayout from 'src/layouts/NewsLayout/NewsLayout'
 
 const SearchResultsPage = () => {
   const [searchResults, setSearchResults] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const location = useLocation()
+  const { toggleCurrentPage } = useContext(CurrentPageContext)
+  toggleCurrentPage(null)
 
   useEffect(() => {
     const query = new URLSearchParams(location.search).get('query')
     if (query) {
-      const apiKey = 'e1d9b8e504f94c2aaccc50b3b6bba68f';
-      const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${apiKey}`
+      const apiKey = 'e1d9b8e504f94c2aaccc50b3b6bba68f'
+      const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+        query
+      )}&apiKey=${apiKey}`
 
       axios
         .get(url)
         .then((response) => {
           const articles = response.data.articles
           articles.sort(
-(a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+            (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
           )
           setSearchResults(articles)
           setIsLoading(false)
@@ -31,7 +36,7 @@ const SearchResultsPage = () => {
         .catch((error) => {
           console.error(error)
           setIsLoading(false)
-})
+        })
     } else {
       setIsLoading(false)
     }
@@ -45,7 +50,7 @@ const SearchResultsPage = () => {
         </Heading>
         {isLoading ? (
           <Text>Loading...</Text>
-) : searchResults.length === 0 ? (
+        ) : searchResults.length === 0 ? (
           <Box>
             <Image
               src="https://media1.tenor.com/images/2025c85773b942247e4565847e43a5d0/tenor.gif?itemid=7619217"
@@ -69,7 +74,8 @@ const SearchResultsPage = () => {
                   {result.title}
                 </Link>
                 <Text fontSize="md" color="gray.500">
-                  Published on {new Date(result.publishedAt).toLocaleDateString()}
+                  Published on{' '}
+                  {new Date(result.publishedAt).toLocaleDateString()}
                 </Text>
               </Box>
             ))}

@@ -11,13 +11,16 @@ import { MetaTags } from '@redwoodjs/web'
 
 import Footer from 'src/components/Footer/Footer'
 import TopNewsByCategory from 'src/components/TopNewsByCategory/TopNewsByCategory'
+import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
-import { getArticles, getLatest, isHomePage, getIsHomePage } from 'src/utils/storage'
+import { getArticles, getLatest, isHomePage } from 'src/utils/storage'
 
 import ArticleGrid from '../../components/ArticleGrid/ArticleGrid'
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
 const CategoryPage = (categoryObject) => {
+  const { toggleCurrentPage } = useContext(CurrentPageContext)
+  toggleCurrentPage(categoryObject.category)
   isHomePage(0)
   async function fetchArticles(category) {
     try {
@@ -302,7 +305,10 @@ const CategoryPage = (categoryObject) => {
 
   return (
     <>
-      <MetaTags title="Category" description="Category page" />
+      <MetaTags
+        title={category.slice(0, 1).toUpperCase() + category.slice(1)}
+        description="Category page"
+      />
       <div
         className={`main-container h-screen max-h-screen w-full max-w-full transition-colors duration-300 ${handleTheme(
           'bg-gray-700',

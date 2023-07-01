@@ -99,7 +99,7 @@ export async function getTopTen(category: string) {
 export async function getDescription(category: string) {
   try {
     const response = await axios.get(
-      //`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
     )
     const data = response.data.articles
 
@@ -118,7 +118,7 @@ export async function getDescription(category: string) {
 export async function getLatest(category: string) {
   try {
     const response = await axios.get(
-      //`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
     )
     const data = response.data.articles
 
@@ -147,7 +147,7 @@ export async function getLatest(category: string) {
 export async function getArticles(category: string) {
   try {
     const response = await axios.get(
-      //`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
     )
     const data = response.data.articles
 

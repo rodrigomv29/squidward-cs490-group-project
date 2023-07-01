@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useContext } from 'react'
 
-// import { Link, routes } from '@redwoodjs/router'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { Box, IconButton } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -11,6 +10,7 @@ import { MetaTags } from '@redwoodjs/web'
 import ArticleList from 'src/components/ArticleList/ArticleList'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
+import currentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
 import { isHomePage } from 'src/utils/storage'
 
@@ -19,7 +19,8 @@ import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 const SignedInHomePage = () => {
   const { theme } = useContext(CustomThemeContext)
   const [refreshToggle, setRefreshToggle] = useState(true)
-
+  const { toggleCurrentPage } = useContext(currentPageContext)
+  toggleCurrentPage('home')
   isHomePage(1)
 
   const handleRefreshClick = () => {
