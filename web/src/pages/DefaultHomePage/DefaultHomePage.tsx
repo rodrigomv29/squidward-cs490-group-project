@@ -11,7 +11,7 @@ import ArticleList from 'src/components/ArticleList/ArticleList'
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
-import { getDescription } from 'src/utils/storage'
+import { getDescription, isHomePage } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
@@ -33,6 +33,7 @@ async function fetchDescriptionsForCategories(categories) {
 const DefaultHomePage = () => {
   const [descriptionData, setDescriptionData] = useState(null)
   const [refreshToggle, setRefreshToggle] = useState(true)
+  isHomePage(1)
 
   const handleRefreshClick = () => {
     setRefreshToggle(false)

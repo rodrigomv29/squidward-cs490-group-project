@@ -12,12 +12,15 @@ import ArticleList from 'src/components/ArticleList/ArticleList'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
 import CustomThemeContext from 'src/CustomThemeContext'
+import { isHomePage } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
 const SignedInHomePage = () => {
   const { theme } = useContext(CustomThemeContext)
   const [refreshToggle, setRefreshToggle] = useState(true)
+
+  isHomePage(1)
 
   const handleRefreshClick = () => {
     setRefreshToggle(false)

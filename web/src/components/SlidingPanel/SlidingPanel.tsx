@@ -48,9 +48,10 @@ function SlidingPannel() {
   }, [])
 
   const slides =
-    topTenData != undefined
+    topTenData != undefined && topTenData.length != 0
       ? topTenData
       : [{ title: 'Something went wrong', urlToImage: '' }]
+
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -84,15 +85,17 @@ function SlidingPannel() {
     <>
       <div className="group relative m-auto h-[95%] max-h-[90%] w-full max-w-full  px-12 py-4">
         <div
-          style={{ backgroundImage: `url(${slides[currentIndex].urlToImage})` }}
+          style={{
+            backgroundImage: `url(${slides[currentIndex]?.urlToImage})`,
+          }}
           className="h-full rounded-2xl bg-cover bg-center bg-no-repeat duration-500"
         >
           <div className="main-header absolute bottom-10 left-8 right-8 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.4] px-10 py-4 text-white">
             <div className="title text-xl font-bold">
-              {slides[currentIndex].title}
+              {slides[currentIndex]?.title}
             </div>
             <div className="main-description text-sm">
-              {slides[currentIndex].description}
+              {slides[currentIndex]?.description}
             </div>
             <div className="read-more">
               <Link

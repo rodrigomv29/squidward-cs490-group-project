@@ -75,8 +75,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     toggleCurrentPage(page)
   }
 
-  console.log(`Current Page ${currentPage}`)
-
   const signIn = () => {
     if (status === 0) {
       navigate(routes.login()) // Redirect to sign-in page
@@ -183,7 +181,12 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                 </div>
               </div>
               {/* Main Logo */}
-              <Link to={routes.home()}>
+              <Link
+                to={routes.home()}
+                onClick={() => {
+                  handlePageChange('home')
+                }}
+              >
                 <div className="main-logo-container flex flex-grow items-center justify-center">
                   <div className="main-header-text flex items-center">
                     <div className="main-logo-squidward mx-2 h-10 rounded-md bg-emerald-400 px-3 py-1.5 text-2xl font-extrabold text-white">

@@ -12,12 +12,13 @@ import { MetaTags } from '@redwoodjs/web'
 import Footer from 'src/components/Footer/Footer'
 import TopNewsByCategory from 'src/components/TopNewsByCategory/TopNewsByCategory'
 import CustomThemeContext from 'src/CustomThemeContext'
-import { getArticles, getLatest } from 'src/utils/storage'
+import { getArticles, getLatest, isHomePage, getIsHomePage } from 'src/utils/storage'
 
 import ArticleGrid from '../../components/ArticleGrid/ArticleGrid'
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
 const CategoryPage = (categoryObject) => {
+  isHomePage(0)
   async function fetchArticles(category) {
     try {
       const articles = await getArticles(category)
