@@ -3,7 +3,6 @@ import type {
   QueryResolvers,
   MutationResolvers,
   CategoryRelationResolvers,
-  Article,
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
@@ -88,25 +87,53 @@ export const createCategoryAPI: MutationResolvers['createCategory'] = async ({
   return createdCategory
 }
 
-export const getArticles = async ({ category }) => {
-  const query = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
+export const getArticles = async () => {
+  const categories = [
+    'general',
+    'business',
+    'technology',
+    'health',
+    'science',
+    'sports',
+    'entertainment',
+  ] // Add more categories if needed
+
+  const results = {}
+
+  for (const category of categories) {
+    const query = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&pageSize=100&apiKey=${process.env.NEWSAPI_KEY}`
+    const response = await fetch(query)
+    const json = await response.json()
+    const articlesArr = json.articles
+
+    const input = {
+      input: {
+        name: category,
+        articles: articlesArr,
+      },
+    }
+
+    const result = await createCategoryAPI(input)
+    results[category] = result
+  }
+
+  return results
+}
+
+export const getArticlesByCategory = async ({ category }) => {
+  const query = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&pageSize=100&apiKey=${process.env.NEWSAPI_KEY}`
   const response = await fetch(query)
-
   const json = await response.json()
+  const articlesArr = json.articles
 
-  const articlesArr: Array<Article> = json.articles
   const input = {
     input: {
       name: category,
       articles: articlesArr,
     },
   }
-  const _result = await createCategoryAPI(input)
 
-  return {
-    category,
-    articlesArr,
-  }
+  const result = await createCategoryAPI(input)
+
+  return result
 }
-
-console.log(`This is coming from categories.ts`)

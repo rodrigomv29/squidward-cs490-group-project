@@ -4,6 +4,8 @@ import { gql } from 'graphql-tag'
 
 import { useQuery, useMutation } from '@redwoodjs/web'
 
+import ArticleDistributor from '../ArticleDistributor/ArticleDistributor'
+
 const GET_ALL_ARTICLE_IDS_QUERY = gql`
   query GetAllArticleIds {
     articles {
@@ -25,9 +27,7 @@ const GET_ARTICLES_QUERY = gql`
   query FindArticleQuery($category: String!) {
     article: getArticles(category: $category) {
       articles {
-        author
-        title
-        description
+        id
       }
     }
   }
@@ -53,11 +53,10 @@ function useGetArticlesById() {
 const isFirstLoad = sessionStorage.getItem('isFirstLoad')
 const fetchArticles = sessionStorage.getItem('fetchArticles')
 
-const FetchArticles = () => {
+export const FetchArticles = () => {
   const [shouldFetchArticles, setShouldFetchArticles] = useState(true)
-  const category = 'general'
   const { loading } = useQuery(GET_ARTICLES_QUERY, {
-    variables: { category },
+    variables: { category: '' },
     skip: !shouldFetchArticles,
   })
 
@@ -105,15 +104,16 @@ export const useHandleDeleteArticles = async () => {
 function ArticleHandler() {
   useEffect(() => {
     if (isFirstLoad === null) {
-      // Flag variable doesn't exist in sessionStorage, indicating the first load
-      console.log('Retrieving Articles')
-
-      // Set the flag variable in sessionStorage to indicate the code has already run
       sessionStorage.setItem('isFirstLoad', 'true')
     }
   }, [])
 
-  return <div>{fetchArticles === null && <FetchArticles />}</div>
+  return (
+    <div>
+      {fetchArticles === null && <FetchArticles />}
+      <ArticleDistributor />
+    </div>
+  )
 }
 
 export default ArticleHandler

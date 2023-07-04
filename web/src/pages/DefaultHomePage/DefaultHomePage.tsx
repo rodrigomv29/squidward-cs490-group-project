@@ -8,12 +8,14 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { MetaTags } from '@redwoodjs/web'
 
 import ArticleList from 'src/components/ArticleList/ArticleList'
+import ArticleRefresher from 'src/components/ArticleRefresher/ArticleRefresher'
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
 import { getDescription, isHomePage } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
+import { useRefreshToggle } from '../SignedInHomePage/SignedInHomePage'
 
 async function fetchDescriptionsForCategories(categories) {
   try {
@@ -32,15 +34,8 @@ async function fetchDescriptionsForCategories(categories) {
 
 const DefaultHomePage = () => {
   const [descriptionData, setDescriptionData] = useState(null)
-  const [refreshToggle, setRefreshToggle] = useState(true)
+  const [refreshToggle, handleRefreshClick] = useRefreshToggle()
   isHomePage(1)
-
-  const handleRefreshClick = () => {
-    setRefreshToggle(false)
-    setTimeout(() => {
-      setRefreshToggle(true)
-    }, 800)
-  }
 
   const categoriesArray = [
     'General',
@@ -139,7 +134,11 @@ const DefaultHomePage = () => {
                         width: 70,
                         height: 70,
                       }}
-                      onClick={handleRefreshClick}
+                      onClick={() => {
+                        if (typeof handleRefreshClick === 'function') {
+                          handleRefreshClick()
+                        }
+                      }}
                     >
                       <RefreshIcon fontSize="inherit" />
                     </IconButton>
@@ -148,8 +147,6 @@ const DefaultHomePage = () => {
               </div>
               <div className="category-grid-container h-[90%] overflow-auto">
                 {refreshToggle ? (
-                  <ArticleList />
-                ) : (
                   <div className="h-[80%]">
                     <Box
                       sx={{
@@ -163,6 +160,8 @@ const DefaultHomePage = () => {
                       <CircularProgress size={300} sx={{ color: '#34D399' }} />
                     </Box>
                   </div>
+                ) : (
+                  <ArticleList />
                 )}
               </div>
             </div>
@@ -173,6 +172,7 @@ const DefaultHomePage = () => {
             </div>
           </div>
         </div>
+        <ArticleRefresher refreshToggle={refreshToggle} />
         <Footer />
       </div>
     </>

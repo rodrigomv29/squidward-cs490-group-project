@@ -7,9 +7,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import { MetaTags } from '@redwoodjs/web'
 
-import ArticleHandler from 'src/components/ArticleHandler/ArticleHandler'
 import ArticleList from 'src/components/ArticleList/ArticleList'
-import CategoriesCell from 'src/components/CategoriesCell/CategoriesCell'
+import ArticleRefresher from 'src/components/ArticleRefresher/ArticleRefresher'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
 import currentPageContext from 'src/CurrentPageContext'
@@ -18,19 +17,35 @@ import { isHomePage } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
+export const useRefreshToggle = () => {
+  const [refreshToggle, setRefreshToggle] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(true)
+
+  const handleRefreshClick: () => void = () => {
+    if (isRefreshing) {
+      setRefreshToggle(true)
+
+      setTimeout(() => {
+        setRefreshToggle(false)
+      }, 1000)
+
+      setIsRefreshing(false)
+
+      setTimeout(() => {
+        setIsRefreshing(true)
+      }, 10000) // Sets
+    }
+  }
+
+  return [refreshToggle, handleRefreshClick]
+}
+
 const SignedInHomePage = () => {
   const { theme } = useContext(CustomThemeContext)
-  const [refreshToggle, setRefreshToggle] = useState(true)
+  const [refreshToggle, handleRefreshClick] = useRefreshToggle()
   const { toggleCurrentPage } = useContext(currentPageContext)
   toggleCurrentPage('home')
   isHomePage(1)
-
-  const handleRefreshClick = () => {
-    setRefreshToggle(false)
-    setTimeout(() => {
-      setRefreshToggle(true)
-    }, 800)
-  }
 
   return (
     <>
@@ -94,7 +109,11 @@ const SignedInHomePage = () => {
                           height: 70,
                           color: 'white',
                         }}
-                        onClick={handleRefreshClick}
+                        onClick={() => {
+                          if (typeof handleRefreshClick === 'function') {
+                            handleRefreshClick()
+                          }
+                        }}
                       >
                         <RefreshIcon fontSize="inherit" />
                       </IconButton>
@@ -107,7 +126,11 @@ const SignedInHomePage = () => {
                           height: 70,
                           color: 'black',
                         }}
-                        onClick={handleRefreshClick}
+                        onClick={() => {
+                          if (typeof handleRefreshClick === 'function') {
+                            handleRefreshClick()
+                          }
+                        }}
                       >
                         <RefreshIcon fontSize="inherit" />
                       </IconButton>
@@ -116,8 +139,6 @@ const SignedInHomePage = () => {
                 </span>
               </div>
               {refreshToggle ? (
-                <ArticleList />
-              ) : (
                 <div className="h-[80%]">
                   <Box
                     sx={{
@@ -131,13 +152,14 @@ const SignedInHomePage = () => {
                     <CircularProgress size={300} sx={{ color: '#34D399' }} />
                   </Box>
                 </div>
+              ) : (
+                <ArticleList />
               )}
             </div>
           </div>
         </div>
         <div className="footer mt-0">
-          <ArticleHandler />
-          <CategoriesCell />
+          <ArticleRefresher refreshToggle={refreshToggle} />
           <Footer />
         </div>
       </div>

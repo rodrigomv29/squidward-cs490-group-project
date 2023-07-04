@@ -2,10 +2,10 @@ export const schema = gql`
   type Article {
     id: Int!
     sourceId: String!
-    sourceName: String!
+    sourceName: String
     author: String
     title: String!
-    description: String!
+    description: String
     url: String!
     urlToImage: String
     publishedAt: DateTime!
@@ -21,7 +21,7 @@ export const schema = gql`
 
   input CreateArticleInput {
     sourceId: String!
-    sourceName: String!
+    sourceName: String
     author: String
     title: String!
     description: String!
