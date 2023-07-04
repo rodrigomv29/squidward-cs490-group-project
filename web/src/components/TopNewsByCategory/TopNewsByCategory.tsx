@@ -10,8 +10,6 @@ function TopNewsByCategory(articlesArray: { articles }) {
 
   const articles = articlesArray != null && articlesArray.articles.slice(10, 15)
 
-  console.log(articles)
-
   return (
     <div className="flex max-h-full flex-col">
       <div className="categories-container flex h-full flex-grow flex-col justify-between px-4 py-8">

@@ -108,3 +108,5 @@ export const getArticles = async ({ category }) => {
     articlesArr,
   }
 }
+
+console.log(`This is coming from categories.ts`)

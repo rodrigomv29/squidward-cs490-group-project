@@ -7,7 +7,9 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import { MetaTags } from '@redwoodjs/web'
 
+import ArticleHandler from 'src/components/ArticleHandler/ArticleHandler'
 import ArticleList from 'src/components/ArticleList/ArticleList'
+import CategoriesCell from 'src/components/CategoriesCell/CategoriesCell'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
 import currentPageContext from 'src/CurrentPageContext'
@@ -133,7 +135,9 @@ const SignedInHomePage = () => {
             </div>
           </div>
         </div>
-        <div className="footer mt-0 bg-blue-600">
+        <div className="footer mt-0">
+          <ArticleHandler />
+          <CategoriesCell />
           <Footer />
         </div>
       </div>
