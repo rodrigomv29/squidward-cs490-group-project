@@ -8,8 +8,8 @@ export const schema = gql`
   type Query {
     getArticles(category: String): Category! @skipAuth
     getArticlesByCategory(category: String!): Category! @skipAuth
-    categories: [Category!]! @requireAuth
-    category(id: Int!): Category @requireAuth
+    categories: [Category!]! @skipAuth
+    category(id: Int!): Category @skipAuth
     articles: [Article!]!
   }
 
@@ -22,7 +22,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createCategory(input: CreateCategoryInput!): Category! @requireAuth
+    createCategory(input: CreateCategoryInput!): Category! @skipAuth
     updateCategory(id: Int!, input: UpdateCategoryInput!): Category! @skipAuth
     deleteCategory(id: Int!): Category! @skipAuth
   }

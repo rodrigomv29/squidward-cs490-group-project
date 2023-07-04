@@ -1,7 +1,7 @@
 export const schema = gql`
   type Article {
     id: Int!
-    sourceId: String!
+    sourceId: String
     sourceName: String
     author: String
     title: String!
@@ -15,8 +15,8 @@ export const schema = gql`
   }
 
   type Query {
-    articles: [Article!]! @requireAuth
-    article(id: Int!): Article @requireAuth
+    articles: [Article!]! @skipAuth
+    article(id: Int!): Article @skipAuth
   }
 
   input CreateArticleInput {

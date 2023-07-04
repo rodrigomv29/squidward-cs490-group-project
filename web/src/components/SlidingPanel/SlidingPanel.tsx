@@ -1,50 +1,38 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react'
 
+import { Box, CircularProgress } from '@mui/material'
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
-import { Link, routes } from '@redwoodjs/router'
-
 import CurrentPageContext from 'src/CurrentPageContext'
-import { getTopTen } from 'src/utils/storage'
 
-export const QUERY = gql`
-  query FindArticlesQuery {
-    articles {
-      author
-      title
-      description
-    }
-  }
-`
+import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
+
+const processData = (categoryArticlesMap, currentPage) => {
+  const category = currentPage === 'home' ? 'general' : currentPage
+  const categoryArticles = categoryArticlesMap[category].map((article) => ({
+    title: article.title,
+    description: article.description,
+    author: article.author,
+    urlToImage: article.urlToImage,
+    url: article.url,
+    publishedAt: article.publishedAt,
+  }))
+  return categoryArticles
+}
 
 function SlidingPannel() {
-  const [topTenData, setTopTenData] = useState(null)
   const { currentPage } = useContext(CurrentPageContext)
+  const { categoryArticlesMap, loading } = useGetArticles()
 
-  const category = currentPage === 'home' ? 'general' : currentPage
+  let categoryArticles = []
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getTopTen(category)
-        setTopTenData(response)
-      } catch (error) {
-        console.log('Error fetching top 10 data:', error)
-      }
-    }
+  if (!loading) {
+    categoryArticles = processData(categoryArticlesMap, currentPage)
+  }
 
-    fetchData()
-
-    const interval = setInterval(() => {
-      fetchData()
-    }, 3600000) // 1 hour in milliseconds
-
-    return () => {
-      clearInterval(interval)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const topTenData =
+    categoryArticles.length > 0 ? categoryArticles.slice(0, 10) : []
 
   const slides =
     topTenData != undefined
@@ -79,6 +67,25 @@ function SlidingPannel() {
     }
   }, [currentIndex, nextSlide])
 
+  if (categoryArticles.length === 0 || loading) {
+    // Render loading state or placeholder
+    return (
+      <div className="h-[80%]">
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            height: '100%',
+            alignItems: 'center',
+            color: '#34D399',
+          }}
+        >
+          <CircularProgress size={200} sx={{ color: '#34D399' }} />
+        </Box>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="group relative m-auto h-[95%] max-h-[90%] w-full max-w-full  px-12 py-4">
@@ -96,13 +103,15 @@ function SlidingPannel() {
               {slides[currentIndex]?.description}
             </div>
             <div className="read-more">
-              <Link
-                to={routes.home()}
+              <a
+                href={slides[currentIndex]?.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="read-more-link group relative inline-block transition-opacity duration-300 hover:opacity-60"
               >
                 Read More
                 <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-emerald-400 transition-transform duration-300 group-hover:scale-x-100"></span>
-              </Link>
+              </a>
             </div>
           </div>
           <div className="absolute bottom-0 left-4 right-4 flex justify-center px-10 py-4">

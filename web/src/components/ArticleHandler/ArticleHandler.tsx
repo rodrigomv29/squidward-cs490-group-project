@@ -4,7 +4,7 @@ import { gql } from 'graphql-tag'
 
 import { useQuery, useMutation } from '@redwoodjs/web'
 
-import ArticleDistributor from '../ArticleDistributor/ArticleDistributor'
+import ArticleDistributor from '../ArticleDistrobutor/ArticleDistrobutor'
 
 const GET_ALL_ARTICLE_IDS_QUERY = gql`
   query GetAllArticleIds {
