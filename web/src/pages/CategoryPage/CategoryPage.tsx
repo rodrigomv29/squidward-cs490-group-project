@@ -1,8 +1,5 @@
-// import { Link, routes } from '@redwoodjs/router'
+import React, { useContext } from 'react'
 
-import React, { useEffect, useState, useContext } from 'react'
-
-// import { Link, routes } from '@redwoodjs/router'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { Box, IconButton } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -15,40 +12,19 @@ import TopNewsByCategory from 'src/components/TopNewsByCategory/TopNewsByCategor
 import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
 import { useRefreshToggle } from 'src/pages/SignedInHomePage/SignedInHomePage'
-import { getArticles, getLatest, isHomePage } from 'src/utils/storage'
+import { isHomePage } from 'src/utils/storage'
 
 import ArticleGrid from '../../components/ArticleGrid/ArticleGrid'
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 
 const CategoryPage = (categoryObject) => {
   const { toggleCurrentPage } = useContext(CurrentPageContext)
+
   toggleCurrentPage(categoryObject.category)
   isHomePage(0)
-  async function fetchArticles(category) {
-    try {
-      const articles = await getArticles(category)
-      return articles
-    } catch (error) {
-      console.log('Error fetching description article for categories:', error)
-      throw error
-    }
-  }
-
-  async function fetchLatest(category) {
-    try {
-      const articles = await getLatest(category)
-      return articles
-    } catch (error) {
-      console.log('Error fetching description article for categories:', error)
-      throw error
-    }
-  }
 
   const category = categoryObject.category
   localStorage.setItem('currentPage', category)
-
-  const [articles, setArticles] = useState([])
-  const [latest, setLatest] = useState([])
   const [refreshToggle, handleRefreshClick] = useRefreshToggle()
 
   const { theme } = useContext(CustomThemeContext)
@@ -57,56 +33,11 @@ const CategoryPage = (categoryObject) => {
     return theme === 1 ? firstArg : secondArg
   }
 
-  // Use effect to control api fetching
-  useEffect(() => {
-    fetchArticles(category)
-      .then((articles) => {
-        setArticles(articles)
-      })
-      .catch((error) => {
-        console.log('Error fetching descriptions:', error)
-      })
-
-    const interval = setInterval(() => {
-      fetchArticles(category)
-        .then((articles) => {
-          setArticles(articles)
-        })
-        .catch((error) => {
-          console.log('Error fetching descriptions:', error)
-        })
-    }, 3600000) // 1 hour in milliseconds
-
-    return () => {
-      clearInterval(interval)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    fetchLatest(category)
-      .then((articles) => {
-        setLatest(articles)
-      })
-      .catch((error) => {
-        console.log('Error fetching descriptions:', error)
-      })
-
-    const interval = setInterval(() => {
-      fetchLatest(category)
-        .then((articles) => {
-          setLatest(articles)
-        })
-        .catch((error) => {
-          console.log('Error fetching descriptions:', error)
-        })
-    }, 3600000) // 1 hour in milliseconds
-
-    return () => {
-      clearInterval(interval)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category])
+  const tempData = [
+    { title: '', description: '' },
+    { title: '', description: '' },
+    { title: '', description: '' },
+  ]
 
   return (
     <>
@@ -142,7 +73,7 @@ const CategoryPage = (categoryObject) => {
               {category}
             </div>
             <div className="category-list-container max-h-1/3 flex h-[79.9%] flex-col justify-start overflow-auto">
-              <TopNewsByCategory articles={articles} />
+              <TopNewsByCategory />
             </div>
           </div>
         </div>
@@ -229,7 +160,7 @@ const CategoryPage = (categoryObject) => {
                     </Box>
                   </div>
                 ) : (
-                  <ArticleGrid items={latest} itemsPerPage={6} />
+                  <ArticleGrid items={tempData} itemsPerPage={6} />
                 )}
               </div>
             </div>

@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 export const setStatus = (status: number) => {
   localStorage.setItem('status', String(status))
 }
@@ -13,18 +11,6 @@ export const getFirstRender = () => {
 export const getStatus = () => {
   const status = localStorage.getItem('status')
   return status ? parseInt(status, 10) : null
-}
-
-// Set the status in local storage
-export const setFirstRender = () => {
-  const isFirstRender = getFirstRender()
-
-  if (isFirstRender === null) {
-    localStorage.setItem('first_render', '1')
-    return true
-  } else {
-    return false
-  }
 }
 
 export const isHomePage = (status: number) => {
@@ -72,89 +58,4 @@ export function getTimeSincePublication(publishedAt) {
   minutes = Math.abs(parseInt(currentTime.minutes) - minutes)
 
   return { hours, minutes }
-}
-
-export async function getTopTen(category: string) {
-  try {
-    const response = await axios.get(
-      //`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const articles = response.data.articles
-
-    const filteredArticles = articles.filter((article) => {
-      return article.urlToImage && article.description
-    })
-
-    const topTenArticles = filteredArticles.slice(0, 10)
-    console.log('called top 10')
-    return topTenArticles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
-}
-
-export async function getDescription(category: string) {
-  try {
-    const response = await axios.get(
-      //`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const data = response.data.articles
-
-    const filteredArticles = data.filter((article) => {
-      return article.description
-    })
-
-    const articles = filteredArticles.slice(0, 1)
-    return articles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
-}
-
-export async function getLatest(category: string) {
-  try {
-    const response = await axios.get(
-      //`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const data = response.data.articles
-
-    const filteredArticles = data.filter((article) => {
-      return article.urlToImage
-    })
-
-    const articles = filteredArticles
-      .slice(10, filteredArticles.length - 1)
-      .map((article) => ({
-        title: article.title,
-        description: article.description,
-        image: article.urlToImage,
-        sourceId: article.source.id,
-        sourceName: article.source.name,
-        publishedAt: article.publishedAt,
-      }))
-
-    return articles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
-}
-
-export async function getArticles(category: string) {
-  try {
-    const response = await axios.get(
-      //`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const data = response.data.articles
-
-    const filteredArticles = data.filter((article) => {
-      return article.description && article.urlToImage
-    })
-    return filteredArticles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
 }

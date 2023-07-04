@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 // import { Link, routes } from '@redwoodjs/router'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -12,88 +12,14 @@ import ArticleRefresher from 'src/components/ArticleRefresher/ArticleRefresher'
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
-import { getDescription, isHomePage } from 'src/utils/storage'
+import { isHomePage } from 'src/utils/storage'
 
 import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 import { useRefreshToggle } from '../SignedInHomePage/SignedInHomePage'
 
-async function fetchDescriptionsForCategories(categories) {
-  try {
-    const descriptionArticle = {}
-
-    for (const category of categories) {
-      const categoryDescription = await getDescription(category)
-      descriptionArticle[category] = categoryDescription
-    }
-    return descriptionArticle
-  } catch (error) {
-    console.log('Error fetching description article for categories:', error)
-    throw error
-  }
-}
-
 const DefaultHomePage = () => {
-  const [descriptionData, setDescriptionData] = useState(null)
   const [refreshToggle, handleRefreshClick] = useRefreshToggle()
   isHomePage(1)
-
-  const categoriesArray = [
-    'General',
-    'Business',
-    'Entertainment',
-    'Sports',
-    'Health',
-    'Science',
-    'Technology',
-  ]
-
-  // Use effect to control api fetching
-  useEffect(() => {
-    fetchDescriptionsForCategories(categoriesArray)
-      .then((descriptions) => {
-        const updatedDescriptions = {
-          ...descriptions,
-          ...descriptions,
-        }
-        setDescriptionData(updatedDescriptions)
-      })
-      .catch((error) => {
-        console.log('Error fetching descriptions:', error)
-      })
-
-    const interval = setInterval(() => {
-      fetchDescriptionsForCategories(categoriesArray)
-        .then((descriptions) => {
-          const updatedDescriptions = {
-            ...descriptions,
-            ...descriptions,
-          }
-
-          setDescriptionData(updatedDescriptions)
-        })
-        .catch((error) => {
-          console.log('Error fetching descriptions:', error)
-        })
-    }, 3600000) // 1 hour in milliseconds
-
-    return () => {
-      clearInterval(interval)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const categoryDescriptions = categoriesArray.map((category) => ({
-    name: category,
-    article:
-      descriptionData && descriptionData[category]?.[0]
-        ? descriptionData[category][0]
-        : {
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sit amet arcu ac dolor scelerisque tincidunt. Phasellus faucibus, dui ut sollicitudin viverra, nibh velit vulputate mauris, sed posuere tortor purus vel elit. Proin placerat, lacus non viverra auctor, risus arcu semper velit, ac sollicitudin odio mauris ac lectus. Nulla non erat ut odio feugiat blandit.',
-          },
-  }))
-
-  const categories = categoryDescriptions
 
   return (
     <>
@@ -113,7 +39,7 @@ const DefaultHomePage = () => {
               Top Stories
             </div>
             <div className="category-list-container max-h-1/3 flex h-[79.9%] flex-col justify-start overflow-auto">
-              <CategoryListItems categories={categories} />
+              <CategoryListItems />
             </div>
           </div>
         </div>
@@ -125,7 +51,7 @@ const DefaultHomePage = () => {
                 <span style={{ cursor: 'not-allowed' }}>
                   <div className="flex items-center">
                     <span className="text-xl font-bold text-gray-500">
-                      Refresh Articles
+                      Refresh
                     </span>
                     <IconButton
                       aria-label="delete"

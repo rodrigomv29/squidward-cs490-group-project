@@ -28,6 +28,7 @@ export const useGetArticles = () => {
   const categoryArticlesMap =
     !loading && data
       ? data.categories.reduce((map, category) => {
+          const categoryName = category.name
           map[category.name] = category.articles.map((article) => ({
             id: article.id,
             title: article.title,
@@ -38,6 +39,7 @@ export const useGetArticles = () => {
             urlToImage: article.urlToImage,
             publishedAt: article.publishedAt,
             content: article.content,
+            category: categoryName,
           }))
           return map
         }, {})

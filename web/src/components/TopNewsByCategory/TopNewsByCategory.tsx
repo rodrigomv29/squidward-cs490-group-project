@@ -1,14 +1,36 @@
 import React from 'react'
 import { useContext } from 'react'
 
-import { Link, routes } from '@redwoodjs/router'
-
+import { useGetArticles } from 'src/components/ArticleDistrobutor/ArticleDistrobutor'
+import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
 
-function TopNewsByCategory(articlesArray: { articles }) {
-  const { theme } = useContext(CustomThemeContext)
+const processData = (categoryArticlesMap, currentPage) => {
+  const category = currentPage === 'home' ? 'general' : currentPage
+  const categoryArticles = categoryArticlesMap[category].map((article) => ({
+    title: article.title,
+    description: article.description,
+    url: article.url,
+    publishedAt: article.publishedAt,
+    content: article.content,
+    category: article.category,
+  }))
+  return categoryArticles
+}
 
-  const articles = articlesArray != null && articlesArray.articles.slice(10, 15)
+function TopNewsByCategory() {
+  const { theme } = useContext(CustomThemeContext)
+  const { currentPage } = useContext(CurrentPageContext)
+  const { categoryArticlesMap, loading } = useGetArticles()
+
+  let categoryArticles = []
+
+  if (!loading) {
+    categoryArticles = processData(categoryArticlesMap, currentPage)
+  }
+
+  const articles =
+    categoryArticles.length > 0 ? categoryArticles.slice(10, 15) : []
 
   return (
     <div className="flex max-h-full flex-col">
@@ -16,8 +38,8 @@ function TopNewsByCategory(articlesArray: { articles }) {
         <div className="items-controller  max-h-full">
           <div className="main-container overflow-auto ">
             {articles &&
-              articles.map((category, index) => (
-                <div key={category.name} className="mb-2 flex flex-wrap">
+              articles.map((article, index) => (
+                <div key={article.title} className="mb-2 flex flex-wrap">
                   <span
                     className={`relative flex w-1/5 flex-col items-center justify-center text-3xl font-bold transition-colors duration-200 ${
                       theme === 1 ? 'text-white' : 'text-black'
@@ -28,22 +50,30 @@ function TopNewsByCategory(articlesArray: { articles }) {
                   </span>
 
                   <div className="category-container flex w-4/5 flex-col items-center justify-center py-2">
-                    <span className="flex justify-center text-left font-bold text-emerald-400">
-                      {category.name}
+                    <span className="mb-1 flex justify-center text-left font-bold text-emerald-400">
+                      {article.title.slice(0, 90) + '...'}
                     </span>
-                    <Link to={routes.home()}>
+                    <a
+                      href={article?.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <span className="flex justify-center px-4">
                         <span
                           className={`text-sm transition-colors duration-200 hover:underline ${
                             theme === 1 ? 'text-white' : 'text-black'
                           }`}
                         >
-                          {category && category.description.length > 200
-                            ? category.description.slice(0, 200) + '...'
-                            : category.description}
+                          {article && article.description?.length > 200
+                            ? article.description?.slice(0, 200) + '...'
+                            : article.description
+                            ? article.description
+                            : article.content
+                            ? article.content
+                            : 'This article doesnt have a description or content'}
                         </span>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               ))}
