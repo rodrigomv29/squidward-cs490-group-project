@@ -72,8 +72,6 @@ function ArticleList() {
     if (userSettings.user.science) categoryArray.push('science')
     if (userSettings.user.sports) categoryArray.push('sports')
     if (userSettings.user.technology) categoryArray.push('technology')
-
-    console.log(categoryArray)
   }
 
   const handlePageChange = (page: string) => {
