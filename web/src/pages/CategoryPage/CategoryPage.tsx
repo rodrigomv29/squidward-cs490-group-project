@@ -33,12 +33,6 @@ const CategoryPage = (categoryObject) => {
     return theme === 1 ? firstArg : secondArg
   }
 
-  const tempData = [
-    { title: '', description: '' },
-    { title: '', description: '' },
-    { title: '', description: '' },
-  ]
-
   return (
     <>
       <MetaTags
@@ -46,7 +40,7 @@ const CategoryPage = (categoryObject) => {
         description="Category page"
       />
       <div
-        className={`main-container h-screen max-h-screen w-full max-w-full transition-colors duration-300 ${handleTheme(
+        className={`main-container relative h-screen max-h-screen w-full max-w-full transition-colors duration-300 ${handleTheme(
           'bg-gray-700',
           'bg-white'
         )}`}
@@ -78,11 +72,10 @@ const CategoryPage = (categoryObject) => {
           </div>
         </div>
         <div
-          className={`main-content colors flex h-[90%] w-full pb-10 transition duration-200 ${handleTheme(
+          className={`main-content colors flex h-[102%] w-full pb-10 transition duration-200 ${handleTheme(
             'bg-gray-700',
             'bg-white'
           )}`}
-          style={{ marginTop: '-50px' }}
         >
           <div className="latest-news-container w-[100%]">
             <div className="h-full w-full px-10">
@@ -160,7 +153,9 @@ const CategoryPage = (categoryObject) => {
                     </Box>
                   </div>
                 ) : (
-                  <ArticleGrid items={tempData} itemsPerPage={6} />
+                  <div className="h-screen">
+                    <ArticleGrid itemsPerPage={6} />
+                  </div>
                 )}
               </div>
             </div>

@@ -26,36 +26,25 @@ export const getIsHomePage = () => {
   }
 }
 
-export function getCurrentMilitaryTime(): {
-  hours: string
-  minutes: string
-  militaryTime: string
-} {
-  const now = new Date()
-  const hours = now.getHours().toString().padStart(2, '0')
-  const minutes = now.getMinutes().toString().padStart(2, '0')
+const insertionSort = (array) => {
+  const length = array.length
 
-  const militaryTime = `${hours}:${minutes}`
-  return { hours, minutes, militaryTime }
-}
+  for (let i = 1; i < length; i++) {
+    const current = array[i]
+    let j = i - 1
 
-export function getTimeSincePublication(publishedAt) {
-  const dateTimeString = publishedAt
-  const regex = /T(\d{2}):(\d{2})/
-  const matches = regex.exec(dateTimeString)
+    while (j >= 0 && array[j].publishedAt < current.publishedAt) {
+      array[j + 1] = array[j]
+      j--
+    }
 
-  let hours = 0
-  let minutes = 0
-
-  const currentTime = getCurrentMilitaryTime()
-
-  if (matches && matches.length > 2) {
-    hours = parseInt(matches[1], 10)
-    minutes = parseInt(matches[2], 10)
+    array[j + 1] = current
   }
 
-  hours = Math.abs(parseInt(currentTime.hours) - hours)
-  minutes = Math.abs(parseInt(currentTime.minutes) - minutes)
+  return array
+}
 
-  return { hours, minutes }
+export const sortArticlesByDate = (articleArray) => {
+  insertionSort(articleArray)
+  return articleArray
 }

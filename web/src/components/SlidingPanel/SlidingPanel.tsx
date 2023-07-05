@@ -5,6 +5,7 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
 import CurrentPageContext from 'src/CurrentPageContext'
+import { sortArticlesByDate } from 'src/utils/storage'
 
 import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 
@@ -32,7 +33,9 @@ function SlidingPannel() {
   }
 
   const topTenData =
-    categoryArticles.length > 0 ? categoryArticles.slice(0, 10) : []
+    categoryArticles.length > 0
+      ? sortArticlesByDate(categoryArticles.slice(0, 10))
+      : []
 
   const slides =
     topTenData != undefined
@@ -95,12 +98,22 @@ function SlidingPannel() {
           }}
           className="h-full rounded-2xl bg-cover bg-center bg-no-repeat duration-500"
         >
-          <div className="main-header absolute bottom-10 left-8 right-8 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.4] px-10 py-4 text-white">
+          <div className="main-header absolute bottom-10 left-8 right-8 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.6] px-10 py-4 text-white">
             <div className="title text-xl font-bold">
               {slides[currentIndex]?.title}
             </div>
             <div className="main-description text-sm">
               {slides[currentIndex]?.description}
+            </div>
+            <div className="published-at-container text-white">
+              Published At:&nbsp;
+              {slides[currentIndex]?.publishedAt.slice(5, 7)}-
+              {slides[currentIndex]?.publishedAt.slice(8, 10)}-
+              {slides[currentIndex]?.publishedAt.slice(0, 4)}&nbsp;at&nbsp;
+              {slides[currentIndex]?.publishedAt.slice(
+                slides[currentIndex]?.publishedAt.indexOf('T') + 1,
+                slides[currentIndex]?.publishedAt.length - 5
+              )}
             </div>
             <div className="read-more">
               <a

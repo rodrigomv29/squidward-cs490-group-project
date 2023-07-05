@@ -34,6 +34,7 @@ export const useGetArticles = () => {
             title: article.title,
             description: article.description,
             sourceName: article.sourceName,
+            sourceId: article.sourceId,
             author: article.author,
             url: article.url,
             urlToImage: article.urlToImage,
