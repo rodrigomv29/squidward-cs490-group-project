@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import { MetaTags } from '@redwoodjs/web'
 
-import ArticleList from 'src/components/ArticleList/ArticleList'
+import ArticleListDefault from 'src/components/ArticleListDefault/ArticleListDefault'
 import ArticleRefresher from 'src/components/ArticleRefresher/ArticleRefresher'
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
 import Footer from 'src/components/Footer/Footer'
@@ -87,7 +87,7 @@ const DefaultHomePage = () => {
                     </Box>
                   </div>
                 ) : (
-                  <ArticleList />
+                  <ArticleListDefault />
                 )}
               </div>
             </div>

@@ -1,85 +1,35 @@
 import React from 'react'
 import { useContext } from 'react'
 
-import { Link, routes } from '@redwoodjs/router'
-import { useQuery } from '@redwoodjs/web'
-
-import { useAuth } from 'src/auth'
 import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
 import { sortArticlesByDate } from 'src/utils/storage'
 
 import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 
-const processData = (categoryArticlesMap, currentPage, categories) => {
-  const articles = categories.reduce((acc, category) => {
-    const categoryArticles = categoryArticlesMap[category]
-      .slice(10)
-      .map((article) => ({
-        id: article.id,
-        title: article.title,
-        description: article.description,
-        author: article.author,
-        urlToImage: article.urlToImage,
-        url: article.url,
-        publishedAt: article.publishedAt,
-        sourceName: article.sourceName,
-        category: article.category,
-      }))
-
-    return [...acc, ...categoryArticles]
-  }, [])
-
-  return articles
+const processData = (categoryArticlesMap, currentPage) => {
+  const category = currentPage === 'home' ? 'general' : currentPage
+  const categoryArticles = categoryArticlesMap[category]
+    .slice(10)
+    .map((article) => ({
+      id: article.id,
+      title: article.title,
+      description: article.description,
+      author: article.author,
+      urlToImage: article.urlToImage,
+      url: article.url,
+      publishedAt: article.publishedAt,
+      sourceName: article.sourceName,
+      category: article.category,
+    }))
+  return categoryArticles
 }
-
-const GET_USER_QUERY = gql`
-  query GetUserQuery($id: Int!) {
-    user(id: $id) {
-      id
-      general
-      business
-      entertainment
-      health
-      science
-      sports
-      technology
-    }
-  }
-`
 
 function ArticleList() {
   const { theme } = useContext(CustomThemeContext)
 
-  const { currentPage, toggleCurrentPage } = useContext(CurrentPageContext)
+  const { currentPage } = useContext(CurrentPageContext)
   const { categoryArticlesMap, loading } = useGetArticles()
-  const { currentUser } = useAuth()
-
-  const { data: userSettings, loading: userLoading } = useQuery(
-    GET_USER_QUERY,
-    {
-      variables: { id: currentUser?.id },
-    }
-  )
-
-  const categoryArray: string[] = []
-
-  if (!userLoading) {
-    if (userSettings.user.general) categoryArray.push('general')
-    if (userSettings.user.business) categoryArray.push('business')
-    if (userSettings.user.entertainment) categoryArray.push('entertainment')
-    if (userSettings.user.health) categoryArray.push('health')
-    if (userSettings.user.science) categoryArray.push('science')
-    if (userSettings.user.sports) categoryArray.push('sports')
-    if (userSettings.user.technology) categoryArray.push('technology')
-
-    console.log(categoryArray)
-  }
-
-  const handlePageChange = (page: string) => {
-    toggleCurrentPage(page)
-  }
-
   const handleTheme = (first, second) => {
     if (theme === 1) {
       return first
@@ -90,11 +40,7 @@ function ArticleList() {
   let categoryArticles = []
 
   if (!loading) {
-    categoryArticles = processData(
-      categoryArticlesMap,
-      currentPage,
-      categoryArray
-    )
+    categoryArticles = processData(categoryArticlesMap, currentPage)
   }
 
   sortArticlesByDate(categoryArticles)
@@ -116,19 +62,6 @@ function ArticleList() {
           {categoryArticles != null
             ? categoryArticles.map((article, index) => (
                 <div key={article.id} className="font-bold">
-                  <Link
-                    to={routes.category({ category: article.category })}
-                    onClick={() => {
-                      handlePageChange(article.category)
-                    }}
-                  >
-                    <div className="category-container text-glow flex flex-row text-lg font-bold text-emerald-400">
-                      <div className="uppercase">
-                        {article.category.slice(0, 1)}
-                      </div>
-                      <div className="">{article.category.slice(1)}</div>
-                    </div>
-                  </Link>
                   <a
                     href={article.url}
                     target="_blank"
