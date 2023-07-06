@@ -53,8 +53,6 @@ const HomePage = () => {
     }
   }, [loading, data])
 
-  console.log(`data loaded: ${isDataLoaded}`)
-
   if (firstLoad === null && !isDataLoaded) {
     return <div>Loading...</div>
   }
