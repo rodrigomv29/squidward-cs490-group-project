@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { MetaTags, useQuery } from '@redwoodjs/web'
 
@@ -27,31 +27,46 @@ const GET_CATEGORY_QUERY = gql`
     }
   }
 `
+const firstLoad = sessionStorage.getItem('firstLoad')
 
 const HomePage = () => {
   const status = getStatus()
   const { isAuthenticated } = useAuth()
   const { data, loading } = useQuery(GET_CATEGORY_QUERY)
+  const [isDataLoaded, setIsDataLoaded] = useState(false)
 
-  if (!loading) {
-    if (data?.categories.some((category) => category.articles.length <= 20)) {
-      return <div>Loading...</div>
+  useEffect(() => {
+    if (firstLoad === null) {
+      const delay = 3000 // 3 seconds
+
+      const timer = setTimeout(() => {
+        if (!loading && data) {
+          setIsDataLoaded(true)
+        }
+      }, delay)
+
+      sessionStorage.setItem('firstLoad', 'false')
+
+      return () => clearTimeout(timer)
     } else {
-      return (
-        <>
-          {status === 1 && isAuthenticated ? (
-            <SignedInHomePage />
-          ) : (
-            <DefaultHomePage />
-          )}
-        </>
-      )
+      setIsDataLoaded(true)
     }
+  }, [loading, data])
+
+  console.log(`data loaded: ${isDataLoaded}`)
+
+  if (firstLoad === null && !isDataLoaded) {
+    return <div>Loading...</div>
   }
 
   return (
     <>
       <MetaTags title="Home" description="Home page" />
+      {status === 1 && isAuthenticated ? (
+        <SignedInHomePage />
+      ) : (
+        <DefaultHomePage />
+      )}
     </>
   )
 }
