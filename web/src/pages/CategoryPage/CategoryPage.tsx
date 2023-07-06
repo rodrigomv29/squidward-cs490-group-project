@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { Box, IconButton } from '@mui/material'
@@ -20,7 +20,12 @@ import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 const CategoryPage = (categoryObject) => {
   const { toggleCurrentPage } = useContext(CurrentPageContext)
 
-  toggleCurrentPage(categoryObject.category)
+  console.log(categoryObject)
+
+  useEffect(() => {
+    toggleCurrentPage(categoryObject.category)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   isHomePage(0)
 
   const category = categoryObject.category
