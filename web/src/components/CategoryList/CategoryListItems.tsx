@@ -18,22 +18,25 @@ const processData = (categoryArticlesMap) => {
   const allArticles = []
 
   for (const category of categories) {
-    const categoryArticles = categoryArticlesMap[category]
-      .slice(0, 1)
-      .map((article) => ({
-        title: article.title,
-        description: article.description,
-        author: article.author,
-        urlToImage: article.urlToImage,
-        url: article.url,
-        publishedAt: article.publishedAt,
-        content: article.content,
-        category: article.category,
-      }))
-
-    allArticles.push(...categoryArticles)
+    const categoryArticles =
+      categoryArticlesMap != undefined
+        ? categoryArticlesMap[category]
+            ?.filter((article) => article.description !== null)
+            .slice(0, 1)
+            .map((article) => ({
+              title: article.title,
+              description: article.description,
+              author: article.author,
+              urlToImage: article.urlToImage,
+              url: article.url,
+              publishedAt: article.publishedAt,
+              content: article.content,
+              category: article.category,
+            }))
+        : ''
+    const articleResolver = categoryArticles ? categoryArticles : ''
+    allArticles.push(articleResolver)
   }
-
   return allArticles
 }
 
@@ -44,7 +47,9 @@ function CategoryListItems() {
   let categoryArticles = []
 
   if (!loading) {
-    categoryArticles = processData(categoryArticlesMap)
+    categoryArticles = processData(
+      categoryArticlesMap != undefined ? categoryArticlesMap : ''
+    )
   }
 
   return (
@@ -52,8 +57,8 @@ function CategoryListItems() {
       <div className="categories-container flex h-full flex-grow flex-col justify-between px-4 py-8">
         <div className="items-controller  max-h-full">
           <div className="main-container overflow-auto ">
-            {categoryArticles.map((article, index) => (
-              <div key={article.title} className="mb-2 flex flex-wrap">
+            {categoryArticles?.map((article, index) => (
+              <div key={article[0]?.title} className="mb-2 flex flex-wrap">
                 <span
                   className={`relative flex w-1/5 flex-col items-center justify-center text-3xl font-bold transition-colors duration-200 ${
                     theme === 1 ? 'text-white' : 'text-black'
@@ -66,14 +71,14 @@ function CategoryListItems() {
                 <div className="category-container flex w-4/5 flex-col items-center justify-center py-2">
                   <div className="flex flex-row">
                     <span className="flex justify-center text-left font-bold uppercase text-emerald-400">
-                      {article.category.slice(0, 1)}
+                      {article[0]?.category?.slice(0, 1)}
                     </span>
                     <span className="flex justify-center text-left font-bold text-emerald-400">
-                      {article.category.slice(1)}
+                      {article[0]?.category?.slice(1)}
                     </span>
                   </div>
                   <a
-                    href={article.url}
+                    href={article[0]?.url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -83,11 +88,11 @@ function CategoryListItems() {
                           theme === 1 ? 'text-white' : 'text-black'
                         }`}
                       >
-                        {article.description?.length > 200
-                          ? article.description?.slice(0, 200) + '...'
-                          : article.description
-                          ? article.description
-                          : article.content}
+                        {article[0]?.description?.length > 200
+                          ? article[0]?.description?.slice(0, 200) + '...'
+                          : article[0]?.description
+                          ? article[0]?.description
+                          : article[0]?.content}
                       </span>
                     </span>
                   </a>

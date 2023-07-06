@@ -13,19 +13,20 @@ import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 
 const processData = (categoryArticlesMap, currentPage, categories) => {
   const articles = categories.reduce((acc, category) => {
-    const categoryArticles = categoryArticlesMap[category]
-      .slice(10)
-      .map((article) => ({
-        id: article.id,
-        title: article.title,
-        description: article.description,
-        author: article.author,
-        urlToImage: article.urlToImage,
-        url: article.url,
-        publishedAt: article.publishedAt,
-        sourceName: article.sourceName,
-        category: article.category,
-      }))
+    const categoryArticles =
+      categoryArticlesMap != undefined
+        ? categoryArticlesMap[category].slice(10).map((article) => ({
+            id: article.id,
+            title: article.title,
+            description: article.description,
+            author: article.author,
+            urlToImage: article.urlToImage,
+            url: article.url,
+            publishedAt: article.publishedAt,
+            sourceName: article.sourceName,
+            category: article.category,
+          }))
+        : ''
 
     return [...acc, ...categoryArticles]
   }, [])
@@ -65,13 +66,13 @@ function ArticleList() {
   const categoryArray: string[] = []
 
   if (!userLoading) {
-    if (userSettings.user.general) categoryArray.push('general')
-    if (userSettings.user.business) categoryArray.push('business')
-    if (userSettings.user.entertainment) categoryArray.push('entertainment')
-    if (userSettings.user.health) categoryArray.push('health')
-    if (userSettings.user.science) categoryArray.push('science')
-    if (userSettings.user.sports) categoryArray.push('sports')
-    if (userSettings.user.technology) categoryArray.push('technology')
+    if (userSettings?.user.general) categoryArray.push('general')
+    if (userSettings?.user.business) categoryArray.push('business')
+    if (userSettings?.user.entertainment) categoryArray.push('entertainment')
+    if (userSettings?.user.health) categoryArray.push('health')
+    if (userSettings?.user.science) categoryArray.push('science')
+    if (userSettings?.user.sports) categoryArray.push('sports')
+    if (userSettings?.user.technology) categoryArray.push('technology')
   }
 
   const handlePageChange = (page: string) => {

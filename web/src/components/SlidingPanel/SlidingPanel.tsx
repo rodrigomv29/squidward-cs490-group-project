@@ -11,7 +11,7 @@ import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 
 const processData = (categoryArticlesMap, currentPage) => {
   const category = currentPage === 'home' ? 'general' : currentPage
-  const categoryArticles = categoryArticlesMap[category].map((article) => ({
+  const categoryArticles = categoryArticlesMap[category]?.map((article) => ({
     title: article.title,
     description: article.description,
     author: article.author,
@@ -33,7 +33,7 @@ function SlidingPannel() {
   }
 
   const topTenData =
-    categoryArticles.length > 0
+    categoryArticles?.length > 0
       ? sortArticlesByDate(categoryArticles.slice(0, 10))
       : []
 
@@ -70,7 +70,7 @@ function SlidingPannel() {
     }
   }, [currentIndex, nextSlide])
 
-  if (categoryArticles.length === 0 || loading) {
+  if (categoryArticles?.length === 0 || loading) {
     // Render loading state or placeholder
     return (
       <div className="h-[80%]">

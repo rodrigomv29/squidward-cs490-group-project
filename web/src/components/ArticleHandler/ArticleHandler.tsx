@@ -60,14 +60,17 @@ export const FetchArticles = () => {
     skip: !shouldFetchArticles,
   })
 
+  console.log(`is first load ${isFirstLoad}`)
+  console.log(`should fetch articles ${fetchArticles}`)
+
   useEffect(() => {
     if (shouldFetchArticles && !loading) {
-      sessionStorage.setItem('fetchArticles', 'true')
+      sessionStorage.setItem('fetchArticles', 'false')
       setShouldFetchArticles(false)
     }
   }, [loading, shouldFetchArticles])
 
-  return null
+  return true
 }
 
 const useDeleteArticle = () => {
@@ -104,7 +107,7 @@ export const useHandleDeleteArticles = async () => {
 function ArticleHandler() {
   useEffect(() => {
     if (isFirstLoad === null) {
-      sessionStorage.setItem('isFirstLoad', 'true')
+      sessionStorage.setItem('isFirstLoad', 'false')
     }
   }, [])
 

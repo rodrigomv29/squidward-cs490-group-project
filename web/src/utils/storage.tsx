@@ -27,13 +27,13 @@ export const getIsHomePage = () => {
 }
 
 const insertionSort = (array) => {
-  const length = array.length
+  const length = array?.length
 
   for (let i = 1; i < length; i++) {
     const current = array[i]
     let j = i - 1
 
-    while (j >= 0 && array[j].publishedAt < current.publishedAt) {
+    while (j >= 0 && array[j]?.publishedAt < current?.publishedAt) {
       array[j + 1] = array[j]
       j--
     }

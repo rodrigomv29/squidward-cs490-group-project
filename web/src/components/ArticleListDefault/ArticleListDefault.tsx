@@ -9,19 +9,20 @@ import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 
 const processData = (categoryArticlesMap, currentPage) => {
   const category = currentPage === 'home' ? 'general' : currentPage
-  const categoryArticles = categoryArticlesMap[category]
-    .slice(10)
-    .map((article) => ({
-      id: article.id,
-      title: article.title,
-      description: article.description,
-      author: article.author,
-      urlToImage: article.urlToImage,
-      url: article.url,
-      publishedAt: article.publishedAt,
-      sourceName: article.sourceName,
-      category: article.category,
-    }))
+  const categoryArticles =
+    categoryArticlesMap != undefined
+      ? categoryArticlesMap[category]?.slice(10).map((article) => ({
+          id: article.id,
+          title: article.title,
+          description: article.description,
+          author: article.author,
+          urlToImage: article.urlToImage,
+          url: article.url,
+          publishedAt: article.publishedAt,
+          sourceName: article.sourceName,
+          category: article.category,
+        }))
+      : ''
   return categoryArticles
 }
 
@@ -59,8 +60,8 @@ function ArticleList() {
           grid-cols-3
         gap-4`}
         >
-          {categoryArticles != null
-            ? categoryArticles.map((article, index) => (
+          {categoryArticles?.length > 0
+            ? categoryArticles?.map((article, index) => (
                 <div key={article.id} className="font-bold">
                   <a
                     href={article.url}
