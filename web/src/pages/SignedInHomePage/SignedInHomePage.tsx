@@ -51,6 +51,14 @@ const SignedInHomePage = () => {
   const { theme } = useContext(CustomThemeContext)
   const [refreshToggle, handleRefreshClick, dataChanged] = useRefreshToggle()
   const { toggleCurrentPage } = useContext(currentPageContext)
+
+  const handleTheme = (first, second) => {
+    if (theme === 1) {
+      return first
+    }
+    return second
+  }
+
   toggleCurrentPage('home')
   isHomePage(1)
 
@@ -63,7 +71,12 @@ const SignedInHomePage = () => {
         }`}
       >
         {!dataChanged ? (
-          <div className="flex h-[100%] items-center justify-center">
+          <div
+            className={`flex h-[100%] items-center justify-center ${handleTheme(
+              'bg-gray-700',
+              'bg-white'
+            )}`}
+          >
             <CircularProgress size={300} sx={{ color: '#34D399' }} />
           </div>
         ) : (

@@ -45,7 +45,12 @@ const CategoryPage = (categoryObject) => {
         description="Category page"
       />
       {!dataChanged ? (
-        <div className="flex h-[100%] items-center justify-center">
+        <div
+          className={`flex h-[100%] items-center justify-center ${handleTheme(
+            'bg-gray-700',
+            `bg-white`
+          )}`}
+        >
           <CircularProgress size={300} sx={{ color: '#34D399' }} />
         </div>
       ) : (
