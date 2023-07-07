@@ -34,8 +34,15 @@ function SlidingPannel() {
 
   const topTenData =
     categoryArticles?.length > 0
-      ? sortArticlesByDate(categoryArticles.slice(0, 10))
+      ? sortArticlesByDate(
+          categoryArticles
+            .slice(0, 50)
+            .filter((article) => article.urlToImage)
+            .slice(0, 10)
+        )
       : []
+
+  console.log(topTenData)
 
   const slides =
     topTenData != undefined
@@ -91,12 +98,12 @@ function SlidingPannel() {
 
   return (
     <>
-      <div className="group relative m-auto h-[95%] max-h-[90%] w-full max-w-full  px-12 py-4">
+      <div className="group relative m-auto h-[100%] max-h-[90%] w-full max-w-full  px-12 py-4">
         <div
           style={{
             backgroundImage: `url(${slides[currentIndex]?.urlToImage})`,
           }}
-          className="h-full rounded-2xl bg-cover bg-center bg-no-repeat duration-500"
+          className="h-full rounded-2xl bg-gradient-to-t bg-cover bg-center bg-no-repeat duration-500"
         >
           <div className="main-header absolute bottom-10 left-8 right-8 mx-4 rounded-xl bg-gray-600 bg-opacity-[0.6] px-10 py-4 text-white">
             <div className="title text-xl font-bold">

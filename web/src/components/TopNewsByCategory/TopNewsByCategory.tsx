@@ -7,7 +7,7 @@ import CustomThemeContext from 'src/CustomThemeContext'
 
 const processData = (categoryArticlesMap, currentPage) => {
   const category = currentPage === 'home' ? 'general' : currentPage
-  const categoryArticles = categoryArticlesMap[category].map((article) => ({
+  const categoryArticles = categoryArticlesMap[category]?.map((article) => ({
     title: article.title,
     description: article.description,
     url: article.url,
@@ -30,7 +30,7 @@ function TopNewsByCategory() {
   }
 
   const articles =
-    categoryArticles.length > 0 ? categoryArticles.slice(10, 15) : []
+    categoryArticles?.length > 0 ? categoryArticles?.slice(10, 15) : []
 
   return (
     <div className="flex max-h-full flex-col">

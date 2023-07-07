@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 
 import { Box, Heading, Image, Text } from '@chakra-ui/react'
+import { CircularProgress } from '@mui/material'
 import axios from 'axios'
 
 import { useLocation } from '@redwoodjs/router'
@@ -76,7 +77,26 @@ const SearchResultsPage = () => {
             </span>
           </Heading>
           {isLoading ? (
-            <Text>Loading...</Text>
+            <div className="h-screen">
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  height: '100%',
+                  color: '#34D399',
+                  alignItems: 'center',
+                }}
+                className="flex flex-col"
+              >
+                <div className="mb-96">
+                  <CircularProgress size={150} sx={{ color: '#34D399' }} />
+                  <p className="font-lg pt-2 font-bold ">
+                    Loading Search Results
+                  </p>
+                </div>
+              </Box>
+            </div>
           ) : searchResults.length === 0 ? (
             <Box h={'screen'}>
               <Image

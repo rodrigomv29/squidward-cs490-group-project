@@ -12,8 +12,8 @@ import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 const processData = (categoryArticlesMap, currentPage) => {
   const category = currentPage === 'home' ? 'general' : currentPage
   const categoryArticles = categoryArticlesMap[category]
-    .slice(15)
-    .map((article) => ({
+    ?.slice(15)
+    ?.map((article) => ({
       id: article.id,
       title: article.title,
       description: article.description,
