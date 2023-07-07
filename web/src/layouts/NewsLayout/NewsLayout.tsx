@@ -70,7 +70,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
 
   const { theme, toggleTheme } = useContext(CustomThemeContext)
   const { currentPage, toggleCurrentPage } = useContext(CurrentPageContext)
-
+  console.log(currentPage)
   const handlePageChange = (page) => {
     toggleCurrentPage(page)
   }
