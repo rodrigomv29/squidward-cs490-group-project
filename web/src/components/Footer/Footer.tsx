@@ -27,15 +27,24 @@ const CustomLink = (props) => {
           'text-black'
         )} transition-colors duration-200 hover:text-emerald-400 hover:underline`}
       >
-        <Link
-          to={routes.category({ category: props.category })}
-          onClick={handleLink}
-        >
-          <div>
-            <span className="uppercase ">{props.category.slice(0, 1)}</span>
-            <span>{props.category.slice(1)}</span>
-          </div>
-        </Link>
+        {props.category === 'home' ? (
+          <Link to={routes.home()} onClick={handleLink}>
+            <div>
+              <span className="uppercase ">{props.category.slice(0, 1)}</span>
+              <span>{props.category.slice(1)}</span>
+            </div>
+          </Link>
+        ) : (
+          <Link
+            to={routes.category({ category: props.category })}
+            onClick={handleLink}
+          >
+            <div>
+              <span className="uppercase ">{props.category.slice(0, 1)}</span>
+              <span>{props.category.slice(1)}</span>
+            </div>
+          </Link>
+        )}
       </div>
     </>
   )
