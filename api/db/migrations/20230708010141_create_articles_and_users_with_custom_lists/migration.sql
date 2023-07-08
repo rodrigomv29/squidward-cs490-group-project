@@ -28,7 +28,9 @@ CREATE TABLE "Article" (
     "publishedAt" DATETIME NOT NULL,
     "content" TEXT,
     "categoryId" INTEGER,
-    CONSTRAINT "Article_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "customListId" INTEGER,
+    CONSTRAINT "Article_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "Article_customListId_fkey" FOREIGN KEY ("customListId") REFERENCES "CustomList" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -37,8 +39,19 @@ CREATE TABLE "Category" (
     "name" TEXT NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "CustomList" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
+    CONSTRAINT "CustomList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CustomList_name_key" ON "CustomList"("name");

@@ -13,10 +13,18 @@ export const schema = gql`
     science: Boolean!
     sports: Boolean!
     technology: Boolean!
+    customLists: [CustomList!]
+  }
+
+  type CustomList {
+    id: Int!
+    name: String!
+    userId: Int!
+    user: User!
   }
 
   type Query {
-    users: [User!]! @requireAuth
+    users: [User!]! @skipAuth
     user(id: Int!): User @requireAuth
   }
 

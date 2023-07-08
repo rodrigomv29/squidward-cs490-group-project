@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { MetaTags, useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
+import CustomListHandler from 'src/components/CustomListHandler/CustomListHandler'
 import { getStatus } from 'src/utils/storage'
 
 import DefaultHomePage from '../DefaultHomePage/DefaultHomePage'
@@ -60,6 +61,7 @@ const HomePage = () => {
   return (
     <>
       <MetaTags title="Home" description="Home page" />
+      <CustomListHandler />
       {status === 1 && isAuthenticated ? (
         <SignedInHomePage />
       ) : (

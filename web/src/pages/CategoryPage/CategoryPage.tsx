@@ -20,8 +20,6 @@ import SlidingPanel from '../../components/SlidingPanel/SlidingPanel'
 const CategoryPage = (categoryObject) => {
   const { toggleCurrentPage } = useContext(CurrentPageContext)
 
-  console.log(categoryObject)
-
   useEffect(() => {
     toggleCurrentPage(categoryObject.category)
     // eslint-disable-next-line react-hooks/exhaustive-deps

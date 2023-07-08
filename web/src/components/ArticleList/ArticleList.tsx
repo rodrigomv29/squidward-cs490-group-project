@@ -34,8 +34,8 @@ const processData = (categoryArticlesMap, currentPage, categories) => {
   return articles
 }
 
-const GET_USER_QUERY = gql`
-  query GetUserQuery($id: Int!) {
+const GET_USER_SETTINGS_QUERY = gql`
+  query GetUserSettingsQuery($id: Int!) {
     user(id: $id) {
       id
       general
@@ -45,6 +45,18 @@ const GET_USER_QUERY = gql`
       science
       sports
       technology
+      customLists {
+        name
+      }
+    }
+  }
+`
+
+const CUSTOM_LIST_QUERY = gql`
+  query CustomListsQuery {
+    customLists {
+      name
+      userId
     }
   }
 `
@@ -57,11 +69,26 @@ function ArticleList() {
   const { currentUser } = useAuth()
 
   const { data: userSettings, loading: userLoading } = useQuery(
-    GET_USER_QUERY,
+    GET_USER_SETTINGS_QUERY,
     {
       variables: { id: currentUser?.id },
     }
   )
+
+  const { data: customListsData, loading: customListsLoading } = useQuery(
+    CUSTOM_LIST_QUERY,
+    {
+      variables: { userId: currentUser?.id },
+    }
+  )
+
+  if (!customListsLoading && customListsData) {
+    const customLists = customListsData.customLists
+    const filteredCustomLists = customLists.filter(
+      (customList) => customList.userId === currentUser?.id
+    )
+    console.log(filteredCustomLists)
+  }
 
   const categoryArray: string[] = []
 
