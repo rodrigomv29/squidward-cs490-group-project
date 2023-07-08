@@ -106,6 +106,16 @@ const SignupPage = () => {
         // toast.error('An error occurred. Please try again.')
       }
     } else {
+      await toast.promise(
+        new Promise((resolve) => {
+          setTimeout(resolve, 2500) // Adjust the delay to your desired duration
+        }),
+        {
+          loading: `Welcome to Squidward News ${username} !`,
+          success: 'Loading..',
+          error: 'Error',
+        }
+      )
       signIn()
     }
   }

@@ -15,7 +15,7 @@ const processData = (categoryArticlesMap, currentPage, categories) => {
   const articles = categories.reduce((acc, category) => {
     const categoryArticles =
       categoryArticlesMap != undefined
-        ? categoryArticlesMap[category].slice(10).map((article) => ({
+        ? categoryArticlesMap[category]?.slice(10).map((article) => ({
             id: article.id,
             title: article.title,
             description: article.description,
@@ -46,17 +46,8 @@ const GET_USER_SETTINGS_QUERY = gql`
       sports
       technology
       customLists {
-        name
+        id
       }
-    }
-  }
-`
-
-const CUSTOM_LIST_QUERY = gql`
-  query CustomListsQuery {
-    customLists {
-      name
-      userId
     }
   }
 `
@@ -74,21 +65,6 @@ function ArticleList() {
       variables: { id: currentUser?.id },
     }
   )
-
-  const { data: customListsData, loading: customListsLoading } = useQuery(
-    CUSTOM_LIST_QUERY,
-    {
-      variables: { userId: currentUser?.id },
-    }
-  )
-
-  if (!customListsLoading && customListsData) {
-    const customLists = customListsData.customLists
-    const filteredCustomLists = customLists.filter(
-      (customList) => customList.userId === currentUser?.id
-    )
-    console.log(filteredCustomLists)
-  }
 
   const categoryArray: string[] = []
 

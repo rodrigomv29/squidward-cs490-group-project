@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useContext, useState } from 'react'
 
+import DvrIcon from '@mui/icons-material/Dvr'
 import Logout from '@mui/icons-material/Logout'
 import Settings from '@mui/icons-material/Settings'
 import {
@@ -22,6 +23,7 @@ import { setStatus } from 'src/utils/storage'
 
 import CustomThemeContext from '../../CustomThemeContext'
 import SettingsPopup from '../Settings/SettingsPopup'
+import CustomListModal from '../CustomListModal/CustomListModal'
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -32,6 +34,7 @@ export default function AccountMenu() {
     setAnchorEl(event.currentTarget)
   }
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [customListOpen, setCustomListOpen] = useState(false)
 
   const handlePageChange = (page: string) => {
     toggleCurrentPage(page)
@@ -154,6 +157,20 @@ export default function AccountMenu() {
         <div className="flex justify-center">
           <MenuItem onClick={handleOpenSettings} className="w-full">
             <ListItemIcon>
+              <DvrIcon fontSize="small" sx={{ color: themeColor }} />
+            </ListItemIcon>
+            <span
+              className={`py-2 font-['Arvo'] text-xl font-bold transition-colors duration-200 ${
+                theme === 1 ? 'text-white' : 'text-black'
+              }`}
+            >
+              My List
+            </span>
+          </MenuItem>
+        </div>
+        <div className="flex justify-center">
+          <MenuItem onClick={handleOpenSettings} className="w-full">
+            <ListItemIcon>
               <Settings fontSize="small" sx={{ color: themeColor }} />
             </ListItemIcon>
             <span
@@ -184,6 +201,11 @@ export default function AccountMenu() {
         <SettingsPopup
           onClose={() => setSettingsOpen(false)}
           userId={currentUser?.id}
+        />
+      )}
+      {customListOpen && (
+        <CustomListModal
+          onClose={() => setSettingsOpen(false)}
         />
       )}
     </React.Fragment>

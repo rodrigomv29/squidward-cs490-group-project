@@ -93,7 +93,7 @@ function CustomListHandler() {
   const { filteredCustomLists, getCustomListIdByName, refetchCustomListQuery } =
     useCustomList()
 
-  const handleNewList = async (name: string, articleIds?: number[]) => {
+  const _handleNewList = async (name: string, articleIds?: number[]) => {
     const variables = {
       input: {
         name,
@@ -103,9 +103,9 @@ function CustomListHandler() {
     }
 
     try {
-      const { data } = await createCustomList({ variables })
-      console.log('Created new list:', data.createCustomList)
+      await createCustomList({ variables })
       await refetchCustomListQuery()
+      return true
     } catch (error) {
       if (
         error.graphQLErrors &&
@@ -121,7 +121,7 @@ function CustomListHandler() {
     }
   }
 
-  const handleDeleteList = async (name: string) => {
+  const _handleDeleteList = async (name: string) => {
     const customListId = getCustomListIdByName(name)
     console.log(customListId)
     if (!customListId) {
@@ -136,17 +136,18 @@ function CustomListHandler() {
         },
       })
       refetchCustomListQuery() // Refetch the custom list query after the mutation is completed
-      console.log('Custom list deleted successfully')
+      return true
     } catch (error) {
       console.error('Error deleting custom list:', error)
+      return false
     }
   }
 
-  const handleUpdateList = async (name: string, articleIds: number[]) => {
+  const _handleUpdateList = async (name: string, articleIds: number[]) => {
     const customListId = getCustomListIdByName(name)
     console.log(customListId)
     if (!customListId) {
-      console.log(`Custom list with name "${name}" not found`)
+      throw new Error(`Custom list with name "${name}" not found`)
       return
     }
 
@@ -158,9 +159,10 @@ function CustomListHandler() {
         },
       })
       refetchCustomListQuery()
-      console.log('Custom list updated successfully')
+      return true
     } catch (error) {
       console.error('Error updating custom list:', error)
+      return false
     }
   }
 
@@ -168,36 +170,7 @@ function CustomListHandler() {
     console.log(filteredCustomLists)
   }, [filteredCustomLists])
 
-  return (
-    <div>
-      <button
-        onClick={() => {
-          handleNewList('testList3', [1, 2])
-        }}
-        className="mx-32 my-32 h-[4rem] w-[10rem] bg-blue-600"
-      >
-        Make new list
-      </button>
-
-      <button
-        onClick={() => {
-          handleDeleteList('testList3')
-        }}
-        className="mx-32 my-32 h-[4rem] w-[10rem] bg-red-600"
-      >
-        Delete custom list
-      </button>
-      <button
-        onClick={() => {
-          const articleIds = [1, 2] // Replace with your desired article IDs
-          handleUpdateList('testList3', articleIds)
-        }}
-        className="mx-32 my-32 h-[4rem] w-[10rem] bg-green-600"
-      >
-        Update custom list
-      </button>
-    </div>
-  )
+  return <div></div>
 }
 
 export default CustomListHandler
