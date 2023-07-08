@@ -1,16 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  VStack,
-} from '@chakra-ui/react'
-import { Switch } from '@chakra-ui/react'
+import Backdrop from '@mui/material/Backdrop'
+import Box from '@mui/material/Box'
+import Fade from '@mui/material/Fade'
+import Modal from '@mui/material/Modal'
+import Typography from '@mui/material/Typography'
 import { gql } from 'graphql-tag'
 
 import { useMutation, useQuery } from '@redwoodjs/web'
@@ -25,9 +19,6 @@ interface CustomListPopupProps {
 const CustomListPopup: React.FC<CustomListPopupProps> = ({
   onClose: closePopup,
 }) => {
-  const [elements, setElements] = useState<
-    { id: number; name: string; enabled: boolean }[]
-  >([])
   const [isOpen, setIsOpen] = useState(false)
 
   const { toggleTheme } = React.useContext(CustomThemeContext)
@@ -46,9 +37,25 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   }
   const status = getStatus()
 
+  useEffect(() => {
+    setIsOpen(true)
+  }, [])
+
   const handleClose = () => {
     setIsOpen(false)
     closePopup()
+  }
+
+  const style = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '70%',
+    bgcolor: '#34D399',
+    boxShadow: 24,
+    borderRadius: 12,
+    p: 4,
   }
 
   return (
@@ -79,117 +86,29 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
           }}
         />
       )}
-      <Modal isOpen={isOpen} onClose={handleClose}>
-        <ModalOverlay />
-        <ModalContent
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyItems="center"
-          alignSelf="center"
-          justifySelf="center"
-          //className="bg-emerald-400 bg-opacity-70"
-          w="full"
-          bg="rgba(0, 0, 0, 0.5)" // Semi-transparent background
-          backdropFilter="blur(5px)" // Blur effect
-          h="full"
-          justifyContent="center"
-          fontFamily="Arvo"
-        >
-          <ModalHeader
-            fontSize="xl"
-            bg="#ad902c"
-            py={2}
-            textAlign="center"
-            //color="white"
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            w="35%"
-          >
-            <div className="flex w-full flex-row justify-between px-10">
-              <div className="">
-                <span className="text-lg font-bold">CustomList</span>
-              </div>
-              <div className="flex items-center">
-                <ModalCloseButton size={'md'} />
-              </div>
-            </div>
-          </ModalHeader>
-          <ModalBody
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            className="bg-emerald-400 bg-opacity-80"
-            w="35%"
-          >
-            <div>
-              <VStack
-                spacing={6}
-                align="start"
-                fontSize="md"
-                fontWeight=""
-                padding={4}
-              >
-                {elements.map((element) => (
-                  <div key={element.id}>
-                    <label htmlFor={`checkbox-${element.id}`}>
-                      <div className="flex flex-row px-4">
-                        <div className="px-2">
-                          <input
-                            type="checkbox"
-                            checked={element.enabled}
-                            onChange={() => toggleElement(element.id)}
-                          />
-                        </div>
-                        <div className="text-lg font-semibold text-gray-800">
-                          {element.name}
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                ))}
-              </VStack>
-              <div className="theme-switch flex items-center justify-center px-4 py-4">
-                <span
-                  className={`mx-8 text-xl font-bold shadow transition-colors duration-200 ${
-                    theme === 1 ? 'text-white' : 'text-black'
-                  }`}
-                >
-                  {theme === 1 && status === 1 ? 'Dark Theme' : 'Light Theme'}
-                </span>
-                {theme === 1 && status === 1 ? (
-                  <Switch
-                    checked={true}
-                    bgColor={'gray'}
-                    onChange={handleCurrentTheme}
-                    className={`relative mx-6 inline-flex h-6 w-11 items-center rounded-full duration-200`}
-                  >
-                    <span
-                      className={`${
-                        theme === 1 ? 'translate-x-6' : 'translate-x-1'
-                      } flex h-3 w-4 transform items-center rounded-full bg-white transition`}
-                    />
-                  </Switch>
-                ) : (
-                  <Switch
-                    checked={true}
-                    bgColor={'white'}
-                    onChange={handleCurrentTheme}
-                    className={`relative mx-6 inline-flex h-6 w-11 items-center rounded-full duration-200`}
-                  >
-                    <span
-                      className={`${
-                        theme === 1 ? 'translate-x-6' : 'translate-x-1'
-                      } flex h-3 w-4 transform items-center rounded-full bg-emerald-400 transition`}
-                    />
-                  </Switch>
-                )}
-              </div>
-            </div>
-          </ModalBody>
-        </ModalContent>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={isOpen}
+        onClose={handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={isOpen}>
+          <Box sx={style}>
+            <Typography id="transition-modal-title" variant="h6" component="h2">
+              Text in a modal
+            </Typography>
+            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </Typography>
+          </Box>
+        </Fade>
       </Modal>
     </>
   )

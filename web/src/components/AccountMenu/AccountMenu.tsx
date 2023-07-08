@@ -22,8 +22,8 @@ import CurrentPageContext from 'src/CurrentPageContext'
 import { setStatus } from 'src/utils/storage'
 
 import CustomThemeContext from '../../CustomThemeContext'
-import SettingsPopup from '../Settings/SettingsPopup'
 import CustomListModal from '../CustomListModal/CustomListModal'
+import SettingsPopup from '../Settings/SettingsPopup'
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -53,6 +53,11 @@ export default function AccountMenu() {
   const handleOpenSettings = () => {
     setAnchorEl(null)
     setSettingsOpen(true)
+  }
+
+  const handleOpenCustomList = () => {
+    setAnchorEl(null)
+    setCustomListOpen(true)
   }
 
   const { theme, toggleTheme } = React.useContext(CustomThemeContext)
@@ -155,7 +160,7 @@ export default function AccountMenu() {
           </span>{' '}
         </div>
         <div className="flex justify-center">
-          <MenuItem onClick={handleOpenSettings} className="w-full">
+          <MenuItem onClick={handleOpenCustomList} className="w-full">
             <ListItemIcon>
               <DvrIcon fontSize="small" sx={{ color: themeColor }} />
             </ListItemIcon>
@@ -204,9 +209,7 @@ export default function AccountMenu() {
         />
       )}
       {customListOpen && (
-        <CustomListModal
-          onClose={() => setSettingsOpen(false)}
-        />
+        <CustomListModal onClose={() => setCustomListOpen(false)} />
       )}
     </React.Fragment>
   )
