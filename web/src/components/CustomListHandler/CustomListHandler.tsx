@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 
-const CUSTOM_LIST_QUERY = gql`
+export const CUSTOM_LIST_QUERY = gql`
   query GetCustomListsQuery {
     customLists {
       id
@@ -19,7 +19,7 @@ const CUSTOM_LIST_QUERY = gql`
   }
 `
 
-const CREATE_CUSTOM_LIST_MUTATION = gql`
+export const CREATE_CUSTOM_LIST_MUTATION = gql`
   mutation CreateCustomListMutation($input: CreateCustomListInput!) {
     createCustomList(input: $input) {
       id
@@ -32,7 +32,7 @@ const CREATE_CUSTOM_LIST_MUTATION = gql`
   }
 `
 
-const UPDATE_CUSTOM_LIST_MUTATION = gql`
+export const UPDATE_CUSTOM_LIST_MUTATION = gql`
   mutation UpdateCustomListMutation($id: Int!, $articleIds: [Int!]!) {
     updateCustomList(id: $id, input: { articleIds: $articleIds }) {
       id
@@ -85,86 +85,57 @@ export function useCustomList() {
   }
 }
 
-function CustomListHandler() {
-  const [createCustomList] = useMutation(CREATE_CUSTOM_LIST_MUTATION)
+export const useDeleteList = async (name: string) => {
   const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
-  const [updateCustomList] = useMutation(UPDATE_CUSTOM_LIST_MUTATION)
-  const { currentUser } = useAuth()
-  const { filteredCustomLists, getCustomListIdByName, refetchCustomListQuery } =
-    useCustomList()
+  const { getCustomListIdByName, refetchCustomListQuery } = useCustomList()
+  const customListId = getCustomListIdByName(name)
+  console.log(customListId)
+  if (!customListId) {
+    console.log(`Custom list with name "${name}" not found`)
+    return
+  }
 
-  const _handleNewList = async (name: string, articleIds?: number[]) => {
-    const variables = {
-      input: {
-        name,
-        userId: currentUser.id,
-        articleIds,
+  try {
+    await deleteCustomList({
+      variables: {
+        id: customListId,
       },
-    }
+    })
+    refetchCustomListQuery() // Refetch the custom list query after the mutation is completed
+    return true
+  } catch (error) {
+    console.error('Error deleting custom list:', error)
+    return false
+  }
+}
 
-    try {
-      await createCustomList({ variables })
-      await refetchCustomListQuery()
-      return true
-    } catch (error) {
-      if (
-        error.graphQLErrors &&
-        error.graphQLErrors.length > 0 &&
-        error.graphQLErrors[0].extensions.originalError.message.includes(
-          'Unique constraint failed on the fields: (`name`)'
-        )
-      ) {
-        throw new Error('Custom list name already exists')
-      } else {
-        throw new Error('Something went wrong: ' + error)
-      }
-    }
+export const useUpdateList = async (name: string, articleIds: number[]) => {
+  const [updateCustomList] = useMutation(UPDATE_CUSTOM_LIST_MUTATION)
+  const { getCustomListIdByName, refetchCustomListQuery } = useCustomList()
+  const customListId = getCustomListIdByName(name)
+  console.log(customListId)
+  if (!customListId) {
+    throw new Error(`Custom list with name "${name}" not found`)
+    return
   }
 
-  const _handleDeleteList = async (name: string) => {
-    const customListId = getCustomListIdByName(name)
-    console.log(customListId)
-    if (!customListId) {
-      console.log(`Custom list with name "${name}" not found`)
-      return
-    }
-
-    try {
-      await deleteCustomList({
-        variables: {
-          id: customListId,
-        },
-      })
-      refetchCustomListQuery() // Refetch the custom list query after the mutation is completed
-      return true
-    } catch (error) {
-      console.error('Error deleting custom list:', error)
-      return false
-    }
+  try {
+    await updateCustomList({
+      variables: {
+        id: customListId,
+        articleIds: articleIds,
+      },
+    })
+    refetchCustomListQuery()
+    return true
+  } catch (error) {
+    console.error('Error updating custom list:', error)
+    return false
   }
+}
 
-  const _handleUpdateList = async (name: string, articleIds: number[]) => {
-    const customListId = getCustomListIdByName(name)
-    console.log(customListId)
-    if (!customListId) {
-      throw new Error(`Custom list with name "${name}" not found`)
-      return
-    }
-
-    try {
-      await updateCustomList({
-        variables: {
-          id: customListId,
-          articleIds: articleIds,
-        },
-      })
-      refetchCustomListQuery()
-      return true
-    } catch (error) {
-      console.error('Error updating custom list:', error)
-      return false
-    }
-  }
+function CustomListHandler() {
+  const { filteredCustomLists } = useCustomList()
 
   useEffect(() => {
     console.log(filteredCustomLists)
