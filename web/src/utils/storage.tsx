@@ -3,13 +3,13 @@ export const setStatus = (status: number) => {
 }
 
 export const getFirstRender = () => {
-  const status = localStorage.getItem('first_render')
+  const status: string = localStorage.getItem('first_render')
   return status ? parseInt(status, 10) : null
 }
 
 // Get the status from local storage
 export const getStatus = () => {
-  const status = localStorage.getItem('status')
+  const status: string = localStorage.getItem('status')
   return status ? parseInt(status, 10) : null
 }
 
@@ -18,7 +18,7 @@ export const isHomePage = (status: number) => {
 }
 
 export const getIsHomePage = () => {
-  const isHomePage = parseInt(localStorage.getItem('isHomePage'), 10)
+  const isHomePage: number = parseInt(localStorage.getItem('isHomePage'), 10)
   if (isHomePage === 1) {
     return true
   } else {
