@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined'
 import SummarizeIcon from '@mui/icons-material/Summarize'
-import { IconButton } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
 import Backdrop from '@mui/material/Backdrop'
 import Box from '@mui/material/Box'
 import Fade from '@mui/material/Fade'
@@ -25,7 +25,6 @@ import {
   CREATE_CUSTOM_LIST_MUTATION,
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
-import { getStatus } from 'src/utils/storage'
 
 interface CustomListPopupProps {
   onClose: () => void
@@ -179,16 +178,41 @@ const AddListMenu = () => {
   )
 }
 
-const DeleteListMenu = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const { filteredCustomLists } = useCustomList()
-  const handleClickMenuList = (event: React.MouseEvent<HTMLElement>) => {
+interface CustomList {
+  id: string
+  name: string
+}
+interface DeleteListMenuProps {
+  filteredCustomLists: CustomList[]
+  getCustomListIdByName?: (name: string) => number
+  refetchCustomListQuery?: (
+    variables?: Partial<GraphQLOperationVariables>
+  ) => Promise<unknown>
+}
+
+const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
+  filteredCustomLists,
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedList, setSelectedList] = useState(null)
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+
+  const handleClickMenuList = (event) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleCloseMenuList = () => {
+    setSelectedList(null)
     setAnchorEl(null)
   }
-  const open = Boolean(anchorEl)
+
+  const handleDeleteList = () => {
+    console.log('Deleting list:', selectedList)
+    // Implement your deletion logic or call the necessary mutation function
+
+    setShowConfirmationModal(false)
+    setAnchorEl(null)
+  }
 
   return (
     <Box sx={{ overflow: 'auto' }}>
@@ -197,8 +221,8 @@ const DeleteListMenu = () => {
         <IconButton
           aria-label="more"
           id="long-button"
-          aria-controls={open ? 'long-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
+          aria-controls={anchorEl ? 'long-menu' : undefined}
+          aria-expanded={anchorEl ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleClickMenuList}
         >
@@ -210,14 +234,17 @@ const DeleteListMenu = () => {
             'aria-labelledby': 'long-button',
           }}
           anchorEl={anchorEl}
-          open={open}
+          open={Boolean(anchorEl)}
           onClose={handleCloseMenuList}
         >
           {filteredCustomLists.map((list) => (
             <MenuItem
               key={list.id}
               selected={list.name === 'Pyxis'}
-              onClick={handleCloseMenuList}
+              onClick={() => {
+                setSelectedList(list)
+                setShowConfirmationModal(true)
+              }}
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -232,14 +259,64 @@ const DeleteListMenu = () => {
           ))}
         </Menu>
       </div>
+      <Modal
+        open={showConfirmationModal}
+        onClose={() => setShowConfirmationModal(false)}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <h3 className="font-['Arvo'] text-lg font-bold">
+            Are you sure you want to delete &quot;
+            {selectedList ? selectedList.name : ''}&quot;&nbsp;?
+          </h3>
+          <div className="flex justify-center space-x-2 py-4">
+            <Button
+              variant="contained"
+              onClick={() => setShowConfirmationModal(false)}
+              sx={{
+                backgroundColor: 'blue',
+                width: 100,
+                color: 'white',
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleDeleteList}
+              sx={{
+                backgroundColor: 'red',
+                width: 100,
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: 'lightcoral', // Replace with your desired lighter shade of red
+                },
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </Box>
+      </Modal>
     </Box>
   )
 }
+
 
 const CustomListPopup: React.FC<CustomListPopupProps> = ({
   onClose: closePopup,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { filteredCustomLists } = useCustomList()
 
   const { toggleTheme } = useContext(CustomThemeContext)
   const { theme } = useContext(CustomThemeContext)
@@ -249,11 +326,6 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
     }
     return second
   }
-
-  const handleCurrentTheme = () => {
-    toggleTheme()
-  }
-  const status = getStatus()
 
   useEffect(() => {
     setIsOpen(true)
@@ -327,10 +399,12 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
             <div className="flex items-center justify-center">
               <p className="font-['Arvo'] text-2xl font-bold">My List</p>
             </div>
-            <div className="bg-blue-500 flex flex-row justify-between px-10">
+            <div className="flex flex-row justify-between bg-blue-500 px-10">
               <SwitchListMenu />
               <AddListMenu />
-              <DeleteListMenu />
+              <DeleteListMenu
+                filteredCustomLists={Array.from(filteredCustomLists)}
+              />
             </div>
           </Box>
         </Fade>
