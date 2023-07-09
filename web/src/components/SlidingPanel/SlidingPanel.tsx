@@ -42,8 +42,6 @@ function SlidingPannel() {
         )
       : []
 
-  console.log(topTenData)
-
   const slides =
     topTenData != undefined
       ? topTenData

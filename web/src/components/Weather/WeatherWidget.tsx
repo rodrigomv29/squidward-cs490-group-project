@@ -15,8 +15,6 @@ const WeatherWidget = ({ city = 'Newark' }) => {
         const result = await axios.get(
           `http://api.weatherapi.com/v1/forecast.json?key=c54f694eb4484a33bda223538231806&q=${city}&days=3`
         )
-
-        console.log('API result:', result.data)
         setWeatherData(result.data)
       } catch (error) {
         console.error('API error:', error)
