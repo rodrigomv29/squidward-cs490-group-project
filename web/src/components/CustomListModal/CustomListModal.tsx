@@ -23,6 +23,7 @@ import { useAuth } from 'src/auth'
 import {
   useCustomList,
   CREATE_CUSTOM_LIST_MUTATION,
+  DELETE_CUSTOM_LIST_MUTATION,
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
 
@@ -196,6 +197,28 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   const [anchorEl, setAnchorEl] = useState(null)
   const [selectedList, setSelectedList] = useState(null)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+  const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
+
+  const { getCustomListIdByName, refetchCustomListQuery } = useCustomList() // Move the hook call here
+
+  const handleDeleteList = async () => {
+    const customListId = getCustomListIdByName(selectedList.name)
+    try {
+      await deleteCustomList({
+        variables: {
+          id: customListId,
+        },
+      })
+      await refetchCustomListQuery()
+      console.log('Deleting list:', selectedList)
+      toast.success(`Deleted List: "${selectedList.name}"`)
+      handleCloseMenuList()
+    } catch (error) {
+      console.log(error)
+    }
+    setShowConfirmationModal(false)
+    setAnchorEl(null)
+  }
 
   const handleClickMenuList = (event) => {
     setAnchorEl(event.currentTarget)
@@ -203,14 +226,6 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
 
   const handleCloseMenuList = () => {
     setSelectedList(null)
-    setAnchorEl(null)
-  }
-
-  const handleDeleteList = () => {
-    console.log('Deleting list:', selectedList)
-    // Implement your deletion logic or call the necessary mutation function
-
-    setShowConfirmationModal(false)
     setAnchorEl(null)
   }
 
@@ -292,7 +307,9 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
             </Button>
             <Button
               variant="contained"
-              onClick={handleDeleteList}
+              onClick={() => {
+                handleDeleteList()
+              }}
               sx={{
                 backgroundColor: 'red',
                 width: 100,
@@ -310,7 +327,6 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
     </Box>
   )
 }
-
 
 const CustomListPopup: React.FC<CustomListPopupProps> = ({
   onClose: closePopup,

@@ -45,7 +45,7 @@ export const UPDATE_CUSTOM_LIST_MUTATION = gql`
   }
 `
 
-const DELETE_CUSTOM_LIST_MUTATION = gql`
+export const DELETE_CUSTOM_LIST_MUTATION = gql`
   mutation DeleteCustomListMutation($id: Int!) {
     deleteCustomList(id: $id) {
       id
@@ -82,30 +82,6 @@ export function useCustomList() {
     filteredCustomLists,
     getCustomListIdByName,
     refetchCustomListQuery: refetch, // Add the refetch function to the hook's return value
-  }
-}
-
-export const useDeleteList = async (name: string) => {
-  const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
-  const { getCustomListIdByName, refetchCustomListQuery } = useCustomList()
-  const customListId = getCustomListIdByName(name)
-  console.log(customListId)
-  if (!customListId) {
-    console.log(`Custom list with name "${name}" not found`)
-    return
-  }
-
-  try {
-    await deleteCustomList({
-      variables: {
-        id: customListId,
-      },
-    })
-    refetchCustomListQuery() // Refetch the custom list query after the mutation is completed
-    return true
-  } catch (error) {
-    console.error('Error deleting custom list:', error)
-    return false
   }
 }
 
