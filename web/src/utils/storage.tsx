@@ -27,7 +27,7 @@ export const getIsHomePage = () => {
 }
 
 const insertionSort = (array) => {
-  const length = array?.length
+  const length: number = array?.length
 
   for (let i = 1; i < length; i++) {
     const current = array[i]
