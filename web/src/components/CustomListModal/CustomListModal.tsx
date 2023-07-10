@@ -65,15 +65,21 @@ const SwitchListMenu = () => {
           open={open}
           onClose={handleCloseMenuList}
         >
-          {filteredCustomLists.map((list) => (
-            <MenuItem
-              key={list.id}
-              selected={list.name === 'Pyxis'}
-              onClick={handleCloseMenuList}
-            >
-              {list.name}
+          {filteredCustomLists.length > 0 ? (
+            filteredCustomLists.map((list) => (
+              <MenuItem
+                key={list.id}
+                selected={list.name === 'Pyxis'}
+                onClick={handleCloseMenuList}
+              >
+                {list.name}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem>
+              <span className="text-black">You have no list</span>
             </MenuItem>
-          ))}
+          )}
         </Menu>
       </div>
     </Box>
@@ -252,26 +258,32 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
           open={Boolean(anchorEl)}
           onClose={handleCloseMenuList}
         >
-          {filteredCustomLists.map((list) => (
-            <MenuItem
-              key={list.id}
-              selected={list.name === 'Pyxis'}
-              onClick={() => {
-                setSelectedList(list)
-                setShowConfirmationModal(true)
-              }}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <span>{list.name}</span>
-              <RemoveCircleOutlineOutlinedIcon
-                style={{ marginLeft: '8px', fontSize: 20 }}
-              />
+          {filteredCustomLists.length > 0 ? (
+            filteredCustomLists.map((list) => (
+              <MenuItem
+                key={list.id}
+                selected={list.name === 'Pyxis'}
+                onClick={() => {
+                  setSelectedList(list)
+                  setShowConfirmationModal(true)
+                }}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{list.name}</span>
+                <RemoveCircleOutlineOutlinedIcon
+                  style={{ marginLeft: '8px', fontSize: 20 }}
+                />
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem>
+              <span className="text-black">You have no list</span>
             </MenuItem>
-          ))}
+          )}
         </Menu>
       </div>
       <Modal

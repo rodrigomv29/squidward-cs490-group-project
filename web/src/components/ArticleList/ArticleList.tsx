@@ -10,6 +10,7 @@ import CustomThemeContext from 'src/CustomThemeContext'
 import { sortArticlesByDate } from 'src/utils/storage'
 
 import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
+import CustomListAdder from '../CustomListAdder/CustomListAdder'
 
 const processData = (categoryArticlesMap, currentPage, categories) => {
   const articles = categories.reduce((acc, category) => {
@@ -118,19 +119,24 @@ function ArticleList() {
           {categoryArticles != null
             ? categoryArticles.map((article, index) => (
                 <div key={article.id} className="font-bold">
-                  <Link
-                    to={routes.category({ category: article.category })}
-                    onClick={() => {
-                      handlePageChange(article.category)
-                    }}
-                  >
-                    <div className="category-container text-glow flex flex-row text-lg font-bold text-emerald-400">
-                      <div className="uppercase">
-                        {article.category.slice(0, 1)}
+                  <div className="flex flex-row justify-between">
+                    <Link
+                      to={routes.category({ category: article.category })}
+                      onClick={() => {
+                        handlePageChange(article.category)
+                      }}
+                    >
+                      <div className="category-container text-glow flex flex-row text-lg font-bold text-emerald-400">
+                        <div className="uppercase">
+                          {article.category.slice(0, 1)}
+                        </div>
+                        <div className="">{article.category.slice(1)}</div>
                       </div>
-                      <div className="">{article.category.slice(1)}</div>
+                    </Link>
+                    <div>
+                      <CustomListAdder />
                     </div>
-                  </Link>
+                  </div>
                   <a
                     href={article.url}
                     target="_blank"
