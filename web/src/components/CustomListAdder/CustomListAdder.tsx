@@ -18,11 +18,11 @@ import { useAuth } from 'src/auth'
 import {
   CREATE_CUSTOM_LIST_MUTATION,
   useCustomList,
-  //UPDATE_CUSTOM_LIST_MUTATION,
+  UPDATE_CUSTOM_LIST_MUTATION,
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
 
-function CustomListAdder() {
+function CustomListAdder({ articleId }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [nestedAnchorEl, setNestedAnchorEl] =
     React.useState<null | HTMLElement>(null)
@@ -31,6 +31,7 @@ function CustomListAdder() {
   const [listName, setListName] = useState('')
   const [showAddListModal, setShowAddListModal] = useState(false)
   const [createCustomList] = useMutation(CREATE_CUSTOM_LIST_MUTATION)
+  const [updateCustomList] = useMutation(UPDATE_CUSTOM_LIST_MUTATION)
   const { currentUser } = useAuth()
   const { theme } = useContext(CustomThemeContext)
 
@@ -67,12 +68,6 @@ function CustomListAdder() {
     setListName(event.target.value)
   }
 
-  const handleListSelection = (list: any) => {
-    // Logic for adding an article to the selected custom list
-    console.log(`Adding article to list: ${list.name}`)
-    handleNestedClose()
-  }
-
   const handleKeyPressAdd = async (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
@@ -100,7 +95,6 @@ function CustomListAdder() {
             setListName('')
             setShowAddListModal(false) // Close the modal
           } catch (error) {
-            console.log(error.message)
             if (
               error.graphQLErrors &&
               error.graphQLErrors.length > 0 &&
@@ -115,6 +109,41 @@ function CustomListAdder() {
           }
         }
       }
+    }
+  }
+
+  const handleListSelection = async (list: any) => {
+    try {
+      const existingArticleIds = list.articles
+        ? list.articles.map((article: any) => article.id)
+        : []
+
+      const updatedArticleIds = list.articles
+        ? [...list.articles.map((article: any) => article.id)]
+        : []
+
+      if (articleId && !existingArticleIds.includes(articleId)) {
+        updatedArticleIds.push(articleId)
+
+        console.log(updatedArticleIds)
+
+        await updateCustomList({
+          variables: {
+            id: list.id,
+            articleIds: updatedArticleIds,
+          },
+        })
+        await refetchCustomListQuery()
+
+        toast.success('List updated successfully')
+        handleNestedClose()
+        handleClose()
+      } else {
+        toast.error('Article already exists in the list')
+      }
+    } catch (error) {
+      console.error('Error updating list:', error)
+      toast.error('Failed to update list')
     }
   }
 

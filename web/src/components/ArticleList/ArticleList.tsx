@@ -134,7 +134,7 @@ function ArticleList() {
                       </div>
                     </Link>
                     <div>
-                      <CustomListAdder />
+                      <CustomListAdder articleId={article.id} />
                     </div>
                   </div>
                   <a
