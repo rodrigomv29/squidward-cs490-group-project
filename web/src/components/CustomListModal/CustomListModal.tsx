@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined'
@@ -7,6 +7,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined'
 import SummarizeIcon from '@mui/icons-material/Summarize'
 import { Button, IconButton } from '@mui/material'
+import { CircularProgress } from '@mui/material'
 import Backdrop from '@mui/material/Backdrop'
 import Box from '@mui/material/Box'
 import Fade from '@mui/material/Fade'
@@ -37,14 +38,17 @@ interface SwitchListMenuProps {
   filteredCustomLists: CustomList[]
   selectedList: CustomList
   setSelectedList: (list: CustomList) => void
+  setToggledList: (value: boolean) => void
 }
 
 const SwitchListMenu: React.FC<SwitchListMenuProps> = ({
   filteredCustomLists,
   selectedList,
   setSelectedList,
+  setToggledList,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [isToggling, setIsToggling] = useState(true)
 
   const handleClickMenuList = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -55,7 +59,22 @@ const SwitchListMenu: React.FC<SwitchListMenuProps> = ({
   }
 
   const handleListSelection = (list: CustomList) => {
-    setSelectedList(list)
+    if (isToggling && list != selectedList) {
+      setToggledList(true)
+    }
+
+    if (list != selectedList) {
+      setSelectedList(list)
+    }
+
+    setTimeout(() => {
+      setIsToggling(false)
+      setToggledList(false)
+    }, 500)
+
+    setTimeout(() => {
+      setIsToggling(true)
+    }, 500)
     handleCloseMenuList()
   }
 
@@ -210,6 +229,8 @@ interface CustomList {
 }
 interface DeleteListMenuProps {
   filteredCustomLists: CustomList[]
+  setSelectedList: (list: CustomList) => void
+  setToggledList: (value: boolean) => void
   getCustomListIdByName?: (name: string) => number
   refetchCustomListQuery?: (
     variables?: Partial<GraphQLOperationVariables>
@@ -218,16 +239,19 @@ interface DeleteListMenuProps {
 
 const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   filteredCustomLists,
+  setSelectedList,
+  setToggledList,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedList, setSelectedList] = useState(null)
+  const [selectedListMenu, setSelectedListMenu] = useState(null)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
+  const [isToggling, setIsToggling] = useState(true)
 
   const { getCustomListIdByName, refetchCustomListQuery } = useCustomList() // Move the hook call here
 
   const handleDeleteList = async () => {
-    const customListId = getCustomListIdByName(selectedList.name)
+    const customListId = getCustomListIdByName(selectedListMenu.name)
     try {
       await deleteCustomList({
         variables: {
@@ -235,8 +259,30 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
         },
       })
       await refetchCustomListQuery()
-      console.log('Deleting list:', selectedList)
-      toast.success(`Deleted List: "${selectedList.name}"`)
+
+      if (isToggling ) {
+        setToggledList(true)
+      }
+
+      const switchList =
+        filteredCustomLists.length > 1
+          ? filteredCustomLists.length - 2
+          : filteredCustomLists.length > 0
+          ? filteredCustomLists.length - 1
+          : 0
+
+      console.log(switchList, 'switch')
+
+      setTimeout(() => {
+        setIsToggling(false)
+        setSelectedList(filteredCustomLists[switchList])
+        setToggledList(false)
+      }, 500)
+
+      setTimeout(() => {
+        setIsToggling(true)
+      }, 500)
+      toast.success(`Deleted List: "${selectedListMenu.name}"`)
       handleCloseMenuList()
     } catch (error) {
       console.log(error)
@@ -250,7 +296,7 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   }
 
   const handleCloseMenuList = () => {
-    setSelectedList(null)
+    setSelectedListMenu(null)
     setAnchorEl(null)
   }
 
@@ -283,7 +329,7 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
                 key={list.id}
                 selected={list.name === 'Pyxis'}
                 onClick={() => {
-                  setSelectedList(list)
+                  setSelectedListMenu(list)
                   setShowConfirmationModal(true)
                 }}
                 sx={{
@@ -322,7 +368,7 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
         >
           <h3 className="font-['Arvo'] text-lg font-bold">
             Are you sure you want to delete &quot;
-            {selectedList ? selectedList.name : ''}&quot;&nbsp;?
+            {selectedListMenu ? selectedListMenu.name : ''}&quot;&nbsp;?
           </h3>
           <div className="flex justify-center space-x-2 py-4">
             <Button
@@ -365,15 +411,10 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const { filteredCustomLists } = useCustomList()
   const [selectedList, setSelectedList] = useState(null)
+  const [toggledList, setToggledList] = useState(false)
+  const [intialOpen, setInitalOpen] = useState(true)
 
-  useEffect(() => {
-    if (
-      !selectedList ||
-      !filteredCustomLists.some((list) => list.id === selectedList.id)
-    ) {
-      setSelectedList(selectedList === null ? filteredCustomLists[0] : selectedList)
-    }
-  }, [filteredCustomLists, selectedList])
+  console.log(selectedList, 'selectedList')
   const { toggleTheme } = useContext(CustomThemeContext)
   const { theme } = useContext(CustomThemeContext)
   const handleTheme = (first, second) => {
@@ -384,12 +425,6 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   }
 
   useEffect(() => {
-    if (filteredCustomLists.length > 0) {
-      setSelectedList(filteredCustomLists[0])
-    }
-  }, [filteredCustomLists])
-
-  useEffect(() => {
     setIsOpen(true)
   }, [])
 
@@ -397,6 +432,14 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
     setIsOpen(false)
     closePopup()
   }
+
+  if (intialOpen) {
+    setInitalOpen(false)
+  }
+
+  useEffect(() => {
+    setSelectedList(filteredCustomLists[0])
+  }, [filteredCustomLists[0]])
 
   const style = {
     position: 'absolute' as const,
@@ -454,7 +497,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
       >
         <Fade in={isOpen}>
           <Box sx={style} className="custom-modal">
-            <div className="h-full bg-orange-600">
+            <div className="h-full">
               <div className="flex justify-end">
                 <IconButton onClick={handleClose}>
                   <CloseIcon sx={{ fontSize: '30px' }} />
@@ -463,20 +506,29 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
               <div className="flex items-center justify-center">
                 <p className="font-Arvo text-2xl font-bold">My List</p>
               </div>
-              <div className="flex flex-row justify-between bg-blue-500 px-10">
+              <div className="flex flex-row justify-between px-10 pt-6">
                 <SwitchListMenu
                   filteredCustomLists={filteredCustomLists}
                   selectedList={selectedList}
                   setSelectedList={setSelectedList}
+                  setToggledList={setToggledList}
                 />
                 <AddListMenu />
                 <DeleteListMenu
                   filteredCustomLists={Array.from(filteredCustomLists)}
+                  setSelectedList={setSelectedList}
+                  setToggledList={setToggledList}
                 />
               </div>
-              <div className="custom-list-container h-[82%] overflow-auto bg-purple-500 ">
-                <CustomListGrid currentList={selectedList} />
-              </div>
+              {toggledList ? (
+                <div>
+                  <CircularProgress size={200} sx={{ color: '#34D399' }} />
+                </div>
+              ) : (
+                <div className="custom-list-container h-[82%] overflow-auto flex justify-center w-full">
+                  <CustomListGrid currentList={selectedList} />
+                </div>
+              )}
             </div>
           </Box>
         </Fade>

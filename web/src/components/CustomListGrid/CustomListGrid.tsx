@@ -29,7 +29,7 @@ const GET_ARTICLE_QUERY = gql`
   }
 `
 
-export function GetArticle(id: number) {
+function GetArticle(id: number) {
   const { data, loading } = useQuery(GET_ARTICLE_QUERY, {
     variables: { id: id },
   })
@@ -52,25 +52,30 @@ function CustomListGrid({ currentList }) {
 
   const handleTheme = (first, second) => {
     if (theme === 1) {
-      return first
+      return first + ' transitions-colors duration-200 '
     }
-    return second
+    return second + ' transitions-colors duration-200 '
   }
 
   return (
     <>
-      <div className={`grid-container h-[100%] overflow-auto px-4 py-8`}>
-        <p>{currentList?.name}</p>
+      <div className={`grid-container h-[100%] w-full overflow-auto px-4 py-8`}>
+        <div className="text-center">
+          <p className="pb-4 text-2xl font-bold">{currentList?.name}</p>
+        </div>
         <div
           className={`category-grid ${handleTheme(
             'text-white',
             'text-gray-800'
-          )} grid w-full
+          )} flex grid
+          h-[75%]
+          w-full
           max-w-full
-          grid-cols-3
+          grid-cols-3 items-center justify-center
         gap-4`}
         >
-          {userArticles?.length === articleIds?.length ? (
+          {userArticles?.length === articleIds?.length &&
+          userArticles?.length != 0 ? (
             userArticles?.map((article, index) => (
               <div key={article?.id} className="font-bold">
                 <a
@@ -132,8 +137,22 @@ function CustomListGrid({ currentList }) {
               </div>
             ))
           ) : (
-            <CircularProgress size={100} sx={{ color: 'white' }} />
+            <div className="text-center"></div>
           )}
+          {userArticles.length === 0 ? (
+            <div className="flex h-[50%] w-full items-center  text-center">
+              <div className={`w-full  text-center`}>
+                <span
+                  className={`text-xl font-bold ${handleTheme(
+                    'text-white',
+                    'text-black'
+                  )}`}
+                >
+                  You dont have any articles for this list
+                </span>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </>
