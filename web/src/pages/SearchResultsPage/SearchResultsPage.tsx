@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   Select,
+  CSSReset,
   ChakraProvider,
 } from '@chakra-ui/react'
 import { CircularProgress } from '@mui/material'
@@ -157,28 +158,32 @@ const SearchResultsPage = () => {
           ) : (
             <Box marginLeft={0} fontFamily="Arvo">
               <Box mb={4} display="flex" justifyContent="center">
-                <Select
-                  value={sortOrder}
-                  onChange={handleSortChange}
-                  w="200px"
-                  mr="4"
-                  sx={{appearance: 'none'}}
-                >
-                  <option value="latest">Latest</option>
-                  <option value="oldest">Oldest</option>
-                </Select>
-                <Select
-                  value={timeFilter}
-                  onChange={handleTimeFilterChange}
-                  w="200px"
-                  ml="4"
-                  sx={{appearance: 'none'}}
-                >
-                  <option value="all">All Time</option>
-                  <option value="today">Today</option>
-                  <option value="week">Past 7 Days</option>
-                  <option value="month">Past 30 Days</option>
-                </Select>
+                <Box w="200px" mr="4">
+                  <Text mb="2" fontWeight="bold">Sort</Text>
+                  <Select
+                    value={sortOrder}
+                    onChange={handleSortChange}
+                    w="100%"
+                    sx={{appearance: 'none'}}
+                  >
+                    <option value="latest">Latest</option>
+                    <option value="oldest">Oldest</option>
+                  </Select>
+                </Box>
+                <Box w="200px" ml="4">
+                  <Text mb="2" fontWeight="bold">Dates</Text>
+                  <Select
+                    value={timeFilter}
+                    onChange={handleTimeFilterChange}
+                    w="100%"
+                    sx={{appearance: 'none'}}
+                  >
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">Past 7 Days</option>
+                    <option value="month">Past 30 Days</option>
+                  </Select>
+                </Box>
               </Box>
               {sortedResults.map((result) => (
                 <Box key={result.url} mb={4}>
@@ -200,11 +205,11 @@ const SearchResultsPage = () => {
                         >
                           <a
                             href={result.url}
-                            key={result.id}
+                            key={result.title}
                             target="_blank"
-                            rel="noopener noreferrer"
+                            rel="noreferrer"
                           >
-                            {result?.title}
+                            {result.title}
                           </a>
                         </span>
                         <span>
