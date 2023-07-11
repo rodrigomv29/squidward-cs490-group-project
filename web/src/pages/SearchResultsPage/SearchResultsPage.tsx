@@ -46,7 +46,7 @@ const SearchResultsPage = () => {
   useEffect(() => {
     const query = new URLSearchParams(location.search).get('query')
     if (query) {
-      const apiKey = 'e1d9b8e504f94c2aaccc50b3b6bba68f'
+      const apiKey = 'e1d9b8e504f94c2aaccc50b3b6bba68f';
       const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
         query
       )}&apiKey=${apiKey}`
@@ -61,15 +61,17 @@ const SearchResultsPage = () => {
           if (timeFilter !== 'all') {
             const date = new Date();
             if (timeFilter === 'today') {
-              date.setDate(date.getDate() - 1);
+              date.setDate(date.getDate() - 1)
             } else if (timeFilter === 'week') {
-              date.setDate(date.getDate() - 7);
+              date.setDate(date.getDate() - 7)
             } else if (timeFilter === 'fortnight') {
-              date.setDate(date.getDate() - 14);
+              date.setDate(date.getDate() - 14)
             } else if (timeFilter === 'month') {
-              date.setMonth(date.getMonth() - 1);
+              date.setMonth(date.getMonth() - 1)
             }
-            articles = articles.filter(article => new Date(article.publishedAt) > date);
+            articles = articles.filter(
+              (article) => new Date(article.publishedAt) > date
+            )
           }
           setSearchResults(articles)
           setIsLoading(false)
@@ -124,35 +126,13 @@ const SearchResultsPage = () => {
               <p className="font-lg pt-2 font-bold ">Loading Search Results</p>
             </div>
           </Box>
-        ) : searchResults.length === 0 ? (
-          <Box
-            h="screen"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Image
-              src="https://media1.tenor.com/images/2025c85773b942247e4565847e43a5d0/tenor.gif?itemid=7619217"
-              alt="No results found"
-              maxW={400}
-              mx="auto"
-              mb={8}
-            />
-            <Box textAlign="center">
-              <Heading as="h2" fontSize="4xl" fontWeight="bold" mb={4}>
-                No results found.
-              </Heading>
-              <Text fontSize="xl" mb={4}>
-                Please try a different search term.
-              </Text>
-            </Box>
-          </Box>
         ) : (
-          <Box marginLeft={0} fontFamily="Arvo">
+          <>
             <Box mb={4} display="flex" justifyContent="center">
               <Box w="200px" mr="4">
-                <Text mb="2" fontWeight="bold">Sort</Text>
+                <Text mb="2" fontWeight="bold">
+                  Sort
+                </Text>
                 <Select
                   value={sortOrder}
                   onChange={handleSortChange}
@@ -164,12 +144,14 @@ const SearchResultsPage = () => {
                 </Select>
               </Box>
               <Box w="200px" ml="4">
-                <Text mb="2" fontWeight="bold">Dates</Text>
+                <Text mb="2" fontWeight="bold">
+                  Dates
+                </Text>
                 <Select
                   value={timeFilter}
                   onChange={handleTimeFilterChange}
                   w="100%"
-                  sx={{appearance: 'none'}}
+                  sx={{ appearance: 'none' }}
                 >
                   <option value="all">All Time</option>
                   <option value="today">Today</option>
@@ -179,64 +161,92 @@ const SearchResultsPage = () => {
                 </Select>
               </Box>
             </Box>
-            {sortedResults.map((result) => (
-              <Box key={result.url} mb={4}>
-                <div className="items-cetner flex h-[300px] justify-center">
-                  <div className="my-10 flex w-[75%] flex-row">
-                    <div className="w-[30%] ">
-                      <img
-                        src={result.urlToImage}
-                        alt=""
-                        className="h-full w-full"
-                      />
-                    </div>
-                    <div className="flex w-[70%] flex-col p-8">
-                      <span
-                        className={`mb-8 text-lg font-bold hover:underline ${handleTheme(
-                          'text-white',
-                          'text-black'
-                        )}`}
-                      >
-                        <a
-                          href={result.url}
-                          rel="noreferrer"
-                          target="_blank"
-                          className="hover:text-blue-400"
-                        >
-                          {result.title}
-                        </a>
-                      </span>
-                      <span
-                        className={`mb-4 ${handleTheme(
-                          'text-gray-400',
-                          'text-gray-500'
-                        )}`}
-                      >
-                        {new Date(result.publishedAt).toLocaleDateString()} |
-                        {result.source.name}
-                      </span>
-                      <p
-                        className={`text-justify mb-4 ${handleTheme(
-                          'text-white',
-                          'text-black'
-                        )}`}
-                      >
-                        {result.description}
-                      </p>
-                      <a
-                        href={result.url}
-                        rel="noreferrer"
-                        target="_blank"
-                        className="underline hover:text-blue-400"
-                      >
-                        Read more...
-                      </a>
-                    </div>
-                  </div>
-                </div>
+            {searchResults.length === 0 ? (
+              <Box
+                h="screen"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Image
+                  src="https://media1.tenor.com/images/2025c85773b942247e4565847e43a5d0/tenor.gif?itemid=7619217"
+                  alt="No results found"
+                  maxW={400}
+                  mx="auto"
+                  mb={8}
+                />
+                <Box textAlign="center">
+                  <Heading as="h2" fontSize="4xl" fontWeight="bold" mb={4}>
+                    No results found.
+                  </Heading>
+                  <Text fontSize="xl" mb={4}>
+                    Please try a different search term.
+                  </Text>
+                </Box>
               </Box>
-            ))}
-          </Box>
+            ) : (
+              <Box marginLeft={0} fontFamily="Arvo">
+                {sortedResults.map((result) => (
+                  <Box key={result.url} mb={4}>
+                    <div className="items-cetner flex h-[300px] justify-center">
+                      <div className="my-10 flex w-[75%] flex-row">
+                        <div className="w-[30%]">
+                          <img
+                            src={result.urlToImage}
+                            alt=""
+                            className="h-full w-full"
+                          />
+                        </div>
+                        <div className="flex w-[70%] flex-col p-8">
+                          <span
+                            className={`mb-8 text-lg font-bold hover:underline ${handleTheme(
+                              'text-white',
+                              'text-black'
+                            )}`}
+                          >
+                            <a
+                              href={result.url}
+                              rel="noreferrer"
+                              target="_blank"
+                              className="hover:text-blue-400"
+                            >
+                              {result.title}
+                            </a>
+                          </span>
+                          <span
+                            className={`mb-4 ${handleTheme(
+                              'text-gray-400',
+                              'text-gray-500'
+                            )}`}
+                          >
+                            {new Date(result.publishedAt).toLocaleDateString()}{' '}
+                            {result.source.name}
+                          </span>
+                          <p
+                            className={`mb-4 text-justify ${handleTheme(
+                              'text-white',
+                              'text-black'
+                            )}`}
+                          >
+                            {result.description}
+                          </p>
+                          <a
+                            href={result.url}
+                            rel="noreferrer"
+                            target="_blank"
+                            className="underline hover:text-blue-400"
+                          >
+                            Read more...
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </Box>
+                ))}
+              </Box>
+            )}
+          </>
         )}
       </Box>
     </NewsLayout>
