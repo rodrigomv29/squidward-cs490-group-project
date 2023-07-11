@@ -55,7 +55,6 @@ const GET_USER_SETTINGS_QUERY = gql`
 
 function ArticleList() {
   const { theme } = useContext(CustomThemeContext)
-
   const { currentPage, toggleCurrentPage } = useContext(CurrentPageContext)
   const { categoryArticlesMap, loading } = useGetArticles()
   const { currentUser } = useAuth()

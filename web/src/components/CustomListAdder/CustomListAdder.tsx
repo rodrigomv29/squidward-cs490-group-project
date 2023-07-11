@@ -52,7 +52,6 @@ function CustomListAdder({ articleId }) {
 
   const handleCreateList = () => {
     setShowAddListModal(true)
-    console.log('Creating a new list')
     handleClose()
   }
 
@@ -112,14 +111,17 @@ function CustomListAdder({ articleId }) {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleListSelection = async (list: any) => {
     try {
       const existingArticleIds = list.articles
-        ? list.articles.map((article: any) => article.id)
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          list.articles.map((article: any) => article.id)
         : []
 
       const updatedArticleIds = list.articles
-        ? [...list.articles.map((article: any) => article.id)]
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          [...list.articles.map((article: any) => article.id)]
         : []
 
       if (articleId && !existingArticleIds.includes(articleId)) {
@@ -138,6 +140,7 @@ function CustomListAdder({ articleId }) {
         toast.success('List updated successfully')
         handleNestedClose()
         handleClose()
+        return
       } else {
         toast.error('Article already exists in the list')
       }

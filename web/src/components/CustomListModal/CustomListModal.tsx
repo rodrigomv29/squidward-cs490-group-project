@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined'
@@ -27,19 +27,38 @@ import {
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
 
+import CustomListGrid from '../CustomListGrid/CustomListGrid'
+
 interface CustomListPopupProps {
   onClose: () => void
 }
 
-const SwitchListMenu = () => {
+interface SwitchListMenuProps {
+  filteredCustomLists: CustomList[]
+  selectedList: CustomList
+  setSelectedList: (list: CustomList) => void
+}
+
+const SwitchListMenu: React.FC<SwitchListMenuProps> = ({
+  filteredCustomLists,
+  selectedList,
+  setSelectedList,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const { filteredCustomLists } = useCustomList()
+
   const handleClickMenuList = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleCloseMenuList = () => {
     setAnchorEl(null)
   }
+
+  const handleListSelection = (list: CustomList) => {
+    setSelectedList(list)
+    handleCloseMenuList()
+  }
+
   const open = Boolean(anchorEl)
 
   return (
@@ -65,12 +84,12 @@ const SwitchListMenu = () => {
           open={open}
           onClose={handleCloseMenuList}
         >
-          {filteredCustomLists.length > 0 ? (
-            filteredCustomLists.map((list) => (
+          {filteredCustomLists?.length > 0 ? (
+            filteredCustomLists?.map((list) => (
               <MenuItem
                 key={list.id}
-                selected={list.name === 'Pyxis'}
-                onClick={handleCloseMenuList}
+                selected={list === selectedList}
+                onClick={() => handleListSelection(list)}
               >
                 {list.name}
               </MenuItem>
@@ -345,7 +364,16 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { filteredCustomLists } = useCustomList()
+  const [selectedList, setSelectedList] = useState(null)
 
+  useEffect(() => {
+    if (
+      !selectedList ||
+      !filteredCustomLists.some((list) => list.id === selectedList.id)
+    ) {
+      setSelectedList(selectedList === null ? filteredCustomLists[0] : selectedList)
+    }
+  }, [filteredCustomLists, selectedList])
   const { toggleTheme } = useContext(CustomThemeContext)
   const { theme } = useContext(CustomThemeContext)
   const handleTheme = (first, second) => {
@@ -354,6 +382,12 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
     }
     return second
   }
+
+  useEffect(() => {
+    if (filteredCustomLists.length > 0) {
+      setSelectedList(filteredCustomLists[0])
+    }
+  }, [filteredCustomLists])
 
   useEffect(() => {
     setIsOpen(true)
@@ -374,6 +408,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
     boxShadow: 24,
     borderRadius: 6,
     p: 4,
+    height: '80%',
   }
 
   return (
@@ -418,21 +453,30 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
         }}
       >
         <Fade in={isOpen}>
-          <Box sx={style}>
-            <div className="flex justify-end">
-              <IconButton onClick={handleClose}>
-                <CloseIcon sx={{ fontSize: '30px' }} />
-              </IconButton>
-            </div>
-            <div className="flex items-center justify-center">
-              <p className="font-['Arvo'] text-2xl font-bold">My List</p>
-            </div>
-            <div className="flex flex-row justify-between bg-blue-500 px-10">
-              <SwitchListMenu />
-              <AddListMenu />
-              <DeleteListMenu
-                filteredCustomLists={Array.from(filteredCustomLists)}
-              />
+          <Box sx={style} className="custom-modal">
+            <div className="h-full bg-orange-600">
+              <div className="flex justify-end">
+                <IconButton onClick={handleClose}>
+                  <CloseIcon sx={{ fontSize: '30px' }} />
+                </IconButton>
+              </div>
+              <div className="flex items-center justify-center">
+                <p className="font-Arvo text-2xl font-bold">My List</p>
+              </div>
+              <div className="flex flex-row justify-between bg-blue-500 px-10">
+                <SwitchListMenu
+                  filteredCustomLists={filteredCustomLists}
+                  selectedList={selectedList}
+                  setSelectedList={setSelectedList}
+                />
+                <AddListMenu />
+                <DeleteListMenu
+                  filteredCustomLists={Array.from(filteredCustomLists)}
+                />
+              </div>
+              <div className="custom-list-container h-[82%] overflow-auto bg-purple-500 ">
+                <CustomListGrid currentList={selectedList} />
+              </div>
             </div>
           </Box>
         </Fade>

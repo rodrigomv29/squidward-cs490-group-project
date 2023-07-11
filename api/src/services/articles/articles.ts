@@ -45,3 +45,13 @@ export const Article: ArticleRelationResolvers = {
     return db.article.findUnique({ where: { id: root?.id } }).Category()
   },
 }
+
+export const getAllArticles = async () => {
+  return db.article.findMany()
+}
+
+export const getArticleById: QueryResolvers['article'] = ({ id }) => {
+  return db.article.findUnique({
+    where: { id },
+  })
+}
