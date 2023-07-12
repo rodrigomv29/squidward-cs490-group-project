@@ -1,14 +1,19 @@
 import React, { useEffect, useState, useContext } from 'react'
-
-import { Box, Heading, Image, Text, Select } from '@chakra-ui/react'
+import { Box, Heading, Text, Select } from '@chakra-ui/react'
 import { CircularProgress } from '@mui/material'
 import axios from 'axios'
-
 import { useLocation } from '@redwoodjs/router'
-
 import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
 import NewsLayout from 'src/layouts/NewsLayout/NewsLayout'
+
+const stripHtmlTags = (str) => {
+  if ((str===null) || (str===''))
+    return false;
+  else
+    str = str.toString();
+  return str.replace(/<[^>]*>/g, '');
+}
 
 const SearchResultsPage = () => {
   const [searchResults, setSearchResults] = useState([])
@@ -42,12 +47,6 @@ const SearchResultsPage = () => {
   }
 
   toggleCurrentPage(null)
-
-  const stripHtmlTags = (str) => {
-    if (str === null || str === '') return false
-    else str = str.toString()
-    return str.replace(/<[^>]*>/g, '');
-  }
 
   useEffect(() => {
     const query = new URLSearchParams(location.search).get('query')
@@ -169,63 +168,86 @@ const SearchResultsPage = () => {
             </Box>
             {searchResults.length === 0 ? (
               <Box
-                h="screen"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  height: '100%',
+                  color: '#34D399',
+                  alignItems: 'center',
+                }}
+                className="flex flex-col"
               >
-                <Image
-                  src="https://media1.tenor.com/images/2025c85773b942247e4565847e43a5d0/tenor.gif?itemid=7619217"
-                  alt="No results found"
-                  maxW={400}
-                  mx="auto"
-                  mb={8}
-                />
-                <Box textAlign="center">
-                  <Heading as="h2" fontSize="4xl" fontWeight="bold" mb={4}>
-                    No results found.
-                  </Heading>
-                  <Text fontSize="xl" mb={4}>
-                    Please try a different search term.
-                  </Text>
-                </Box>
+                <div className="mb-96">
+                  <p className="font-lg pt-2 font-bold ">
+                    No results found for your search.
+                  </p>
+                </div>
               </Box>
             ) : (
               <Box marginLeft={0} fontFamily="Arvo">
-                {sortedResults.map((result, index) => (
+                {sortedResults.map((result) => (
                   <Box key={result.url} mb={4}>
                     <div className="items-cetner flex h-[300px] justify-center">
                       <div className="my-10 flex w-[75%] flex-row">
                         <div className="w-[30%]">
-                          <img
-                            src={result.urlToImage}
-                            alt="News"
-                            className="h-[200px] w-full rounded-lg object-cover"
-                          />
+                          <a href={result.url} rel="noreferrer" target="_blank">
+                            <img
+                              src={result.urlToImage}
+                              alt="News"
+                              className="h-full w-full"
+                            />
+                          </a>
                         </div>
-                        <div className="ml-5 flex w-[70%] flex-col">
-                          <h2 className="mb-2 truncate text-2xl font-bold">
-                            {result.title}
-                          </h2>
-                          <p className="text-gray-400">
-                            {new Date(result.publishedAt).toDateString()}
-                          </p>
-                          <div className="text-sm font-normal">
-                            <p className="line-clamp-4">
-                              {stripHtmlTags(result.description)}
-                            </p>
-                          </div>
-                          <div className="mt-2">
+                        <div className="flex w-[70%] flex-col p-8">
+                          <span
+                            className={`mb-8 text-lg font-bold hover:underline ${handleTheme(
+                              'text-white',
+                              'text-black'
+                            )}`}
+                          >
                             <a
                               href={result.url}
+                              rel="noreferrer"
                               target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-indigo-500 underline"
+                              className="hover:text-blue-400"
                             >
-                              Read more
+                              {result.title}
                             </a>
-                          </div>
+                          </span>
+                          <span
+                            className={`mb-4 ${handleTheme(
+                              'text-gray-400',
+                              'text-gray-500'
+                            )}`}
+                          >
+                            {new Date(result.publishedAt).toLocaleDateString()}{' '}
+                            -{' '}
+                            <a
+                              href={result.url}
+                              rel="noreferrer"
+                              target="_blank"
+                              className="underline hover:text-blue-400"
+                            >
+                              {result.source.name}
+                            </a>
+                          </span>
+                          <p
+                            className={`mb-4 text-justify ${handleTheme(
+                              'text-white',
+                              'text-black'
+                            )}`}
+                          >
+                            {stripHtmlTags(result.description)}
+                          </p>
+                          <a
+                            href={result.url}
+                            rel="noreferrer"
+                            target="_blank"
+                            className="underline hover:text-blue-400"
+                          >
+                            Read more...
+                          </a>
                         </div>
                       </div>
                     </div>
