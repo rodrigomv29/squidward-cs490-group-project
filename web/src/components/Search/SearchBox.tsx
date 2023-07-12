@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FormEventHandler, useState } from 'react'
 
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons'
 import { Icon, Input } from '@chakra-ui/react'
@@ -56,13 +56,11 @@ const SearchBox = () => {
     }
   }
 
-  const handleInputChange = (event: {
-    target: { value: React.SetStateAction<string> }
-  }) => {
+  const handleInputChange = (event) => {
     setInputValue(event.target.value)
   }
 
-  const handleKeyPress = (event: { key: string }) => {
+  const handleKeyPress = (event, values) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       navigate(`/search-results?query=${encodeURIComponent(inputValue)}`)
     }
@@ -74,7 +72,7 @@ const SearchBox = () => {
   }
 
   return (
-    <form onClick={onSubmit}>
+    <form onSubmit={onSubmit}>
       <div
         className="relative"
         onMouseEnter={handleMouseEnter}
