@@ -43,6 +43,12 @@ const SearchResultsPage = () => {
 
   toggleCurrentPage(null)
 
+  const stripHtmlTags = (str) => {
+    if (str === null || str === '') return false
+    else str = str.toString()
+    return str.replace(/<[^>]*>/g, '');
+  }
+
   useEffect(() => {
     const query = new URLSearchParams(location.search).get('query')
     if (query) {
@@ -187,58 +193,39 @@ const SearchResultsPage = () => {
               </Box>
             ) : (
               <Box marginLeft={0} fontFamily="Arvo">
-                {sortedResults.map((result) => (
+                {sortedResults.map((result, index) => (
                   <Box key={result.url} mb={4}>
                     <div className="items-cetner flex h-[300px] justify-center">
                       <div className="my-10 flex w-[75%] flex-row">
                         <div className="w-[30%]">
                           <img
                             src={result.urlToImage}
-                            alt=""
-                            className="h-full w-full"
+                            alt="News"
+                            className="h-[200px] w-full rounded-lg object-cover"
                           />
                         </div>
-                        <div className="flex w-[70%] flex-col p-8">
-                          <span
-                            className={`mb-8 text-lg font-bold hover:underline ${handleTheme(
-                              'text-white',
-                              'text-black'
-                            )}`}
-                          >
+                        <div className="ml-5 flex w-[70%] flex-col">
+                          <h2 className="mb-2 truncate text-2xl font-bold">
+                            {result.title}
+                          </h2>
+                          <p className="text-gray-400">
+                            {new Date(result.publishedAt).toDateString()}
+                          </p>
+                          <div className="text-sm font-normal">
+                            <p className="line-clamp-4">
+                              {stripHtmlTags(result.description)}
+                            </p>
+                          </div>
+                          <div className="mt-2">
                             <a
                               href={result.url}
-                              rel="noreferrer"
                               target="_blank"
-                              className="hover:text-blue-400"
+                              rel="noopener noreferrer"
+                              className="text-indigo-500 underline"
                             >
-                              {result.title}
+                              Read more
                             </a>
-                          </span>
-                          <span
-                            className={`mb-4 ${handleTheme(
-                              'text-gray-400',
-                              'text-gray-500'
-                            )}`}
-                          >
-                            {new Date(result.publishedAt).toLocaleDateString()}{' '}
-                            {result.source.name}
-                          </span>
-                          <p
-                            className={`mb-4 text-justify ${handleTheme(
-                              'text-white',
-                              'text-black'
-                            )}`}
-                          >
-                            {result.description}
-                          </p>
-                          <a
-                            href={result.url}
-                            rel="noreferrer"
-                            target="_blank"
-                            className="underline hover:text-blue-400"
-                          >
-                            Read more...
-                          </a>
+                          </div>
                         </div>
                       </div>
                     </div>
