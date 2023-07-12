@@ -4,8 +4,7 @@ export const schema = gql`
     name: String!
     userId: Int!
     user: User!
-    articles: [Int]!
-    Article: [Article]!
+    articles: [UserArticle]!
   }
 
   type Query {
@@ -16,19 +15,17 @@ export const schema = gql`
   input CreateCustomListInput {
     name: String!
     userId: Int!
-    articles: [Int]!
   }
 
   input UpdateCustomListInput {
     name: String
     userId: Int
-    articles: [Int]!
   }
 
   type Mutation {
     createCustomList(input: CreateCustomListInput!): CustomList! @requireAuth
     updateCustomList(id: Int!, input: UpdateCustomListInput!): CustomList!
-      @skipAuth
+      @requireAuth
     deleteCustomList(id: Int!): CustomList! @requireAuth
   }
 `

@@ -19,10 +19,11 @@ import {
   CREATE_CUSTOM_LIST_MUTATION,
   useCustomList,
   UPDATE_CUSTOM_LIST_MUTATION,
+  CREATE_USER_ARTICLE_MUTATION,
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
 
-function CustomListAdder({ articleId }) {
+function CustomListAdder({ article }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [nestedAnchorEl, setNestedAnchorEl] =
     React.useState<null | HTMLElement>(null)
@@ -31,6 +32,7 @@ function CustomListAdder({ articleId }) {
   const [listName, setListName] = useState('')
   const [showAddListModal, setShowAddListModal] = useState(false)
   const [createCustomList] = useMutation(CREATE_CUSTOM_LIST_MUTATION)
+  const [createUserArticle] = useMutation(CREATE_USER_ARTICLE_MUTATION)
   const [updateCustomList] = useMutation(UPDATE_CUSTOM_LIST_MUTATION)
   const { currentUser } = useAuth()
   const { theme } = useContext(CustomThemeContext)
@@ -67,6 +69,8 @@ function CustomListAdder({ articleId }) {
     setListName(event.target.value)
   }
 
+  // console.log('article', article)
+
   const handleKeyPressAdd = async (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
@@ -85,7 +89,6 @@ function CustomListAdder({ articleId }) {
                 input: {
                   name: listName,
                   userId: currentUser?.id,
-                  articles: [],
                 },
               },
             })
@@ -113,32 +116,41 @@ function CustomListAdder({ articleId }) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleListSelection = async (list) => {
-    console.log('list', list)
     try {
-      const existingArticleIds = list.articles
-
-      if (articleId && !existingArticleIds.includes(articleId)) {
-        const updatedArticleIds = [...list.articles, articleId]
-
-        console.log('updated articles', updatedArticleIds, list.id)
-        await updateCustomList({
-          variables: {
-            id: list.id,
-            articleIds: updatedArticleIds,
+      await createUserArticle({
+        variables: {
+          input: {
+            customListId: list?.id,
+            sourceId: article?.sourceId,
+            sourceName: article?.sourceName,
+            categoryId: article?.category?.id,
+            author: article?.author,
+            content: article?.content,
+            description: article?.description,
+            articleId: article?.id,
+            publishedAt: article?.publishedAt,
+            title: article?.title,
+            url: article?.url,
+            urlToImage: article?.urlToImage,
           },
-        })
-
-        await refetchCustomListQuery()
-        toast.success('List updated successfully')
-        handleNestedClose()
-        handleClose()
-        return
-      } else {
-        toast.error('Article already exists in the list')
-      }
+        },
+      })
+      await refetchCustomListQuery()
+      toast.success(`Added article to list`)
+      setListName('')
+      setShowAddListModal(false) // Close the modal
     } catch (error) {
-      console.error('Error updating list:', error)
-      toast.error('Failed to update list')
+      if (
+        error.graphQLErrors &&
+        error.graphQLErrors.length > 0 &&
+        error.graphQLErrors[0].extensions.originalError.message.includes(
+          'Unique constraint failed on the fields: (`customListId`,`articleId`)'
+        )
+      ) {
+        toast.error('Article already exists in list')
+      } else {
+        toast.error('Something went wrong: ' + error)
+      }
     }
   }
 

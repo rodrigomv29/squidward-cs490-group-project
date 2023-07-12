@@ -25,7 +25,9 @@ const processData = (categoryArticlesMap, currentPage, categories) => {
             url: article.url,
             publishedAt: article.publishedAt,
             sourceName: article.sourceName,
+            soruceId: article.sourceId,
             category: article.category,
+            content: article.content,
           }))
         : ''
 
@@ -133,7 +135,7 @@ function ArticleList() {
                       </div>
                     </Link>
                     <div>
-                      <CustomListAdder articleId={article.id} />
+                      <CustomListAdder article={article} />
                     </div>
                   </div>
                   <a

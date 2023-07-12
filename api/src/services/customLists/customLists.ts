@@ -46,7 +46,7 @@ export const CustomList: CustomListRelationResolvers = {
   user: (_obj, { root }) => {
     return db.customList.findUnique({ where: { id: root?.id } }).user()
   },
-  Article: (_obj, { root }) => {
-    return db.customList.findUnique({ where: { id: root?.id } }).Article()
+  articles: (_obj, { root }) => {
+    return db.customList.findUnique({ where: { id: root?.id } }).articles()
   },
 }

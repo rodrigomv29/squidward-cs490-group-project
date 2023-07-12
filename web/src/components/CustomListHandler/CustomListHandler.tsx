@@ -12,7 +12,22 @@ export const CUSTOM_LIST_QUERY = gql`
       id
       name
       userId
-      articles
+      articles {
+        id
+        sourceId
+        sourceName
+        author
+        title
+        description
+        url
+        urlToImage
+        publishedAt
+        content
+        categoryId
+        Category {
+          name
+        }
+      }
     }
   }
 `
@@ -23,14 +38,23 @@ export const CREATE_CUSTOM_LIST_MUTATION = gql`
       id
       name
       userId
-      articles
+      articles {
+        id
+      }
+    }
+  }
+`
+export const CREATE_USER_ARTICLE_MUTATION = gql`
+  mutation CreateUserArticleMutation($input: CreateUserArticleInput!) {
+    createUserArticle(input: $input) {
+      id
     }
   }
 `
 
 export const UPDATE_CUSTOM_LIST_MUTATION = gql`
-  mutation UpdateCustomListMutation($id: Int!, $articleIds: [Int!]!) {
-    updateCustomList(id: $id, input: { articles: $articleIds }) {
+  mutation UpdateCustomListMutation($id: Int!, $name: String!) {
+    updateCustomList(id: $id, input: { name: $name }) {
       id
       name
     }

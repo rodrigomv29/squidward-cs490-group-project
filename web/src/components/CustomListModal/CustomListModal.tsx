@@ -153,22 +153,37 @@ const AddListMenu = () => {
     if (event.key === 'Enter') {
       if (listName.trim() !== '') {
         // Check if the input name is not empty or whitespace
-        try {
-          await createCustomList({
-            variables: {
-              input: {
-                name: listName,
-                userId: currentUser?.id,
-                articles: [],
+        const regex = /^[^a-zA-Z]/
+        if (listName.length < 4) {
+          toast.error('List name must be at least 4 characters long')
+        } else if (regex.test(listName)) {
+          toast.error('List name should start with an alphabetic character')
+        } else {
+          try {
+            await createCustomList({
+              variables: {
+                input: {
+                  name: listName,
+                  userId: currentUser?.id,
+                },
               },
-            },
-          })
-          await refetchCustomListQuery()
-          toast.success(`Created New List: "${listName}"`)
-          setListName('')
-          handleCloseMenuList()
-        } catch (error) {
-          console.log(error)
+            })
+            await refetchCustomListQuery()
+            toast.success(`Created New List: "${listName}"`)
+            setListName('')
+          } catch (error) {
+            if (
+              error.graphQLErrors &&
+              error.graphQLErrors.length > 0 &&
+              error.graphQLErrors[0].extensions.originalError.message.includes(
+                'Unique constraint failed on the fields: (`name`)'
+              )
+            ) {
+              toast.error('List name already exists')
+            } else {
+              toast.error('Something went wrong: ' + error)
+            }
+          }
         }
       }
     }
@@ -240,9 +255,6 @@ interface DeleteListMenuProps {
 
 const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   filteredCustomLists,
-  selectedList,
-  setSelectedList,
-  setToggledList,
   getCustomListIdByName,
   refetchCustomListQuery,
 }) => {
@@ -252,7 +264,6 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   )
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
-  const [isToggling, setIsToggling] = useState(true)
 
   const handleDeleteList = async () => {
     if (selectedListMenu) {
@@ -393,7 +404,8 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   onClose: closePopup,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { filteredCustomLists, getCustomListIdByName, refetchCustomListQuery } = useCustomList()
+  const { filteredCustomLists, getCustomListIdByName, refetchCustomListQuery } =
+    useCustomList()
   const [selectedList, setSelectedList] = useState(null)
   const [toggledList, setToggledList] = useState(false)
   const [intialOpen, setInitalOpen] = useState(true)

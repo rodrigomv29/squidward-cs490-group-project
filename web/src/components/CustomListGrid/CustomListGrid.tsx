@@ -1,6 +1,9 @@
 import React from 'react'
 import { useContext } from 'react'
 
+import { IconButton } from '@chakra-ui/react'
+import DeleteIcon from '@mui/icons-material/Delete'
+
 import { useQuery } from '@redwoodjs/web'
 
 import CustomThemeContext from 'src/CustomThemeContext'
@@ -26,34 +29,18 @@ const GET_ARTICLE_QUERY = gql`
   }
 `
 
-function GetArticle(id: number) {
-  const { data, loading } = useQuery(GET_ARTICLE_QUERY, {
-    variables: { id: id },
-  })
-
-  if (!loading) {
-    return data?.article
-  }
-}
-
 function CustomListGrid({ currentList }) {
   const articleIds = currentList?.articles
 
   const { theme } = useContext(CustomThemeContext)
-  const userArticles = []
-
-  if (currentList != null) {
-    Object.values(articleIds).forEach((articleId: number) => {
-      userArticles.push(GetArticle(articleId))
-    })
-  }
-
   const handleTheme = (first, second) => {
     if (theme === 1) {
       return first + ' transitions-colors duration-200 '
     }
     return second + ' transitions-colors duration-200 '
   }
+
+  console.log('Current List', currentList)
 
   return (
     <>
@@ -72,10 +59,10 @@ function CustomListGrid({ currentList }) {
           grid-cols-3 items-center justify-center
         gap-4`}
         >
-          {userArticles?.length === articleIds?.length &&
-          userArticles?.length != 0 &&
+          {currentList?.articles?.length === articleIds?.length &&
+          currentList?.articles?.length != 0 &&
           currentList != null ? (
-            userArticles?.map((article, index) => (
+            currentList?.articles?.map((article, index) => (
               <div key={article?.id} className="font-bold">
                 <a
                   href={article?.url}
@@ -130,15 +117,18 @@ function CustomListGrid({ currentList }) {
                       >
                         {article?.sourceName}
                       </span>
+                      <IconButton>
+                        <DeleteIcon />
+                      </IconButton>
                     </div>
                   </div>
                 </a>
               </div>
             ))
-          ) : userArticles?.length === 0 ? (
+          ) : currentList?.articles?.length === 0 ? (
             <div className=""></div>
           ) : null}
-          {userArticles?.length === 0 && currentList != null ? (
+          {currentList?.articles?.length === 0 && currentList != null ? (
             <div className="flex h-[50%] w-full items-center  text-center">
               <div className={`w-full  text-center`}>
                 <span
