@@ -5,10 +5,13 @@ import { Icon, Input } from '@chakra-ui/react'
 
 import { navigate } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
+
 const SearchBox = () => {
   const [isHovered, setHovered] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [isInputVisible, setInputVisible] = useState(false)
+  const { currentUser } = useAuth()
 
   const handleMouseEnter = () => {
     setHovered(true)
@@ -21,7 +24,11 @@ const SearchBox = () => {
   const handleIconClick = () => {
     setInputVisible(true)
     if (inputValue.trim() !== '') {
-      navigate(`/search-results?query=${encodeURIComponent(inputValue)}`)
+      navigate(
+        `/search-results?query=${encodeURIComponent(
+          inputValue
+        )}&userID=${encodeURIComponent(currentUser.id)}`
+      )
     }
   }
 
@@ -31,7 +38,11 @@ const SearchBox = () => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
-      navigate(`/search-results?query=${encodeURIComponent(inputValue)}`)
+      navigate(
+        `/search-results?query=${encodeURIComponent(
+          inputValue
+        )}&userID=${encodeURIComponent(currentUser.id)}`
+      )
     }
   }
 

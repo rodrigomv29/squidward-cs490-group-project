@@ -35,6 +35,7 @@ const SearchResultsPage = () => {
 
   useEffect(() => {
     const query = new URLSearchParams(location.search).get('query')
+    const id = new URLSearchParams(location.search).get('userID')
     if (query) {
       const apiKey = 'e1d9b8e504f94c2aaccc50b3b6bba68f'
       const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
@@ -55,6 +56,7 @@ const SearchResultsPage = () => {
           console.error(error)
           setIsLoading(false)
         })
+      console.log(id)
     } else {
       setIsLoading(false)
     }
