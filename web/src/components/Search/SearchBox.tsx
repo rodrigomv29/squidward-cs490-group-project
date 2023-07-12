@@ -7,6 +7,8 @@ import { navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
+const searchHistory = () => {}
+
 const SearchBox = () => {
   const [isHovered, setHovered] = useState(false)
   const [inputValue, setInputValue] = useState('')
