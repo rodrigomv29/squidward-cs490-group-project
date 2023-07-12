@@ -1,40 +1,24 @@
-import axios from 'axios'
-
 export const setStatus = (status: number) => {
   localStorage.setItem('status', String(status))
 }
 
 export const getFirstRender = () => {
-  const status = localStorage.getItem('first_render')
+  const status: string = localStorage.getItem('first_render')
   return status ? parseInt(status, 10) : null
 }
 
 // Get the status from local storage
 export const getStatus = () => {
-  const status = localStorage.getItem('status')
+  const status: string = localStorage.getItem('status')
   return status ? parseInt(status, 10) : null
-}
-
-// Set the status in local storage
-export const setFirstRender = () => {
-  const isFirstRender = getFirstRender()
-
-  if (isFirstRender === null) {
-    localStorage.setItem('first_render', '1')
-    return true
-  } else {
-    return false
-  }
 }
 
 export const isHomePage = (status: number) => {
   localStorage.setItem('isHomePage', String(status))
-  console.log(`Is Currently Home Page: ${getIsHomePage()}`)
 }
 
 export const getIsHomePage = () => {
-  const isHomePage = parseInt(localStorage.getItem('isHomePage'), 10)
-  console.log(`Value of home page ${isHomePage}`)
+  const isHomePage: number = parseInt(localStorage.getItem('isHomePage'), 10)
   if (isHomePage === 1) {
     return true
   } else {
@@ -42,121 +26,25 @@ export const getIsHomePage = () => {
   }
 }
 
-export function getCurrentMilitaryTime(): {
-  hours: string
-  minutes: string
-  militaryTime: string
-} {
-  const now = new Date()
-  const hours = now.getHours().toString().padStart(2, '0')
-  const minutes = now.getMinutes().toString().padStart(2, '0')
+const insertionSort = (array) => {
+  const length: number = array?.length
 
-  const militaryTime = `${hours}:${minutes}`
-  return { hours, minutes, militaryTime }
-}
+  for (let i = 1; i < length; i++) {
+    const current = array[i]
+    let j = i - 1
 
-export function getTimeSincePublication(publishedAt) {
-  const dateTimeString = publishedAt
-  const regex = /T(\d{2}):(\d{2})/
-  const matches = regex.exec(dateTimeString)
+    while (j >= 0 && array[j]?.publishedAt < current?.publishedAt) {
+      array[j + 1] = array[j]
+      j--
+    }
 
-  let hours = 0
-  let minutes = 0
-
-  const currentTime = getCurrentMilitaryTime()
-
-  if (matches && matches.length > 2) {
-    hours = parseInt(matches[1], 10)
-    minutes = parseInt(matches[2], 10)
+    array[j + 1] = current
   }
 
-  hours = Math.abs(parseInt(currentTime.hours) - hours)
-  minutes = Math.abs(parseInt(currentTime.minutes) - minutes)
-
-  return { hours, minutes }
+  return array
 }
 
-export async function getTopTen(category: string) {
-  try {
-    const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const articles = response.data.articles
-
-    const filteredArticles = articles.filter((article) => {
-      return article.urlToImage && article.description
-    })
-
-    const topTenArticles = filteredArticles.slice(0, 10)
-    console.log('called top 10')
-    return topTenArticles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
-}
-
-export async function getDescription(category: string) {
-  try {
-    const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const data = response.data.articles
-
-    const filteredArticles = data.filter((article) => {
-      return article.description
-    })
-
-    const articles = filteredArticles.slice(0, 1)
-    return articles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
-}
-
-export async function getLatest(category: string) {
-  try {
-    const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const data = response.data.articles
-
-    const filteredArticles = data.filter((article) => {
-      return article.urlToImage
-    })
-
-    const articles = filteredArticles
-      .slice(10, filteredArticles.length - 1)
-      .map((article) => ({
-        title: article.title,
-        description: article.description,
-        image: article.urlToImage,
-        sourceId: article.source.id,
-        sourceName: article.source.name,
-        publishedAt: article.publishedAt,
-      }))
-
-    return articles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
-}
-
-export async function getArticles(category: string) {
-  try {
-    const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWSAPI_KEY}`
-    )
-    const data = response.data.articles
-
-    const filteredArticles = data.filter((article) => {
-      return article.description && article.urlToImage
-    })
-    return filteredArticles
-  } catch (error) {
-    console.log('Something went wrong', error)
-    throw error
-  }
+export const sortArticlesByDate = (articleArray) => {
+  insertionSort(articleArray)
+  return articleArray
 }

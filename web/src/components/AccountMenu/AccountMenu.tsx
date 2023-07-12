@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useContext, useState } from 'react'
 
-import { Switch } from '@chakra-ui/react'
 import Logout from '@mui/icons-material/Logout'
 import Settings from '@mui/icons-material/Settings'
 import {
@@ -19,18 +18,16 @@ import { navigate, routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import CurrentPageContext from 'src/CurrentPageContext'
-import { setStatus, getStatus } from 'src/utils/storage'
+import { setStatus } from 'src/utils/storage'
 
 import CustomThemeContext from '../../CustomThemeContext'
 import SettingsPopup from '../Settings/SettingsPopup'
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const [enabled, setEnabled] = useState(false)
   const { currentUser, logOut } = useAuth()
   const { toggleCurrentPage } = useContext(CurrentPageContext)
   const open = Boolean(anchorEl)
-  const status = getStatus()
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -56,11 +53,6 @@ export default function AccountMenu() {
   }
 
   const { theme, toggleTheme } = React.useContext(CustomThemeContext)
-
-  const handleTheme = () => {
-    setEnabled(!enabled)
-    toggleTheme()
-  }
 
   const backgroundColor = theme === 1 ? '#4b5563' : '#FFFFFF'
   const themeColor = theme === 1 ? '#FFFFFF' : '#000000'
@@ -158,28 +150,6 @@ export default function AccountMenu() {
           >
             {currentUser && currentUser.email}
           </span>{' '}
-        </div>
-        <div className="theme-switch flex items-center justify-center px-4 py-4">
-          <span
-            className={`mx-8 text-xl font-bold shadow transition-colors duration-200 ${
-              theme === 1 ? 'text-white' : 'text-black'
-            }`}
-          >
-            {theme === 1 && status === 1 ? 'Dark Theme' : 'Light Theme'}
-          </span>
-          <Switch
-            checked={true}
-            onChange={handleTheme}
-            className={`${
-              theme === 1 && status === 1 ? 'bg-emerald-400' : 'bg-gray-200'
-            } transition-color relative mx-6 inline-flex h-6 w-11 items-center rounded-full duration-200`}
-          >
-            <span
-              className={`${
-                theme === 1 ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-            />
-          </Switch>
         </div>
         <div className="flex justify-center">
           <MenuItem onClick={handleOpenSettings} className="w-full">

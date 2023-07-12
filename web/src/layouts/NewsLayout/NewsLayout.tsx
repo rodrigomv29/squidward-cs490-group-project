@@ -56,7 +56,7 @@ const SignInButton = styled(Button)<ButtonProps>(() => ({
   width: 175,
   height: 60,
   fontSize: '1.3rem',
-  borderRadius: '30px', // Set the border radius to make it more rounded
+  borderRadius: '30px',
 }))
 
 const NewsLayout = ({ children }: NewsLayoutProps) => {
@@ -67,10 +67,8 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const currentUsername = currentUser != undefined ? currentUser.email : null
 
   const status = getStatus()
-
   const { theme, toggleTheme } = useContext(CustomThemeContext)
   const { currentPage, toggleCurrentPage } = useContext(CurrentPageContext)
-
   const handlePageChange = (page) => {
     toggleCurrentPage(page)
   }
@@ -211,7 +209,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
               </Link>
               {/* Sign in container */}
               <div className="sing-in-my-account-container mx-6 flex w-1/3 items-center justify-end text-lg">
-                {status === 0 ? (
+                {status === 0 && currentUser == null ? (
                   <Link to={routes.login()}>
                     <div className="sing-in-button mx-6 my-4 text-lg">
                       <SignInButton variant="contained">Sign In</SignInButton>
@@ -281,34 +279,56 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
           >
             <ul className=" text-md h-[100%] bg-emerald-400 bg-opacity-70 text-white">
               <div className="list-items px-3 py-5 uppercase">
-                <li className="my-12 border-b text-xs transition-opacity hover:opacity-75 hover:shadow"></li>
                 <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
                   <Link to={routes.home()} onClick={handleNav}>
+                    Home
+                  </Link>
+                </li>
+                <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
+                  <Link
+                    to={routes.category({ category: 'business' })}
+                    onClick={handleNav}
+                  >
                     Business
                   </Link>
                 </li>
                 <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()} onClick={handleNav}>
+                  <Link
+                    to={routes.category({ category: 'entertainment' })}
+                    onClick={handleNav}
+                  >
                     Entertainment
                   </Link>
                 </li>
                 <li className="my-12 border-b text-xs transition-opacity  duration-300 hover:opacity-75 hover:shadow">
-                  <Link to={routes.home()} onClick={handleNav}>
+                  <Link
+                    to={routes.category({ category: 'health' })}
+                    onClick={handleNav}
+                  >
                     Health
                   </Link>
                 </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-2 border-b text-xs hover:opacity-75">
-                  <Link to={routes.home()} onClick={handleNav}>
+                  <Link
+                    to={routes.category({ category: 'science' })}
+                    onClick={handleNav}
+                  >
                     Science
                   </Link>
                 </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
-                  <Link to={routes.home()} onClick={handleNav}>
+                  <Link
+                    to={routes.category({ category: 'sports' })}
+                    onClick={handleNav}
+                  >
                     Sports
                   </Link>
                 </li>
                 <li className="transition-opacityy hover:shadowduration-300 my-12 border-b text-xs hover:opacity-75">
-                  <Link to={routes.home()} onClick={handleNav}>
+                  <Link
+                    to={routes.category({ category: 'technology' })}
+                    onClick={handleNav}
+                  >
                     Technology
                   </Link>
                 </li>

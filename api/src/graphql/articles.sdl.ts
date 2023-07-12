@@ -1,11 +1,11 @@
 export const schema = gql`
   type Article {
     id: Int!
-    sourceId: String!
-    sourceName: String!
+    sourceId: String
+    sourceName: String
     author: String
     title: String!
-    description: String!
+    description: String
     url: String!
     urlToImage: String
     publishedAt: DateTime!
@@ -15,13 +15,13 @@ export const schema = gql`
   }
 
   type Query {
-    articles: [Article!]! @requireAuth
-    article(id: Int!): Article @requireAuth
+    articles: [Article!]! @skipAuth
+    article(id: Int!): Article @skipAuth
   }
 
   input CreateArticleInput {
     sourceId: String!
-    sourceName: String!
+    sourceName: String
     author: String
     title: String!
     description: String!
@@ -48,6 +48,6 @@ export const schema = gql`
   type Mutation {
     createArticle(input: CreateArticleInput!): Article! @requireAuth
     updateArticle(id: Int!, input: UpdateArticleInput!): Article! @requireAuth
-    deleteArticle(id: Int!): Article! @requireAuth
+    deleteArticle(id: Int!): Article! @skipAuth
   }
 `

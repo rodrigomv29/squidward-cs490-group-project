@@ -3,10 +3,65 @@ import { useContext } from 'react'
 
 import { Link, routes } from '@redwoodjs/router'
 
+import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
+
+const CustomLink = (props) => {
+  const { toggleCurrentPage } = useContext(CurrentPageContext)
+  const { theme } = useContext(CustomThemeContext)
+  const handleTheme = (first, second) => {
+    if (theme === 1) {
+      return first
+    }
+    return second
+  }
+
+  const handleLink = () => {
+    toggleCurrentPage(props.category)
+  }
+  return (
+    <>
+      <div
+        className={`${handleTheme(
+          'text-white',
+          'text-black'
+        )} transition-colors duration-200 hover:text-emerald-400 hover:underline`}
+      >
+        {props.category === 'home' ? (
+          <Link to={routes.home()} onClick={handleLink}>
+            <div>
+              <span className="uppercase ">{props.category.slice(0, 1)}</span>
+              <span>{props.category.slice(1)}</span>
+            </div>
+          </Link>
+        ) : (
+          <Link
+            to={routes.category({ category: props.category })}
+            onClick={handleLink}
+          >
+            <div>
+              <span className="uppercase ">{props.category.slice(0, 1)}</span>
+              <span>{props.category.slice(1)}</span>
+            </div>
+          </Link>
+        )}
+      </div>
+    </>
+  )
+}
 
 function Footer() {
   const { theme } = useContext(CustomThemeContext)
+  const categories = [
+    'home',
+    'general',
+    'business',
+    'entertainment',
+    'health',
+    'science',
+    'sports',
+    'technology',
+  ]
   return (
     <footer
       className={`mt-0 w-full transition-colors duration-300 ${
@@ -26,61 +81,13 @@ function Footer() {
             theme === 1 ? 'text-white' : 'text-black'
           }`}
         >
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-            onClick={() => {}}
-          >
-            Home
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            General
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            Business
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            Entertainment
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            Health
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            Science
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            Sports
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            Technology
-          </Link>
-          <Link
-            to={routes.home()}
-            className="transition-colors duration-200 ease-in-out hover:text-emerald-400 hover:underline"
-          >
-            About Us
-          </Link>
+          {categories.map((category: string) => {
+            return (
+              <>
+                <CustomLink category={category} />
+              </>
+            )
+          })}
         </div>
       </div>
     </footer>

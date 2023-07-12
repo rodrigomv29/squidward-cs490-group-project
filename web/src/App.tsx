@@ -11,6 +11,7 @@ import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.css'
 import { AuthProvider, useAuth } from './auth'
+import ArticleHandler from './components/ArticleHandler/ArticleHandler'
 import { CurrentPageProvider } from './CurrentPageContext'
 import { CustomThemeProvider } from './CustomThemeContext'
 import theme from './Themes/theme-chakra'
@@ -27,6 +28,7 @@ const App = () => (
                 <AuthProvider>
                   <RedwoodApolloProvider useAuth={useAuth}>
                     <Routes />
+                    <ArticleHandler />
                   </RedwoodApolloProvider>
                 </AuthProvider>
               </RedwoodProvider>

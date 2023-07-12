@@ -22,6 +22,13 @@ export const CurrentPageProvider = ({ children }) => {
     localStorage.setItem('currentPage', _page)
   }
 
+  const firstLoad = sessionStorage.getItem('isFirstRender')
+
+  if (firstLoad === null) {
+    toggleCurrentPage('home')
+    sessionStorage.setItem('isFirstRender', 'false')
+  }
+
   return (
     <CurrentPageContext.Provider value={{ currentPage, toggleCurrentPage }}>
       {children}

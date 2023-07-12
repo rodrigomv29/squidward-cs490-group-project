@@ -1,20 +1,64 @@
-import React from 'react'
-import { useContext } from 'react'
-
-import { Link, routes } from '@redwoodjs/router'
+import React, { useContext } from 'react'
 
 import CustomThemeContext from 'src/CustomThemeContext'
 
-function CategoryListItems({ categories }) {
+import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
+
+const processData = (categoryArticlesMap) => {
+  const categories = [
+    'general',
+    'business',
+    'entertainment',
+    'health',
+    'science',
+    'sports',
+    'technology',
+  ]
+
+  const allArticles = []
+
+  for (const category of categories) {
+    const categoryArticles =
+      categoryArticlesMap != undefined
+        ? categoryArticlesMap[category]
+            ?.filter((article) => article.description !== null)
+            .slice(0, 1)
+            .map((article) => ({
+              title: article.title,
+              description: article.description,
+              author: article.author,
+              urlToImage: article.urlToImage,
+              url: article.url,
+              publishedAt: article.publishedAt,
+              content: article.content,
+              category: article.category,
+            }))
+        : ''
+    const articleResolver = categoryArticles ? categoryArticles : ''
+    allArticles.push(articleResolver)
+  }
+  return allArticles
+}
+
+function CategoryListItems() {
   const { theme } = useContext(CustomThemeContext)
+  const { categoryArticlesMap, loading } = useGetArticles()
+
+  let categoryArticles = []
+
+  if (!loading) {
+    categoryArticles = processData(
+      categoryArticlesMap != undefined ? categoryArticlesMap : ''
+    )
+  }
 
   return (
     <div className="flex max-h-full flex-col">
       <div className="categories-container flex h-full flex-grow flex-col justify-between px-4 py-8">
         <div className="items-controller  max-h-full">
           <div className="main-container overflow-auto ">
-            {categories.map((category, index) => (
-              <div key={category.name} className="mb-2 flex flex-wrap">
+            {categoryArticles?.map((article, index) => (
+              <div key={article[0]?.title} className="mb-2 flex flex-wrap">
                 <span
                   className={`relative flex w-1/5 flex-col items-center justify-center text-3xl font-bold transition-colors duration-200 ${
                     theme === 1 ? 'text-white' : 'text-black'
@@ -25,22 +69,33 @@ function CategoryListItems({ categories }) {
                 </span>
 
                 <div className="category-container flex w-4/5 flex-col items-center justify-center py-2">
-                  <span className="flex justify-center text-left font-bold text-emerald-400">
-                    {category.name}
-                  </span>
-                  <Link to={routes.home()}>
+                  <div className="flex flex-row">
+                    <span className="flex justify-center text-left font-bold uppercase text-emerald-400">
+                      {article[0]?.category?.slice(0, 1)}
+                    </span>
+                    <span className="flex justify-center text-left font-bold text-emerald-400">
+                      {article[0]?.category?.slice(1)}
+                    </span>
+                  </div>
+                  <a
+                    href={article[0]?.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <span className="flex justify-center px-4">
                       <span
                         className={`text-sm transition-colors duration-200 hover:underline ${
                           theme === 1 ? 'text-white' : 'text-black'
                         }`}
                       >
-                        {category.article.description.length > 200
-                          ? category.article.description.slice(0, 200) + '...'
-                          : category.article.description}
+                        {article[0]?.description?.length > 200
+                          ? article[0]?.description?.slice(0, 200) + '...'
+                          : article[0]?.description
+                          ? article[0]?.description
+                          : article[0]?.content}
                       </span>
                     </span>
-                  </Link>
+                  </a>
                 </div>
               </div>
             ))}
