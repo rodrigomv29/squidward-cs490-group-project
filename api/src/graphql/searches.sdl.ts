@@ -22,8 +22,6 @@ export const schema = gql`
   }
 
   type Mutation {
-    createSearch(input: CreateSearchInput!): Search! @requireAuth
-    updateSearch(id: Int!, input: UpdateSearchInput!): Search! @requireAuth
-    deleteSearch(id: Int!): Search! @requireAuth
+    createSearch(input: CreateSearchInput!): Search! @skipAuth
   }
 `
