@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useContext } from 'react'
-
-import { CircularProgress } from '@mui/material'
 
 import { useQuery } from '@redwoodjs/web'
 
 import CustomThemeContext from 'src/CustomThemeContext'
-import { sortArticlesByDate } from 'src/utils/storage'
 
 const GET_ARTICLE_QUERY = gql`
   query GetArticleById($id: Int!) {
@@ -58,8 +55,6 @@ function CustomListGrid({ currentList }) {
     return second + ' transitions-colors duration-200 '
   }
 
-  console.log('user articles', userArticles)
-
   return (
     <>
       <div className={`grid-container h-[100%] w-full overflow-auto px-4 py-8`}>
@@ -70,7 +65,7 @@ function CustomListGrid({ currentList }) {
           className={`category-grid ${handleTheme(
             'text-white',
             'text-gray-800'
-          )} flex grid
+          )} grid
           h-[75%]
           w-full
           max-w-full
@@ -78,7 +73,8 @@ function CustomListGrid({ currentList }) {
         gap-4`}
         >
           {userArticles?.length === articleIds?.length &&
-          userArticles?.length != 0 && currentList != null ? (
+          userArticles?.length != 0 &&
+          currentList != null ? (
             userArticles?.map((article, index) => (
               <div key={article?.id} className="font-bold">
                 <a
@@ -140,11 +136,9 @@ function CustomListGrid({ currentList }) {
               </div>
             ))
           ) : userArticles?.length === 0 ? (
-            <div className="text-center">
-
-            </div>
+            <div className=""></div>
           ) : null}
-          {userArticles?.length === 0 ? (
+          {userArticles?.length === 0 && currentList != null ? (
             <div className="flex h-[50%] w-full items-center  text-center">
               <div className={`w-full  text-center`}>
                 <span
@@ -153,7 +147,20 @@ function CustomListGrid({ currentList }) {
                     'text-black'
                   )}`}
                 >
-                  You dont have any articles for this list
+                  You dont have any articles
+                </span>
+              </div>
+            </div>
+          ) : currentList === undefined ? (
+            <div className="flex h-[50%] w-full items-center  text-center">
+              <div className={`w-full  text-center`}>
+                <span
+                  className={`text-xl font-bold ${handleTheme(
+                    'text-white',
+                    'text-black'
+                  )}`}
+                >
+                  You dont have any list, Add some by clicking add list
                 </span>
               </div>
             </div>

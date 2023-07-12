@@ -243,73 +243,38 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   selectedList,
   setSelectedList,
   setToggledList,
+  getCustomListIdByName,
+  refetchCustomListQuery,
 }) => {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedListMenu, setSelectedListMenu] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [selectedListMenu, setSelectedListMenu] = useState<CustomList | null>(
+    null
+  )
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
   const [isToggling, setIsToggling] = useState(true)
 
-  const { getCustomListIdByName, refetchCustomListQuery } = useCustomList() // Move the hook call here
-
   const handleDeleteList = async () => {
-    const customListId = getCustomListIdByName(selectedListMenu.name)
-    try {
-      await deleteCustomList({
-        variables: {
-          id: customListId,
-        },
-      })
-      await refetchCustomListQuery()
-
-      if (isToggling) {
-        setToggledList(true)
+    if (selectedListMenu) {
+      const customListId = getCustomListIdByName(selectedListMenu.name)
+      try {
+        await deleteCustomList({
+          variables: {
+            id: customListId,
+          },
+        })
+        await refetchCustomListQuery()
+        toast.success(`Deleted List: "${selectedListMenu.name}"`)
+      } catch (error) {
+        console.log(error)
       }
-      const switchList =
-        filteredCustomLists.length > 1
-          ? filteredCustomLists.length - 2
-          : filteredCustomLists.length === 0
-          ? 0
-          : null
-      if (selectedListMenu.name === selectedList.name) {
-        setTimeout(() => {
-          setIsToggling(false)
-          if (switchList != null) {
-            setSelectedList(filteredCustomLists[switchList])
-          } else {
-            setSelectedList(null)
-          }
-          setToggledList(false)
-        }, 500)
-
-        setTimeout(() => {
-          setIsToggling(true)
-        }, 500)
-      } else {
-        setTimeout(() => {
-          setIsToggling(false)
-          if (switchList != null) {
-            setSelectedList(filteredCustomLists[switchList])
-          } else {
-            setSelectedList(null)
-          }
-          setToggledList(false)
-        }, 500)
-
-        setTimeout(() => {
-          setIsToggling(true)
-        }, 500)
-      }
-      toast.success(`Deleted List: "${selectedListMenu.name}"`)
-      handleCloseMenuList()
-    } catch (error) {
-      console.log(error)
     }
+
     setShowConfirmationModal(false)
     setAnchorEl(null)
   }
 
-  const handleClickMenuList = (event) => {
+  const handleClickMenuList = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -386,7 +351,8 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
         >
           <h3 className="font-['Arvo'] text-lg font-bold">
             Are you sure you want to delete &quot;
-            {selectedListMenu ? selectedListMenu.name : ''}&quot;&nbsp;?
+            {selectedListMenu ? selectedListMenu.name : ''}
+            &quot;?
           </h3>
           <div className="flex justify-center space-x-2 py-4">
             <Button
@@ -427,7 +393,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   onClose: closePopup,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { filteredCustomLists } = useCustomList()
+  const { filteredCustomLists, getCustomListIdByName, refetchCustomListQuery } = useCustomList()
   const [selectedList, setSelectedList] = useState(null)
   const [toggledList, setToggledList] = useState(false)
   const [intialOpen, setInitalOpen] = useState(true)
@@ -451,6 +417,12 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   if (intialOpen) {
     setInitalOpen(false)
   }
+
+  useEffect(() => {
+    if (filteredCustomLists.length === 0) {
+      setSelectedList(undefined)
+    }
+  }, [filteredCustomLists])
 
   useEffect(() => {
     setSelectedList(filteredCustomLists[0])
@@ -535,6 +507,8 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
                   setSelectedList={setSelectedList}
                   setToggledList={setToggledList}
                   selectedList={selectedList}
+                  getCustomListIdByName={getCustomListIdByName}
+                  refetchCustomListQuery={refetchCustomListQuery}
                 />
               </div>
               {toggledList ? (

@@ -85,7 +85,7 @@ function CustomListAdder({ articleId }) {
                 input: {
                   name: listName,
                   userId: currentUser?.id,
-                  articleIds: [],
+                  articles: [],
                 },
               },
             })
@@ -101,7 +101,7 @@ function CustomListAdder({ articleId }) {
                 'Unique constraint failed on the fields: (`name`)'
               )
             ) {
-              toast.error('Custom list name already exists')
+              toast.error('List name already exists')
             } else {
               toast.error('Something went wrong: ' + error)
             }
@@ -113,19 +113,18 @@ function CustomListAdder({ articleId }) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleListSelection = async (list) => {
+    console.log('list', list)
     try {
       const existingArticleIds = list.articles
-        ? list.articles.map((article) => article.id)
-        : []
 
       if (articleId && !existingArticleIds.includes(articleId)) {
-        const updatedArticleIds = [...existingArticleIds, articleId]
+        const updatedArticleIds = [...list.articles, articleId]
 
         console.log('updated articles', updatedArticleIds, list.id)
         await updateCustomList({
           variables: {
-            id: 46,
-            articleIds: [3, 5, 6],
+            id: list.id,
+            articleIds: updatedArticleIds,
           },
         })
 

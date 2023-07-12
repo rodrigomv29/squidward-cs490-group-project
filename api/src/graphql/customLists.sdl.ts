@@ -28,7 +28,7 @@ export const schema = gql`
   type Mutation {
     createCustomList(input: CreateCustomListInput!): CustomList! @requireAuth
     updateCustomList(id: Int!, input: UpdateCustomListInput!): CustomList!
-      @requireAuth
+      @skipAuth
     deleteCustomList(id: Int!): CustomList! @requireAuth
   }
 `

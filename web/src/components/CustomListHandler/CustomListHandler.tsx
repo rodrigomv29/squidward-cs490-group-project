@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { gql } from 'graphql-tag'
 
-import { useMutation, useQuery } from '@redwoodjs/web'
+import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 
