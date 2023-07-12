@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useContext } from 'react'
+
 import { Box, Heading, Text, Select } from '@chakra-ui/react'
 import { CircularProgress } from '@mui/material'
 import axios from 'axios'
+
 import { useLocation } from '@redwoodjs/router'
+
 import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
 import NewsLayout from 'src/layouts/NewsLayout/NewsLayout'
 
 const stripHtmlTags = (str) => {
-  if ((str===null) || (str===''))
-    return false;
-  else
-    str = str.toString();
-  return str.replace(/<[^>]*>/g, '');
+  if (str === null || str === '') return false
+  else str = str.toString()
+  return str.replace(/<[^>]*>/g, '')
 }
 
 const SearchResultsPage = () => {
@@ -192,16 +193,24 @@ const SearchResultsPage = () => {
                       <div className="my-10 flex w-[75%] flex-row">
                         <div className="w-[30%]">
                           <a href={result.url} rel="noreferrer" target="_blank">
-                            <img
-                              src={result.urlToImage}
-                              alt="News"
-                              className="h-full w-full"
-                            />
+                            {result.urlToImage ? (
+                              <img
+                                src={result.urlToImage}
+                                alt="News"
+                                className="h-full w-full"
+                              />
+                            ) : (
+                              <img
+                                src="https://www.androidpolice.com/wp-content/uploads/2018/05/google-news-hero.png"
+                                alt="News"
+                                className="h-full w-full"
+                              />
+                            )}
                           </a>
                         </div>
                         <div className="flex w-[70%] flex-col p-8">
                           <span
-                            className={`mb-8 text-lg font-bold hover:underline ${handleTheme(
+                            className={`mb-0 text-2xl font-bold hover:underline ${handleTheme(
                               'text-white',
                               'text-black'
                             )}`}
@@ -216,7 +225,7 @@ const SearchResultsPage = () => {
                             </a>
                           </span>
                           <span
-                            className={`mb-4 ${handleTheme(
+                            className={`mb-4 mt-0 ${handleTheme(
                               'text-gray-400',
                               'text-gray-500'
                             )}`}
