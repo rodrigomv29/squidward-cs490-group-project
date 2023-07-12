@@ -151,16 +151,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   }
 
   const CustomLink = (props) => {
-    const handleCategoryClick = (event) => {
-      event.preventDefault()
-      setShowOptions((prevShowOptions) => {
-        return {
-          ...prevShowOptions,
-          [props.category]: !prevShowOptions[props.category],
-        }
-      })
-    }
-
     return (
       <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
         {props.showOptions[props.category] && (
@@ -172,7 +162,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
             }
             onClick={() => {
               handlePageChange(props.category)
-              handleCategoryClick(Event)
             }}
           >
             <div
