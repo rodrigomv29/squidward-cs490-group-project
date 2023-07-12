@@ -112,31 +112,24 @@ function CustomListAdder({ articleId }) {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleListSelection = async (list: any) => {
+  const handleListSelection = async (list) => {
     try {
       const existingArticleIds = list.articles
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          list.articles.map((article: any) => article.id)
-        : []
-
-      const updatedArticleIds = list.articles
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          [...list.articles.map((article: any) => article.id)]
+        ? list.articles.map((article) => article.id)
         : []
 
       if (articleId && !existingArticleIds.includes(articleId)) {
-        updatedArticleIds.push(articleId)
+        const updatedArticleIds = [...existingArticleIds, articleId]
 
-        console.log(updatedArticleIds)
-
+        console.log('updated articles', updatedArticleIds, list.id)
         await updateCustomList({
           variables: {
-            id: list.id,
-            articleIds: updatedArticleIds,
+            id: 46,
+            articleIds: [3, 5, 6],
           },
         })
-        await refetchCustomListQuery()
 
+        await refetchCustomListQuery()
         toast.success('List updated successfully')
         handleNestedClose()
         handleClose()
@@ -224,7 +217,7 @@ function CustomListAdder({ articleId }) {
           horizontal: 'left',
         }}
       >
-        {filteredCustomLists.map((list) => (
+        {filteredCustomLists?.map((list) => (
           <MenuItem
             key={list.id}
             onClick={() => handleListSelection(list)}
@@ -234,7 +227,7 @@ function CustomListAdder({ articleId }) {
             <AddIcon />
           </MenuItem>
         ))}
-        {filteredCustomLists.length === 0 && (
+        {filteredCustomLists?.length === 0 && (
           <MenuItem disabled>No custom lists</MenuItem>
         )}
       </Menu>

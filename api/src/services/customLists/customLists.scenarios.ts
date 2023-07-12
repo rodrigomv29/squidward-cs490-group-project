@@ -5,10 +5,11 @@ export const standard = defineScenario<Prisma.CustomListCreateArgs>({
   customList: {
     one: {
       data: {
-        name: 'String',
+        name: 'String3138286',
+        articles: 7015587,
         user: {
           create: {
-            email: 'String2186343',
+            email: 'String5759780',
             hashedPassword: 'String',
             salt: 'String',
           },
@@ -17,10 +18,11 @@ export const standard = defineScenario<Prisma.CustomListCreateArgs>({
     },
     two: {
       data: {
-        name: 'String',
+        name: 'String9386026',
+        articles: 230333,
         user: {
           create: {
-            email: 'String1987644',
+            email: 'String8688941',
             hashedPassword: 'String',
             salt: 'String',
           },

@@ -159,7 +159,7 @@ const AddListMenu = () => {
               input: {
                 name: listName,
                 userId: currentUser?.id,
-                articleIds: [],
+                articles: [],
               },
             },
           })
@@ -229,6 +229,7 @@ interface CustomList {
 }
 interface DeleteListMenuProps {
   filteredCustomLists: CustomList[]
+  selectedList: CustomList
   setSelectedList: (list: CustomList) => void
   setToggledList: (value: boolean) => void
   getCustomListIdByName?: (name: string) => number
@@ -239,6 +240,7 @@ interface DeleteListMenuProps {
 
 const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   filteredCustomLists,
+  selectedList,
   setSelectedList,
   setToggledList,
 }) => {
@@ -260,28 +262,44 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
       })
       await refetchCustomListQuery()
 
-      if (isToggling ) {
+      if (isToggling) {
         setToggledList(true)
       }
-
       const switchList =
         filteredCustomLists.length > 1
           ? filteredCustomLists.length - 2
-          : filteredCustomLists.length > 0
-          ? filteredCustomLists.length - 1
-          : 0
+          : filteredCustomLists.length === 0
+          ? 0
+          : null
+      if (selectedListMenu.name === selectedList.name) {
+        setTimeout(() => {
+          setIsToggling(false)
+          if (switchList != null) {
+            setSelectedList(filteredCustomLists[switchList])
+          } else {
+            setSelectedList(null)
+          }
+          setToggledList(false)
+        }, 500)
 
-      console.log(switchList, 'switch')
+        setTimeout(() => {
+          setIsToggling(true)
+        }, 500)
+      } else {
+        setTimeout(() => {
+          setIsToggling(false)
+          if (switchList != null) {
+            setSelectedList(filteredCustomLists[switchList])
+          } else {
+            setSelectedList(null)
+          }
+          setToggledList(false)
+        }, 500)
 
-      setTimeout(() => {
-        setIsToggling(false)
-        setSelectedList(filteredCustomLists[switchList])
-        setToggledList(false)
-      }, 500)
-
-      setTimeout(() => {
-        setIsToggling(true)
-      }, 500)
+        setTimeout(() => {
+          setIsToggling(true)
+        }, 500)
+      }
       toast.success(`Deleted List: "${selectedListMenu.name}"`)
       handleCloseMenuList()
     } catch (error) {
@@ -413,9 +431,6 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   const [selectedList, setSelectedList] = useState(null)
   const [toggledList, setToggledList] = useState(false)
   const [intialOpen, setInitalOpen] = useState(true)
-
-  console.log(selectedList, 'selectedList')
-  const { toggleTheme } = useContext(CustomThemeContext)
   const { theme } = useContext(CustomThemeContext)
   const handleTheme = (first, second) => {
     if (theme === 1) {
@@ -439,6 +454,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
 
   useEffect(() => {
     setSelectedList(filteredCustomLists[0])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredCustomLists[0]])
 
   const style = {
@@ -518,6 +534,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
                   filteredCustomLists={Array.from(filteredCustomLists)}
                   setSelectedList={setSelectedList}
                   setToggledList={setToggledList}
+                  selectedList={selectedList}
                 />
               </div>
               {toggledList ? (
@@ -525,7 +542,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
                   <CircularProgress size={200} sx={{ color: '#34D399' }} />
                 </div>
               ) : (
-                <div className="custom-list-container h-[82%] overflow-auto flex justify-center w-full">
+                <div className="custom-list-container flex h-[82%] w-full justify-center overflow-auto">
                   <CustomListGrid currentList={selectedList} />
                 </div>
               )}

@@ -23,7 +23,7 @@ export const GET_CATEGORY_QUERY = gql`
 `
 
 const GET_ARTICLE_QUERY = gql`
-  query getArticlesById($id: ID!) {
+  query getArticlesById($id: Int!) {
     article(id: $id) {
       id
       title

@@ -35,20 +35,21 @@ function GetArticle(id: number) {
   })
 
   if (!loading) {
-    return data.article
+    return data?.article
   }
 }
 
 function CustomListGrid({ currentList }) {
-  const articleIds =
-    currentList?.articles.map((article: any) => article.id) || []
+  const articleIds = currentList?.articles
 
   const { theme } = useContext(CustomThemeContext)
   const userArticles = []
 
-  Object.values(articleIds).forEach((articleId: number) => {
-    userArticles.push(GetArticle(articleId))
-  })
+  if (currentList != null) {
+    Object.values(articleIds).forEach((articleId: number) => {
+      userArticles.push(GetArticle(articleId))
+    })
+  }
 
   const handleTheme = (first, second) => {
     if (theme === 1) {
@@ -56,6 +57,8 @@ function CustomListGrid({ currentList }) {
     }
     return second + ' transitions-colors duration-200 '
   }
+
+  console.log('user articles', userArticles)
 
   return (
     <>
@@ -75,7 +78,7 @@ function CustomListGrid({ currentList }) {
         gap-4`}
         >
           {userArticles?.length === articleIds?.length &&
-          userArticles?.length != 0 ? (
+          userArticles?.length != 0 && currentList != null ? (
             userArticles?.map((article, index) => (
               <div key={article?.id} className="font-bold">
                 <a
@@ -136,10 +139,12 @@ function CustomListGrid({ currentList }) {
                 </a>
               </div>
             ))
-          ) : (
-            <div className="text-center"></div>
-          )}
-          {userArticles.length === 0 ? (
+          ) : userArticles?.length === 0 ? (
+            <div className="text-center">
+
+            </div>
+          ) : null}
+          {userArticles?.length === 0 ? (
             <div className="flex h-[50%] w-full items-center  text-center">
               <div className={`w-full  text-center`}>
                 <span

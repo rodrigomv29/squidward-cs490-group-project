@@ -16,42 +16,22 @@ export const customList: QueryResolvers['customList'] = ({ id }) => {
   })
 }
 
-export const createCustomList: MutationResolvers['createCustomList'] = async ({
+export const createCustomList: MutationResolvers['createCustomList'] = ({
   input,
 }) => {
-  const { name, userId, articleIds } = input
-
-  const createdCustomList = await db.customList.create({
-    data: {
-      name,
-      userId,
-      articles: {
-        connect: articleIds?.map((articleId) => ({ id: articleId })),
-      },
-    },
+  return db.customList.create({
+    data: input,
   })
-
-  return createdCustomList
 }
 
-export const updateCustomList: MutationResolvers['updateCustomList'] = async ({
+export const updateCustomList: MutationResolvers['updateCustomList'] = ({
   id,
   input,
 }) => {
-  const { name, userId, articleIds } = input
-
-  const updatedCustomList = await db.customList.update({
+  return db.customList.update({
+    data: input,
     where: { id },
-    data: {
-      name,
-      userId,
-      articles: {
-        set: articleIds?.map((articleId) => ({ id: articleId })),
-      },
-    },
   })
-
-  return updatedCustomList
 }
 
 export const deleteCustomList: MutationResolvers['deleteCustomList'] = ({
@@ -66,7 +46,7 @@ export const CustomList: CustomListRelationResolvers = {
   user: (_obj, { root }) => {
     return db.customList.findUnique({ where: { id: root?.id } }).user()
   },
-  articles: (_obj, { root }) => {
-    return db.customList.findUnique({ where: { id: root?.id } }).articles()
+  Article: (_obj, { root }) => {
+    return db.customList.findUnique({ where: { id: root?.id } }).Article()
   },
 }

@@ -33,11 +33,16 @@ describe('customLists', () => {
 
   scenario('creates a customList', async (scenario: StandardScenario) => {
     const result = await createCustomList({
-      input: { name: 'String', userId: scenario.customList.two.userId },
+      input: {
+        name: 'String7446906',
+        userId: scenario.customList.two.userId,
+        articles: 7012961,
+      },
     })
 
-    expect(result.name).toEqual('String')
+    expect(result.name).toEqual('String7446906')
     expect(result.userId).toEqual(scenario.customList.two.userId)
+    expect(result.articles).toEqual(7012961)
   })
 
   scenario('updates a customList', async (scenario: StandardScenario) => {
@@ -46,10 +51,10 @@ describe('customLists', () => {
     })) as CustomList
     const result = await updateCustomList({
       id: original.id,
-      input: { name: 'String2' },
+      input: { name: 'String52085202' },
     })
 
-    expect(result.name).toEqual('String2')
+    expect(result.name).toEqual('String52085202')
   })
 
   scenario('deletes a customList', async (scenario: StandardScenario) => {

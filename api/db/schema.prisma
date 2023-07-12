@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -53,5 +53,6 @@ model CustomList {
   name     String    @unique
   userId   Int
   user     User      @relation(fields: [userId], references: [id])
-  articles Article[]
+  articles Int[]
+  Article  Article[]
 }

@@ -1,23 +1,25 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "hashedPassword" TEXT NOT NULL,
     "salt" TEXT NOT NULL,
     "resetToken" TEXT,
-    "resetTokenExpiresAt" DATETIME,
+    "resetTokenExpiresAt" TIMESTAMP(3),
     "general" BOOLEAN NOT NULL DEFAULT true,
     "business" BOOLEAN NOT NULL DEFAULT false,
     "entertainment" BOOLEAN NOT NULL DEFAULT false,
     "health" BOOLEAN NOT NULL DEFAULT false,
     "science" BOOLEAN NOT NULL DEFAULT false,
     "sports" BOOLEAN NOT NULL DEFAULT false,
-    "technology" BOOLEAN NOT NULL DEFAULT false
+    "technology" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Article" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "sourceId" TEXT,
     "sourceName" TEXT,
     "author" TEXT,
@@ -25,26 +27,30 @@ CREATE TABLE "Article" (
     "description" TEXT,
     "url" TEXT NOT NULL,
     "urlToImage" TEXT,
-    "publishedAt" DATETIME NOT NULL,
+    "publishedAt" TIMESTAMP(3) NOT NULL,
     "content" TEXT,
     "categoryId" INTEGER,
     "customListId" INTEGER,
-    CONSTRAINT "Article_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT "Article_customListId_fkey" FOREIGN KEY ("customListId") REFERENCES "CustomList" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+
+    CONSTRAINT "Article_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT NOT NULL
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "CustomList" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
-    CONSTRAINT "CustomList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "articles" INTEGER[],
+
+    CONSTRAINT "CustomList_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -55,3 +61,12 @@ CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CustomList_name_key" ON "CustomList"("name");
+
+-- AddForeignKey
+ALTER TABLE "Article" ADD CONSTRAINT "Article_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Article" ADD CONSTRAINT "Article_customListId_fkey" FOREIGN KEY ("customListId") REFERENCES "CustomList"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CustomList" ADD CONSTRAINT "CustomList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

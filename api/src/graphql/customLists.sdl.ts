@@ -4,7 +4,8 @@ export const schema = gql`
     name: String!
     userId: Int!
     user: User!
-    articles: [Article]!
+    articles: [Int]!
+    Article: [Article]!
   }
 
   type Query {
@@ -15,13 +16,13 @@ export const schema = gql`
   input CreateCustomListInput {
     name: String!
     userId: Int!
-    articleIds: [Int!]
+    articles: [Int]!
   }
 
   input UpdateCustomListInput {
     name: String
     userId: Int
-    articleIds: [Int!]
+    articles: [Int]!
   }
 
   type Mutation {
