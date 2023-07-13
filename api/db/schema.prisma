@@ -24,6 +24,7 @@ model User {
   technology          Boolean      @default(false)
   customLists         CustomList[]
   userArticles        UserArticle[]
+  Search              Search[]
 }
 
 model Article {
@@ -72,9 +73,15 @@ model UserArticle {
   customList   CustomList? @relation(fields: [customListId], references: [id])
   customListId Int?
   articleId    Int
-  user         User        @relation(fields: [userId], references: [id]) 
+  user         User        @relation(fields: [userId], references: [id])
   userId       Int
 
   @@unique([customListId, articleId])
 }
 
+model Search {
+  id     Int     @id @default(autoincrement())
+  search String?
+  userID Int?
+  User   User?   @relation(fields: [userID], references: [id])
+}

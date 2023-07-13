@@ -67,7 +67,6 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const currentUsername = currentUser != undefined ? currentUser.email : null
 
   const status = getStatus()
-
   const { theme, toggleTheme } = useContext(CustomThemeContext)
   const { currentPage, toggleCurrentPage } = useContext(CurrentPageContext)
   const handlePageChange = (page) => {
