@@ -69,8 +69,6 @@ function CustomListAdder({ article }) {
     setListName(event.target.value)
   }
 
-  // console.log('article', article)
-
   const handleKeyPressAdd = async (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {

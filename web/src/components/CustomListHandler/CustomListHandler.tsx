@@ -111,17 +111,13 @@ export function useArticleLength() {
     setArticleCount(count)
   }
 
-  console.log(articleCount, 'this is the current article count')
-
   const increaseCount = () => {
     setArticleCount(articleCount + 1)
-    console.log('ran increase code')
   }
 
   const decreaseCount = () => {
     if (articleCount > 0) {
       setArticleCount(articleCount - 1)
-      console.log('I was called')
     }
   }
 
@@ -168,12 +164,6 @@ export function useCustomList() {
 }
 
 function CustomListHandler() {
-  const { filteredCustomLists } = useCustomList()
-
-  useEffect(() => {
-    console.log(filteredCustomLists, 'filted articles')
-  }, [filteredCustomLists])
-
   return <div></div>
 }
 

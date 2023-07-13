@@ -72,8 +72,6 @@ function CustomListGrid({ currentList, refreshArticles }) {
     }
   }
 
-  console.log(currentList?.articles?.length, 'articles length')
-
   const { theme } = useContext(CustomThemeContext)
   const handleTheme = (first, second) => {
     if (theme === 1) {
