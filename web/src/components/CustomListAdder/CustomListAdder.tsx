@@ -18,7 +18,6 @@ import { useAuth } from 'src/auth'
 import {
   CREATE_CUSTOM_LIST_MUTATION,
   useCustomList,
-  UPDATE_CUSTOM_LIST_MUTATION,
   CREATE_USER_ARTICLE_MUTATION,
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
@@ -33,7 +32,6 @@ function CustomListAdder({ article }) {
   const [showAddListModal, setShowAddListModal] = useState(false)
   const [createCustomList] = useMutation(CREATE_CUSTOM_LIST_MUTATION)
   const [createUserArticle] = useMutation(CREATE_USER_ARTICLE_MUTATION)
-  const [updateCustomList] = useMutation(UPDATE_CUSTOM_LIST_MUTATION)
   const { currentUser } = useAuth()
   const { theme } = useContext(CustomThemeContext)
 
