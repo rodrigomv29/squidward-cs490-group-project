@@ -1,7 +1,8 @@
 # README
 
 Welcome to the Squidward News App!
-Written with the help of [RedwoodJs](https://redwoodjs.com)!
+Written with the help of [RedwoodJS](https://redwoodjs.com)!
+The project is mostly written in TypeScript to ensure type safety and error handling.
 
 > **Prerequisites**
 >
