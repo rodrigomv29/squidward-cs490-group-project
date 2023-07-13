@@ -6,6 +6,7 @@ import axios from 'axios'
 
 import { useLocation } from '@redwoodjs/router'
 
+import CustomListAdder from 'src/components/CustomListAdder/CustomListAdder'
 import CurrentPageContext from 'src/CurrentPageContext'
 import CustomThemeContext from 'src/CustomThemeContext'
 import NewsLayout from 'src/layouts/NewsLayout/NewsLayout'
@@ -59,6 +60,8 @@ const SearchResultsPage = () => {
       setIsLoading(false)
     }
   }, [location.search])
+
+  const counter = 999999
 
   return (
     <NewsLayout>
@@ -115,7 +118,7 @@ const SearchResultsPage = () => {
             </Box>
           ) : (
             <Box marginLeft={0} fontFamily="Arvo">
-              {searchResults.map((result) => (
+              {searchResults.map((result, index) => (
                 <Box key={result.url} mb={4}>
                   <div className="items-cetner flex h-[300px] justify-center">
                     <div className="my-10 flex w-[75%] flex-row">
@@ -173,6 +176,22 @@ const SearchResultsPage = () => {
                               ).toLocaleDateString()}
                             </span>
                           </Text>
+                          <div>
+                            <CustomListAdder
+                              article={{
+                                id: index + counter,
+                                title: result.title,
+                                description: result.description,
+                                sourceName: result.sourceName,
+                                sourceId: result.sourceId,
+                                author: result.author,
+                                url: result.url,
+                                urlToImage: result.urlToImage,
+                                publishedAt: result.publishedAt,
+                                content: result.content,
+                              }}
+                            />
+                          </div>
                           <div
                             className={`font-bold ${handleTheme(
                               'text-emerald-400',

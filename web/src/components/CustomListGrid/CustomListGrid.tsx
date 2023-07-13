@@ -11,7 +11,6 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 import {
   DELETE_USER_ARTICLE_MUTATION,
   useCustomList,
-  useArticleLength,
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
 
@@ -26,16 +25,6 @@ function CustomListGrid({ currentList, refreshArticles }) {
   const [firstSwitch, setFirstSwitch] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [selectedArticleId, setSelectedArticleId] = useState(null)
-
-  const { articleCount, setCount } = useArticleLength()
-
-  useEffect(() => {
-    setCount(currentList?.articles?.length)
-  }, [])
-
-  useEffect(() => {
-    console.log(articleCount)
-  }, [articleCount])
 
   useEffect(() => {
     if (refresh) {
@@ -121,7 +110,12 @@ function CustomListGrid({ currentList, refreshArticles }) {
       <div className="flex h-[100%] w-full flex-col items-center justify-center text-center">
         {currentList || currentListUser ? (
           <div className="flex h-full w-full flex-col items-center justify-center">
-            <span className="py-2 text-lg font-bold">
+            <span
+              className={`py-2 text-lg font-bold ${handleTheme(
+                'text-emerald-400',
+                'text-black'
+              )}`}
+            >
               {currentList ? currentList?.name : currentListUser?.name}
             </span>
             <div className="flex flex-1 flex-col items-center justify-center ">
@@ -161,7 +155,7 @@ function CustomListGrid({ currentList, refreshArticles }) {
 
   return (
     <>
-      <div className={`grid-container h-[100%] w-full overflow-auto px-4 py-8`}>
+      <div className={`grid-container h-[95%] w-full overflow-auto px-4 py-8`}>
         {handleTheme(
           <Toaster
             toastOptions={{
@@ -187,7 +181,14 @@ function CustomListGrid({ currentList, refreshArticles }) {
           />
         )}
         <div className="text-center">
-          <p className="pb-4 text-2xl font-bold">{currentList?.name}</p>
+          <p
+            className={`pb-4 text-2xl font-bold ${handleTheme(
+              'text-emerald-400',
+              'text-black'
+            )}`}
+          >
+            {currentList?.name}
+          </p>
         </div>
         <div
           className={`category-grid ${handleTheme(
@@ -284,7 +285,7 @@ function CustomListGrid({ currentList, refreshArticles }) {
               </div>
             ))
           ) : currentList?.articles?.length === 0 ? (
-            <div className="flex h-full w-full flex-col items-center justify-center bg-red-400">
+            <div className="flex h-full w-full flex-col items-center justify-center">
               <div className="flex flex-1 flex-col items-center justify-center ">
                 <div className="w-full text-center">
                   <span
@@ -386,7 +387,7 @@ function CustomListGrid({ currentList, refreshArticles }) {
               </div>
             ))
           ) : userArticles?.length === 0 && currentList != null ? (
-            <div className="flex h-full w-full flex-col items-center justify-center bg-red-400">
+            <div className="flex h-full w-full flex-col items-center justify-center">
               <div className="flex flex-1 flex-col items-center justify-center ">
                 <div className="w-full text-center">
                   <span

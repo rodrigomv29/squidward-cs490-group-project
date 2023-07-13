@@ -196,7 +196,7 @@ function CustomListAdder({ article }) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <AddIcon sx={{ fontSize: 25 }} />
+        <AddIcon sx={{ fontSize: 25, color: handleTheme('white', null) }} />
       </IconButton>
       <Menu
         id="long-menu"

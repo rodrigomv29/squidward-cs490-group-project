@@ -49,6 +49,13 @@ const SwitchListMenu: React.FC<SwitchListMenuProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [isToggling, setIsToggling] = useState(true)
+  const { theme } = useContext(CustomThemeContext)
+  const handleTheme = (first, second) => {
+    if (theme === 1) {
+      return first
+    }
+    return second
+  }
 
   const handleClickMenuList = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -83,7 +90,9 @@ const SwitchListMenu: React.FC<SwitchListMenuProps> = ({
   return (
     <Box sx={{ overflow: 'auto' }}>
       <div>
-        <span className="">Switch List</span>
+        <span className={handleTheme('text-white', 'text-black')}>
+          Switch List
+        </span>
         <IconButton
           aria-label="more"
           id="long-button"
@@ -91,6 +100,7 @@ const SwitchListMenu: React.FC<SwitchListMenuProps> = ({
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleClickMenuList}
+          sx={{ color: handleTheme('white', null) }}
         >
           <ArrowDropDownCircleOutlinedIcon />
         </IconButton>
@@ -130,6 +140,13 @@ const AddListMenu = () => {
   const [createCustomList] = useMutation(CREATE_CUSTOM_LIST_MUTATION)
   const { refetchCustomListQuery } = useCustomList()
   const { currentUser } = useAuth()
+  const { theme } = useContext(CustomThemeContext)
+  const handleTheme = (first, second) => {
+    if (theme === 1) {
+      return first
+    }
+    return second
+  }
 
   const handleClickMenuList = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -193,7 +210,9 @@ const AddListMenu = () => {
   return (
     <Box sx={{ overflow: 'auto' }}>
       <div>
-        <span className="">Add List</span>
+        <span className={handleTheme('text-white', 'text-black')}>
+          Add List
+        </span>
         <IconButton
           aria-label="more"
           id="long-button"
@@ -201,6 +220,7 @@ const AddListMenu = () => {
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleClickMenuList}
+          sx={{ color: handleTheme('white', null) }}
         >
           <AddOutlinedIcon />
         </IconButton>
@@ -283,7 +303,13 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
 
   const previousElement =
     previousIndex >= 0 ? filteredCustomLists[previousIndex] : null
-
+  const { theme } = useContext(CustomThemeContext)
+  const handleTheme = (first, second) => {
+    if (theme === 1) {
+      return first
+    }
+    return second
+  }
   const handleDeleteList = async () => {
     if (selectedListMenu) {
       const customListId = getCustomListIdByName(selectedListMenu.name)
@@ -327,7 +353,9 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   return (
     <Box sx={{ overflow: 'auto' }}>
       <div>
-        <span className="">Delete List</span>
+        <span className={handleTheme('text-white', 'text-black')}>
+          Delete List
+        </span>
         <IconButton
           aria-label="more"
           id="long-button"
@@ -335,6 +363,7 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
           aria-expanded={anchorEl ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleClickMenuList}
+          sx={{ color: handleTheme('white', null) }}
         >
           <DeleteOutlineOutlinedIcon />
         </IconButton>
@@ -478,13 +507,26 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredCustomLists[0]])
 
-  const style = {
+  const light_style = {
     position: 'absolute' as const,
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '60%',
     bgcolor: '#34D399',
+    boxShadow: 24,
+    borderRadius: 6,
+    p: 4,
+    height: '80%',
+  }
+
+  const dark_style = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '60%',
+    bgcolor: '#1f2937',
     boxShadow: 24,
     borderRadius: 6,
     p: 4,
@@ -533,15 +575,27 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
         }}
       >
         <Fade in={isOpen}>
-          <Box sx={style} className="custom-modal">
+          <Box
+            sx={handleTheme(dark_style, light_style)}
+            className="custom-modal"
+          >
             <div className="h-full">
               <div className="flex justify-end">
                 <IconButton onClick={handleClose}>
-                  <CloseIcon sx={{ fontSize: '30px' }} />
+                  <CloseIcon
+                    sx={{ fontSize: '30px', color: handleTheme('white', null) }}
+                  />
                 </IconButton>
               </div>
               <div className="flex items-center justify-center">
-                <p className="font-Arvo text-2xl font-bold">My List</p>
+                <p
+                  className={`font-Arvo text-2xl font-bold ${handleTheme(
+                    'text-white',
+                    'text-black'
+                  )}`}
+                >
+                  My List
+                </p>
               </div>
               <div className="flex flex-row justify-between px-10 pt-6">
                 <SwitchListMenu
@@ -563,8 +617,10 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
                 />
               </div>
               {toggledList ? (
-                <div>
-                  <CircularProgress size={200} sx={{ color: '#34D399' }} />
+                <div className="flex h-[70%] w-full items-center justify-center">
+                  <div>
+                    <CircularProgress size={200} sx={{ color: 'white' }} />
+                  </div>
                 </div>
               ) : (
                 <div className="custom-list-container flex h-[82%] w-full justify-center overflow-auto">

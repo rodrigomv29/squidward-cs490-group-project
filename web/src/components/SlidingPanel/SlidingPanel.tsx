@@ -4,21 +4,28 @@ import { Box, CircularProgress } from '@mui/material'
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs'
 import { RxDotFilled } from 'react-icons/rx'
 
+import CustomListAdder from 'src/components/CustomListAdder/CustomListAdder'
 import CurrentPageContext from 'src/CurrentPageContext'
 import { sortArticlesByDate } from 'src/utils/storage'
 
 import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 
 const processData = (categoryArticlesMap, currentPage) => {
+  const count = 999999
   const category = currentPage === 'home' ? 'general' : currentPage
-  const categoryArticles = categoryArticlesMap[category]?.map((article) => ({
-    title: article.title,
-    description: article.description,
-    author: article.author,
-    urlToImage: article.urlToImage,
-    url: article.url,
-    publishedAt: article.publishedAt,
-  }))
+  const categoryArticles = categoryArticlesMap[category]?.map(
+    (article, index) => ({
+      id: index + count,
+      title: article.title,
+      description: article.description,
+      author: article.author,
+      urlToImage: article.urlToImage,
+      url: article.url,
+      publishedAt: article.publishedAt,
+      soruceName: article?.sourceName,
+      soruceId: article.soruceId,
+    })
+  )
   return categoryArticles
 }
 
@@ -120,7 +127,7 @@ function SlidingPannel() {
                 slides[currentIndex]?.publishedAt.length - 5
               )}
             </div>
-            <div className="read-more">
+            <div className="read-more flex flex-row">
               <a
                 href={slides[currentIndex]?.url}
                 target="_blank"
@@ -130,6 +137,9 @@ function SlidingPannel() {
                 Read More
                 <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-emerald-400 transition-transform duration-300 group-hover:scale-x-100"></span>
               </a>
+              <div className="relative top-[-8px]">
+                <CustomListAdder article={slides[currentIndex]} />
+              </div>
             </div>
           </div>
           <div className="absolute bottom-0 left-4 right-4 flex justify-center px-10 py-4">
