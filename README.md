@@ -1,6 +1,7 @@
 # README
 
-Welcome to [RedwoodJS](https://redwoodjs.com)!
+Welcome to the Squidward News App!
+Written with the help of [RedwoodJs](https://redwoodjs.com)!
 
 > **Prerequisites**
 >
