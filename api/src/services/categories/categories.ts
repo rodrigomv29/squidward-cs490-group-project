@@ -1,3 +1,4 @@
+// Many type errors coming out of this file
 import fetch from 'node-fetch'
 import type {
   QueryResolvers,
@@ -6,11 +7,12 @@ import type {
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
-
+// article object is not being used
+// object being called as object
 export const categories: QueryResolvers['categories'] = () => {
   return db.category.findMany()
 }
-
+// error with this method 
 export const category: QueryResolvers['category'] = ({ id }) => {
   return db.category.findUnique({
     where: { id },
