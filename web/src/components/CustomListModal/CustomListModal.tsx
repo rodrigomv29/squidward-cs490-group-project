@@ -349,7 +349,7 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   useEffect(() => {
     setTimeout(() => {
       setRefreshArticles(false)
-    }, 6000)
+    }, 2000)
   }, [refreshArticles, setRefreshArticles])
 
   return (
