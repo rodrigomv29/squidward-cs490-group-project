@@ -505,13 +505,14 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   useEffect(() => {
     setSelectedList(
       selectedList === null || selectedList === undefined
-        ? filteredCustomLists[0]
-        : filteredCustomLists[0]
-        ? filteredCustomLists[0]
+        ? filteredCustomLists && filteredCustomLists[0] !== undefined
+          ? filteredCustomLists[0]
+          : selectedList !== null
+          ? selectedList
+          : null
         : selectedList
-        ? selectedList
-        : null
     )
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialList])
 
