@@ -71,14 +71,6 @@ export const DELETE_CUSTOM_LIST_MUTATION = gql`
   }
 `
 
-export const DELETE_USER_ARTICLE_MUTATION = gql`
-  mutation DeleteUserArrticleMutation($id: Int!) {
-    deleteUserArticle(id: $id) {
-      id
-    }
-  }
-`
-
 export function useCustomList() {
   const { currentUser } = useAuth()
   const {
