@@ -5,9 +5,11 @@ import { ArrowRightIcon } from '@chakra-ui/icons'
 import { Icon } from '@chakra-ui/react'
 import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
+import { gql } from 'graphql-tag'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
+import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import AccountMenu from 'src/components/AccountMenu/AccountMenu'
@@ -22,13 +24,11 @@ type NewsLayoutProps = {
   children?: React.ReactNode
 }
 
-/*
-  A useEffect to keep track of the current state of the screen for diffrent viewing size
-*/
 const useWindowWidth = (threshold: number) => {
   const [isLargeScreen, setIsLargeScreen] = useState(
     window.innerWidth > threshold
   )
+
   useEffect(() => {
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth > threshold)
@@ -59,6 +59,21 @@ const SignInButton = styled(Button)<ButtonProps>(() => ({
   borderRadius: '30px',
 }))
 
+const GET_USER_QUERY = gql`
+  query GetUserQuery($id: Int!) {
+    user(id: $id) {
+      id
+      general
+      business
+      entertainment
+      health
+      science
+      sports
+      technology
+    }
+  }
+`
+
 const NewsLayout = ({ children }: NewsLayoutProps) => {
   const [isHovered, setIsHovered] = useState(false)
   const isLargeScreen = useWindowWidth(768)
@@ -69,9 +84,28 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
   const status = getStatus()
   const { theme, toggleTheme } = useContext(CustomThemeContext)
   const { currentPage, toggleCurrentPage } = useContext(CurrentPageContext)
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: string) => {
     toggleCurrentPage(page)
   }
+
+  const userId = currentUser?.id || 0
+
+  const { data, loading } = useQuery(GET_USER_QUERY, {
+    variables: { id: userId },
+  })
+
+  const user = data?.user
+
+  const [showOptions, setShowOptions] = useState({
+    home: true,
+    general: user?.general ?? true,
+    business: user?.business ?? true,
+    entertainment: user?.entertainment ?? true,
+    health: user?.health ?? true,
+    science: user?.science ?? true,
+    sports: user?.sports ?? true,
+    technology: user?.technology ?? true,
+  })
 
   const signIn = () => {
     if (status === 0) {
@@ -97,36 +131,35 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
     if (isLargeScreen && nav) {
       setNav(false)
     }
-  }, [isLargeScreen, nav])
+
+    const updatedShowOptions = {
+      home: true,
+      general: user?.general ?? true,
+      business: user?.business ?? true,
+      entertainment: user?.entertainment ?? true,
+      health: user?.health ?? true,
+      science: user?.science ?? true,
+      sports: user?.sports ?? true,
+      technology: user?.technology ?? true,
+    }
+    setShowOptions(updatedShowOptions)
+  }, [isLargeScreen, nav, user])
+
+  if (loading) {
+    // Handle loading state
+    return <div>Loading...</div>
+  }
 
   const CustomLink = (props) => {
     return (
-      <>
-        {props.category === 'home' ? (
+      <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+        {props.showOptions[props.category] && (
           <Link
-            to={routes.home()}
-            onClick={() => {
-              handlePageChange(props.category)
-            }}
-          >
-            <div
-              className={`${
-                currentPage === props.category
-                  ? `h-full w-full rounded-full px-4 transition-colors duration-200 ${
-                      theme === 1
-                        ? 'bg-emerald-400 text-white'
-                        : 'bg-white text-emerald-400 '
-                    }`
-                  : ''
-              }`}
-            >
-              <span className="uppercase">{props.category.slice(0, 1)}</span>
-              <span className="">{props.category.slice(1)}</span>
-            </div>
-          </Link>
-        ) : (
-          <Link
-            to={routes.category({ category: props.category })}
+            to={
+              props.category === 'home'
+                ? routes.home()
+                : routes.category({ category: props.category })
+            }
             onClick={() => {
               handlePageChange(props.category)
             }}
@@ -147,7 +180,7 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
             </div>
           </Link>
         )}
-      </>
+      </li>
     )
   }
 
@@ -363,30 +396,68 @@ const NewsLayout = ({ children }: NewsLayoutProps) => {
                   theme === 1 ? 'text-emerald-400' : 'text-white'
                 }`}
               >
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="home" />
-                </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="general" />
-                </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="business" />
-                </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="entertainment" />
-                </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="health" />
-                </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="science" />
-                </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="sports" />
-                </li>
-                <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
-                  <CustomLink category="technology" />
-                </li>
+                {/* Display the link if the 'home' option is enabled */}
+                {showOptions.home && (
+                  <li className="mx-8 transition-opacity duration-300 hover:opacity-75 hover:shadow">
+                    <Link
+                      to={routes.home()}
+                      onClick={() => handlePageChange('home')}
+                    >
+                      <div
+                        className={`${
+                          currentPage === 'home'
+                            ? `h-full w-full rounded-full px-4 transition-colors duration-200 ${
+                                theme === 1
+                                  ? 'bg-emerald-400 text-white'
+                                  : 'bg-white text-emerald-400 '
+                              }`
+                            : ''
+                        }`}
+                      >
+                        <span className="uppercase">H</span>
+                        <span>ome</span>
+                      </div>
+                    </Link>
+                  </li>
+                )}
+
+                {/* Display the link if the 'general' option is enabled */}
+                {showOptions.general && (
+                  <CustomLink category="general" showOptions={showOptions} />
+                )}
+
+                {/* Display the link if the 'business' option is enabled */}
+                {showOptions.business && (
+                  <CustomLink category="business" showOptions={showOptions} />
+                )}
+
+                {/* Display the link if the 'entertainment' option is enabled */}
+                {showOptions.entertainment && (
+                  <CustomLink
+                    category="entertainment"
+                    showOptions={showOptions}
+                  />
+                )}
+
+                {/* Display the link if the 'health' option is enabled */}
+                {showOptions.health && (
+                  <CustomLink category="health" showOptions={showOptions} />
+                )}
+
+                {/* Display the link if the 'science' option is enabled */}
+                {showOptions.science && (
+                  <CustomLink category="science" showOptions={showOptions} />
+                )}
+
+                {/* Display the link if the 'sports' option is enabled */}
+                {showOptions.sports && (
+                  <CustomLink category="sports" showOptions={showOptions} />
+                )}
+
+                {/* Display the link if the 'technology' option is enabled */}
+                {showOptions.technology && (
+                  <CustomLink category="technology" showOptions={showOptions} />
+                )}
                 <SearchBox></SearchBox>
               </ul>
             </div>
