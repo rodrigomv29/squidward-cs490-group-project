@@ -296,13 +296,15 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   )
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
-  const currentIndex = filteredCustomLists.findIndex(
+  const currentIndex = filteredCustomLists?.findIndex(
     (list) => list.id === selectedList?.id
   )
   const previousIndex = currentIndex > 0 ? currentIndex - 1 : -1
 
   const previousElement =
-    previousIndex >= 0 ? filteredCustomLists[previousIndex] : null
+    previousIndex >= 0
+      ? filteredCustomLists && filteredCustomLists[previousIndex]
+      : null
   const { theme } = useContext(CustomThemeContext)
   const handleTheme = (first, second) => {
     if (theme === 1) {
@@ -376,8 +378,8 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
           open={Boolean(anchorEl)}
           onClose={handleCloseMenuList}
         >
-          {filteredCustomLists.length > 0 ? (
-            filteredCustomLists.map((list) => (
+          {filteredCustomLists?.length > 0 ? (
+            filteredCustomLists?.map((list) => (
               <MenuItem
                 key={list.id}
                 selected={list.name === 'Pyxis'}
@@ -498,14 +500,20 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
     }
   }, [filteredCustomLists])
 
+  const initialList =
+    filteredCustomLists?.length > 0 ? filteredCustomLists[0] : null
   useEffect(() => {
     setSelectedList(
       selectedList === null || selectedList === undefined
         ? filteredCustomLists[0]
+        : filteredCustomLists[0]
+        ? filteredCustomLists[0]
         : selectedList
+        ? selectedList
+        : null
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filteredCustomLists[0]])
+  }, [initialList])
 
   const light_style = {
     position: 'absolute' as const,
@@ -599,14 +607,18 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
               </div>
               <div className="flex flex-row justify-between px-10 pt-6">
                 <SwitchListMenu
-                  filteredCustomLists={filteredCustomLists}
+                  filteredCustomLists={
+                    filteredCustomLists ? filteredCustomLists : null
+                  }
                   selectedList={selectedList}
                   setSelectedList={setSelectedList}
                   setToggledList={setToggledList}
                 />
                 <AddListMenu />
                 <DeleteListMenu
-                  filteredCustomLists={Array.from(filteredCustomLists)}
+                  filteredCustomLists={
+                    filteredCustomLists && Array.from(filteredCustomLists)
+                  }
                   setToggledList={setToggledList}
                   selectedList={selectedList}
                   getCustomListIdByName={getCustomListIdByName}
