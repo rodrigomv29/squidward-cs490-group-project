@@ -22,6 +22,7 @@ model User {
   science             Boolean   @default(false)
   sports              Boolean   @default(false)
   technology          Boolean   @default(false)
+  Search              Search[]
 }
 
 model Article {
@@ -43,4 +44,11 @@ model Category {
   id       Int       @id @default(autoincrement())
   name     String    @unique
   articles Article[]
+}
+
+model Search {
+  id     Int     @id @default(autoincrement())
+  search String?
+  userID Int?
+  User   User?   @relation(fields: [userID], references: [id])
 }
