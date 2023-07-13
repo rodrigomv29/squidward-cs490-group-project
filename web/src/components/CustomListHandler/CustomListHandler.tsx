@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { gql } from 'graphql-tag'
 
@@ -56,7 +56,19 @@ export const UPDATE_CUSTOM_LIST_MUTATION = gql`
   mutation UpdateCustomListMutation($id: Int!, $name: String!) {
     updateCustomList(id: $id, input: { name: $name }) {
       id
-      name
+      articles {
+        id
+      }
+    }
+  }
+`
+export const UPDATE_USER_ARTICLE_MUTATION = gql`
+  mutation UpdateUserArticletMutation($id: Int!, $userId: Int!) {
+    updateUserArticle(id: $id, input: { userId: $userId }) {
+      id
+      customList {
+        id
+      }
     }
   }
 `
@@ -71,6 +83,56 @@ export const DELETE_CUSTOM_LIST_MUTATION = gql`
   }
 `
 
+export const DELETE_USER_ARTICLE_MUTATION = gql`
+  mutation DeleteUserArticleMutation($id: Int!) {
+    deleteUserArticle(id: $id) {
+      id
+      customList {
+        id
+      }
+    }
+  }
+`
+
+export function useNumArticles(initialValue) {
+  const [numArticles, setNumArticles] = useState(initialValue)
+
+  const updateNumArticles = (newValue) => {
+    setNumArticles(newValue)
+  }
+
+  return { numArticles, updateNumArticles }
+}
+
+export function useArticleLength() {
+  const [articleCount, setArticleCount] = useState(0)
+
+  const setCount = (count) => {
+    setArticleCount(count)
+  }
+
+  console.log(articleCount, 'this is the current article count')
+
+  const increaseCount = () => {
+    setArticleCount(articleCount + 1)
+    console.log('ran increase code')
+  }
+
+  const decreaseCount = () => {
+    if (articleCount > 0) {
+      setArticleCount(articleCount - 1)
+      console.log('I was called')
+    }
+  }
+
+  return {
+    articleCount,
+    setCount,
+    increaseCount,
+    decreaseCount,
+  }
+}
+
 export function useCustomList() {
   const { currentUser } = useAuth()
   const {
@@ -79,13 +141,17 @@ export function useCustomList() {
     refetch,
   } = useQuery(CUSTOM_LIST_QUERY)
 
-  let filteredCustomLists = []
-  if (!customListLoading) {
-    const customLists = customListData?.customLists
-    filteredCustomLists = customLists?.filter(
-      (customList) => customList?.userId === currentUser?.id
-    )
-  }
+  const [filteredCustomLists, setFilteredCustomLists] = useState([])
+
+  useEffect(() => {
+    if (!customListLoading) {
+      const customLists = customListData?.customLists
+      const filteredLists = customLists?.filter(
+        (customList) => customList?.userId === currentUser?.id
+      )
+      setFilteredCustomLists(filteredLists)
+    }
+  }, [customListData, currentUser, customListLoading, refetch])
 
   const getCustomListIdByName = (name: string) => {
     const customList = filteredCustomLists?.find(
@@ -97,7 +163,7 @@ export function useCustomList() {
   return {
     filteredCustomLists,
     getCustomListIdByName,
-    refetchCustomListQuery: refetch, // Add the refetch function to the hook's return value
+    refetchCustomListQuery: refetch,
   }
 }
 
@@ -105,7 +171,7 @@ function CustomListHandler() {
   const { filteredCustomLists } = useCustomList()
 
   useEffect(() => {
-    console.log(filteredCustomLists)
+    console.log(filteredCustomLists, 'filted articles')
   }, [filteredCustomLists])
 
   return <div></div>

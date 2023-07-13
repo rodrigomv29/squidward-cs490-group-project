@@ -49,4 +49,7 @@ export const UserArticle: UserArticleRelationResolvers = {
   customList: (_obj, { root }) => {
     return db.userArticle.findUnique({ where: { id: root?.id } }).customList()
   },
+  user: (_obj, { root }) => {
+    return db.userArticle.findUnique({ where: { id: root?.id } }).user()
+  },
 }

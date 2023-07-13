@@ -15,6 +15,8 @@ export const schema = gql`
     customList: CustomList
     customListId: Int
     articleId: Int!
+    user: User!
+    userId: Int!
   }
 
   type Query {
@@ -35,6 +37,7 @@ export const schema = gql`
     categoryId: Int
     customListId: Int
     articleId: Int!
+    userId: Int!
   }
 
   input UpdateUserArticleInput {
@@ -50,6 +53,7 @@ export const schema = gql`
     categoryId: Int
     customListId: Int
     articleId: Int
+    userId: Int
   }
 
   type Mutation {

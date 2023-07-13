@@ -8,6 +8,7 @@ import CustomThemeContext from 'src/CustomThemeContext'
 import { sortArticlesByDate } from 'src/utils/storage'
 
 import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
+import CustomListAdder from '../CustomListAdder/CustomListAdder'
 
 const processData = (categoryArticlesMap, currentPage) => {
   const category = currentPage === 'home' ? 'general' : currentPage
@@ -71,20 +72,20 @@ function ArticleGrid({ itemsPerPage }) {
     const end = start + itemsPerPage
 
     return categoryArticles.slice(start, end).map((newsItem, index) => (
-      <a
-        href={newsItem.url}
-        key={newsItem.id}
-        target="_blank"
-        rel="noopener noreferrer"
+      <div
+        key={index}
+        className={` h-[80%] p-4 transition-colors duration-200 ${handleTheme(
+          'text-white',
+          'text-gray-800'
+        )}`}
       >
-        <div
-          key={index}
-          className={` h-[80%] p-4 transition-colors duration-200 ${handleTheme(
-            'text-white',
-            'text-gray-800'
-          )}`}
-        >
-          <div className="h-full  w-full px-12">
+        <div className="h-full  w-full px-12">
+          <a
+            href={newsItem.url}
+            key={newsItem.id}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div className="category-box lg:max-w-400 max-h-300 md:max-w-300 max-h-200 sm:max-w-200 max-h-100 flex h-full flex-col items-center justify-start rounded-lg text-center">
               <div className="h-[65%] w-full">
                 <img
@@ -128,9 +129,15 @@ function ArticleGrid({ itemsPerPage }) {
                 </span>
               </div>
             </div>
+          </a>
+          <div className="flex w-full justify-end">
+            <span className="relative top-[-30px]">
+              {' '}
+              <CustomListAdder article={newsItem} />
+            </span>
           </div>
         </div>
-      </a>
+      </div>
     ))
   }
 

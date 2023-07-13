@@ -18,8 +18,8 @@ import { useAuth } from 'src/auth'
 import {
   CREATE_CUSTOM_LIST_MUTATION,
   useCustomList,
-  UPDATE_CUSTOM_LIST_MUTATION,
   CREATE_USER_ARTICLE_MUTATION,
+  useArticleLength,
 } from 'src/components/CustomListHandler/CustomListHandler'
 import CustomThemeContext from 'src/CustomThemeContext'
 
@@ -33,9 +33,9 @@ function CustomListAdder({ article }) {
   const [showAddListModal, setShowAddListModal] = useState(false)
   const [createCustomList] = useMutation(CREATE_CUSTOM_LIST_MUTATION)
   const [createUserArticle] = useMutation(CREATE_USER_ARTICLE_MUTATION)
-  const [updateCustomList] = useMutation(UPDATE_CUSTOM_LIST_MUTATION)
   const { currentUser } = useAuth()
   const { theme } = useContext(CustomThemeContext)
+  const { increaseCount } = useArticleLength()
 
   const handleTheme = (first, second) => {
     if (theme === 1) {
@@ -92,6 +92,7 @@ function CustomListAdder({ article }) {
                 },
               },
             })
+            increaseCount()
             await refetchCustomListQuery()
             toast.success(`Created New List: "${listName}"`)
             setListName('')
@@ -132,12 +133,14 @@ function CustomListAdder({ article }) {
             title: article?.title,
             url: article?.url,
             urlToImage: article?.urlToImage,
+            userId: currentUser?.id,
           },
         },
       })
       await refetchCustomListQuery()
       toast.success(`Added article to list`)
       setListName('')
+      increaseCount()
       setShowAddListModal(false) // Close the modal
     } catch (error) {
       if (

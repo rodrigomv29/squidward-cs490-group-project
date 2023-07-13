@@ -238,13 +238,21 @@ const AddListMenu = () => {
   )
 }
 
+interface Article {
+  id: number
+  name: string
+}
+
 interface CustomList {
   id: string
   name: string
+  articles: Article[]
 }
 interface DeleteListMenuProps {
   filteredCustomLists: CustomList[]
   selectedList: CustomList
+  refreshArticles: boolean
+  setRefreshArticles: (value: boolean) => void
   setSelectedList: (list: CustomList) => void
   setToggledList: (value: boolean) => void
   getCustomListIdByName?: (name: string) => number
@@ -257,6 +265,10 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   filteredCustomLists,
   getCustomListIdByName,
   refetchCustomListQuery,
+  setRefreshArticles,
+  refreshArticles,
+  setSelectedList,
+  selectedList,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [selectedListMenu, setSelectedListMenu] = useState<CustomList | null>(
@@ -264,6 +276,13 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
   )
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [deleteCustomList] = useMutation(DELETE_CUSTOM_LIST_MUTATION)
+  const currentIndex = filteredCustomLists.findIndex(
+    (list) => list.id === selectedList?.id
+  )
+  const previousIndex = currentIndex > 0 ? currentIndex - 1 : -1
+
+  const previousElement =
+    previousIndex >= 0 ? filteredCustomLists[previousIndex] : null
 
   const handleDeleteList = async () => {
     if (selectedListMenu) {
@@ -275,6 +294,11 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
           },
         })
         await refetchCustomListQuery()
+        if (selectedList.name === selectedListMenu.name) {
+          setSelectedList(
+            previousElement === null ? filteredCustomLists[1] : previousElement
+          )
+        }
         toast.success(`Deleted List: "${selectedListMenu.name}"`)
       } catch (error) {
         console.log(error)
@@ -293,6 +317,12 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
     setSelectedListMenu(null)
     setAnchorEl(null)
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRefreshArticles(false)
+    }, 6000)
+  }, [refreshArticles, setRefreshArticles])
 
   return (
     <Box sx={{ overflow: 'auto' }}>
@@ -381,6 +411,7 @@ const DeleteListMenu: React.FC<DeleteListMenuProps> = ({
               variant="contained"
               onClick={() => {
                 handleDeleteList()
+                setRefreshArticles(true)
               }}
               sx={{
                 backgroundColor: 'red',
@@ -409,6 +440,8 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   const [selectedList, setSelectedList] = useState(null)
   const [toggledList, setToggledList] = useState(false)
   const [intialOpen, setInitalOpen] = useState(true)
+  const [refreshArticles, setRefreshArticles] = useState(false)
+
   const { theme } = useContext(CustomThemeContext)
   const handleTheme = (first, second) => {
     if (theme === 1) {
@@ -431,13 +464,17 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
   }
 
   useEffect(() => {
-    if (filteredCustomLists.length === 0) {
+    if (filteredCustomLists?.length === 0) {
       setSelectedList(undefined)
     }
   }, [filteredCustomLists])
 
   useEffect(() => {
-    setSelectedList(filteredCustomLists[0])
+    setSelectedList(
+      selectedList === null || selectedList === undefined
+        ? filteredCustomLists[0]
+        : selectedList
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredCustomLists[0]])
 
@@ -460,7 +497,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
         <Toaster
           toastOptions={{
             className: 'my-toast',
-            duration: 3000,
+            duration: 2000,
             style: {
               background: '#1f2937',
               color: '#34D399',
@@ -472,7 +509,7 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
         <Toaster
           toastOptions={{
             className: 'my-toast',
-            duration: 3000,
+            duration: 2000,
             style: {
               background: '#FAF7F6',
               color: '#34D399',
@@ -516,11 +553,13 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
                 <AddListMenu />
                 <DeleteListMenu
                   filteredCustomLists={Array.from(filteredCustomLists)}
-                  setSelectedList={setSelectedList}
                   setToggledList={setToggledList}
                   selectedList={selectedList}
                   getCustomListIdByName={getCustomListIdByName}
                   refetchCustomListQuery={refetchCustomListQuery}
+                  setRefreshArticles={setRefreshArticles}
+                  refreshArticles={refreshArticles}
+                  setSelectedList={setSelectedList}
                 />
               </div>
               {toggledList ? (
@@ -529,7 +568,10 @@ const CustomListPopup: React.FC<CustomListPopupProps> = ({
                 </div>
               ) : (
                 <div className="custom-list-container flex h-[82%] w-full justify-center overflow-auto">
-                  <CustomListGrid currentList={selectedList} />
+                  <CustomListGrid
+                    currentList={selectedList}
+                    refreshArticles={refreshArticles}
+                  />
                 </div>
               )}
             </div>

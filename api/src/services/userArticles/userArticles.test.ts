@@ -31,20 +31,22 @@ describe('userArticles', () => {
     }
   )
 
-  scenario('creates a userArticle', async () => {
+  scenario('creates a userArticle', async (scenario: StandardScenario) => {
     const result = await createUserArticle({
       input: {
         title: 'String',
         url: 'String',
-        publishedAt: '2023-07-12T22:59:43.077Z',
-        articleId: 1375816,
+        publishedAt: '2023-07-13T07:20:22.354Z',
+        articleId: 2747491,
+        userId: scenario.userArticle.two.userId,
       },
     })
 
     expect(result.title).toEqual('String')
     expect(result.url).toEqual('String')
-    expect(result.publishedAt).toEqual(new Date('2023-07-12T22:59:43.077Z'))
-    expect(result.articleId).toEqual(1375816)
+    expect(result.publishedAt).toEqual(new Date('2023-07-13T07:20:22.354Z'))
+    expect(result.articleId).toEqual(2747491)
+    expect(result.userId).toEqual(scenario.userArticle.two.userId)
   })
 
   scenario('updates a userArticle', async (scenario: StandardScenario) => {

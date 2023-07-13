@@ -7,16 +7,30 @@ export const standard = defineScenario<Prisma.UserArticleCreateArgs>({
       data: {
         title: 'String',
         url: 'String',
-        publishedAt: '2023-07-12T22:59:43.241Z',
-        articleId: 6790910,
+        publishedAt: '2023-07-13T07:20:22.467Z',
+        articleId: 7884495,
+        user: {
+          create: {
+            email: 'String9631025',
+            hashedPassword: 'String',
+            salt: 'String',
+          },
+        },
       },
     },
     two: {
       data: {
         title: 'String',
         url: 'String',
-        publishedAt: '2023-07-12T22:59:43.241Z',
-        articleId: 4348510,
+        publishedAt: '2023-07-13T07:20:22.467Z',
+        articleId: 4944148,
+        user: {
+          create: {
+            email: 'String6452125',
+            hashedPassword: 'String',
+            salt: 'String',
+          },
+        },
       },
     },
   },

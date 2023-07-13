@@ -60,8 +60,10 @@ CREATE TABLE "UserArticle" (
     "categoryId" INTEGER,
     "customListId" INTEGER,
     "articleId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
     CONSTRAINT "UserArticle_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT "UserArticle_customListId_fkey" FOREIGN KEY ("customListId") REFERENCES "CustomList" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT "UserArticle_customListId_fkey" FOREIGN KEY ("customListId") REFERENCES "CustomList" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "UserArticle_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex

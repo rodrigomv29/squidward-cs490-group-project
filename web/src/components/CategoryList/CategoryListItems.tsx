@@ -4,6 +4,7 @@ import CustomThemeContext from 'src/CustomThemeContext'
 
 import { useGetArticles } from '../ArticleDistrobutor/ArticleDistrobutor'
 
+
 const processData = (categoryArticlesMap) => {
   const categories = [
     'general',

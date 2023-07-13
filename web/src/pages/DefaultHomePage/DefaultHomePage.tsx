@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { Box, IconButton } from '@mui/material'
@@ -9,6 +9,7 @@ import { MetaTags } from '@redwoodjs/web'
 import ArticleListDefault from 'src/components/ArticleListDefault/ArticleListDefault'
 import ArticleRefresher from 'src/components/ArticleRefresher/ArticleRefresher'
 import CategoryListItems from 'src/components/CategoryList/CategoryListItems'
+import { useArticleLength } from 'src/components/CustomListHandler/CustomListHandler'
 import Footer from 'src/components/Footer/Footer'
 import WeatherWidget from 'src/components/Weather/WeatherWidget'
 import { isHomePage } from 'src/utils/storage'
@@ -18,6 +19,12 @@ import { useRefreshToggle } from '../SignedInHomePage/SignedInHomePage'
 
 const DefaultHomePage = () => {
   const [refreshToggle, handleRefreshClick, dataChanged] = useRefreshToggle()
+
+  const { articleCount } = useArticleLength()
+
+  useEffect(() => {
+    console.log(articleCount, 'articleCount')
+  }, [articleCount])
 
   isHomePage(1)
 

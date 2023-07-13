@@ -23,6 +23,7 @@ model User {
   sports              Boolean      @default(false)
   technology          Boolean      @default(false)
   customLists         CustomList[]
+  userArticles        UserArticle[]
 }
 
 model Article {
@@ -70,7 +71,10 @@ model UserArticle {
   Category     Category?   @relation(fields: [categoryId], references: [id])
   customList   CustomList? @relation(fields: [customListId], references: [id])
   customListId Int?
-  articleId    Int         
+  articleId    Int
+  user         User        @relation(fields: [userId], references: [id]) 
+  userId       Int
 
   @@unique([customListId, articleId])
 }
+
